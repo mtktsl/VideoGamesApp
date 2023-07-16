@@ -11,6 +11,7 @@ import RAWG_API
 import ImageViewPager
 import NSLayoutConstraintExtensionPackage
 
+//MARK: - Fileprivate values
 fileprivate typealias const = ApplicationConstants
 
 fileprivate extension UIEdgeInsets {
@@ -28,11 +29,22 @@ fileprivate extension UIEdgeInsets {
     )
 }
 
+extension HomeViewController {
+    fileprivate enum Constants {
+        static let imageViewPagerHeaderHeight: CGFloat = 200
+        static let collectionContentInset = UIEdgeInsets(
+            10
+        )
+    }
+}
+
+//MARK: - HomeviewControllerProtocol
 protocol HomeViewControllerProtocol {
     func setupColors()
     func setupMainGrid()
 }
 
+//MARK: - HomeViewController View Implementations
 class HomeViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
@@ -44,6 +56,7 @@ class HomeViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: layout
         )
+        
         collectionView.backgroundColor = .clear
         
         collectionView.register(
@@ -51,17 +64,16 @@ class HomeViewController: UIViewController {
             forCellWithReuseIdentifier: GamesListCell.reuseIdentifier
         )
         
+        collectionView.register(
+            ImageViewPagerReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ImageViewPagerReusableView.reuseIdentifier
+        )
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         
         return collectionView
-    }()
-    
-    let imageViewPager: ImageViewPager = {
-        let imageViewPager = ImageViewPager([])
-        
-        imageViewPager.scrollView.layer.cornerRadius = 10
-        return imageViewPager
     }()
     
     lazy var searchField: UITextField = {
@@ -121,6 +133,7 @@ class HomeViewController: UIViewController {
         }
     }
     
+    //MARK: - Overridden methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupColors()
@@ -144,12 +157,14 @@ class HomeViewController: UIViewController {
     }
 }
 
+//MARK: - ImageViewPagerDelegate
 extension HomeViewController: ImageViewPagerDelegate {
     func onImageTap(imageViewPager: ImageViewPager, at index: Int) {
         print(index)
     }
 }
 
+//MARK: - HomeViewControllerProtocol Implementation
 extension HomeViewController: HomeViewControllerProtocol {
     
     func setupColors() {
@@ -162,16 +177,24 @@ extension HomeViewController: HomeViewControllerProtocol {
         mainGrid.backgroundColor = .appBackgroundColor
         mainGrid.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.expand(mainGrid, to: view.safeAreaLayoutGuide)
-        imageViewPager.delegate = self
     }
 }
 
-extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//MARK: - UICollectionViewDataSource and Delegate implementations
+extension HomeViewController: UICollectionViewDataSource,
+                              UICollectionViewDelegate,
+                              UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return viewModel.dataCount
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: GamesListCell.reuseIdentifier,
@@ -180,13 +203,62 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         else { fatalError("Failed to cast GamesListCell") }
         
         cell.viewModel = GamesListCellViewModel(
-            dataModel: viewModel.getGame(at: indexPath.row)
+            dataModel: viewModel.getGameForCell(at: indexPath.row)
         )
         
         return cell
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard let suppView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ImageViewPagerReusableView.reuseIdentifier,
+            for: indexPath
+        ) as? ImageViewPagerReusableView
+        else {
+            fatalError("Failed to cast ImageViewPagerReusableView in HomeViewController")
+        }
+        
+        var imageURLStrings = [String?]()
+        var titles = [String?]()
+        
+        let dataCount = viewModel.imageViewPagerCount
+        
+        for i in 0 ..< dataCount {
+            let gameData = viewModel.getGameForHeader(at: i)
+            imageURLStrings.append(gameData?.backgroundImageURLString)
+            titles.append(gameData?.name)
+        }
+        
+        suppView.viewModel = ImageViewPagerReusableViewModel(
+            imageURLStrings: imageURLStrings,
+            titles: titles
+        )
+        
+        suppView.contentInset = Constants.collectionContentInset
+        
+        return suppView
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        
+        let width: CGFloat = collectionView.bounds.size.width
+        - Constants.collectionContentInset.left
+        - Constants.collectionContentInset.right
+        
+        return .init(width: width, height: Constants.imageViewPagerHeaderHeight)
+    }
 }
 
+//MARK: - ViewModel delegate implementations
 extension HomeViewController: HomeViewModelDelegate {
     func onSearchResult() {
         DispatchQueue.main.async { [weak self] in

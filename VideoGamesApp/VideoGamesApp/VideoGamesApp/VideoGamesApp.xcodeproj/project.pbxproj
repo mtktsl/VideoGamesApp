@@ -40,6 +40,8 @@
 		6F7C4C9A2A63277800241AE6 /* SystemImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C992A63277800241AE6 /* SystemImages.swift */; };
 		6F7C4C9C2A63278100241AE6 /* ImageAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C9B2A63278100241AE6 /* ImageAssets.swift */; };
 		6F7C4C9E2A632ADD00241AE6 /* GamesListCellRatingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */; };
+		6F7C4CA12A64893500241AE6 /* ImageViewPagerReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */; };
+		6F7C4CA32A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		6F7C4C992A63277800241AE6 /* SystemImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemImages.swift; sourceTree = "<group>"; };
 		6F7C4C9B2A63278100241AE6 /* ImageAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAssets.swift; sourceTree = "<group>"; };
 		6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListCellRatingModel.swift; sourceTree = "<group>"; };
+		6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableView.swift; sourceTree = "<group>"; };
+		6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,7 +164,6 @@
 				6F102CFF2A5F1E9A00C9781A /* Extenstions */,
 				6F102D002A5F1EA500C9781A /* Coordinators */,
 				6F102D012A5F1EAE00C9781A /* Views */,
-				6F102D022A5F1EB600C9781A /* Models */,
 				6F102CD02A5F193B00C9781A /* Info.plist */,
 			);
 			path = VideoGamesApp;
@@ -238,28 +241,12 @@
 			isa = PBXGroup;
 			children = (
 				6F7C4C8B2A62F4B200241AE6 /* Collection */,
-				6F102D032A5F4DA600C9781A /* Base */,
 				6F102D112A6124AD00C9781A /* Splash */,
 				6F102D142A6124CE00C9781A /* Main */,
 				6F102D062A5F4F2000C9781A /* Home */,
 				6F102D132A6124C200C9781A /* Favorites */,
-				6F102D122A6124B300C9781A /* Detail */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		6F102D022A5F1EB600C9781A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		6F102D032A5F4DA600C9781A /* Base */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 		6F102D062A5F4F2000C9781A /* Home */ = {
@@ -290,13 +277,6 @@
 			path = Splash;
 			sourceTree = "<group>";
 		};
-		6F102D122A6124B300C9781A /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		6F102D132A6124C200C9781A /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				6F7C4C922A62FF0C00241AE6 /* Cells */,
+				6F7C4C9F2A64890300241AE6 /* ReusableViews */,
 				6F7C4C912A62FF0000241AE6 /* Layouts */,
 			);
 			path = Collection;
@@ -348,6 +329,15 @@
 				6F7C4C8C2A62F61C00241AE6 /* GamesListCell */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		6F7C4C9F2A64890300241AE6 /* ReusableViews */ = {
+			isa = PBXGroup;
+			children = (
+				6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */,
+				6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */,
+			);
+			path = ReusableViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -508,7 +498,9 @@
 				6F7C4C942A62FF2F00241AE6 /* CollectionViewTableLayout.swift in Sources */,
 				6F102D262A62A46000C9781A /* SplashViewController.swift in Sources */,
 				6F102CC22A5F193A00C9781A /* SceneDelegate.swift in Sources */,
+				6F7C4CA12A64893500241AE6 /* ImageViewPagerReusableView.swift in Sources */,
 				6F7C4C9E2A632ADD00241AE6 /* GamesListCellRatingModel.swift in Sources */,
+				6F7C4CA32A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

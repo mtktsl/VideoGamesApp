@@ -20,12 +20,7 @@ final class CollectionViewTableLayout: UICollectionViewFlowLayout {
         
         super.init()
         
-        self.sectionInset = .zero
-        
-        /*self.sectionInset =
-        sectionInset == .zero
-            ? .init(self.minimumInteritemSpacing)
-            : sectionInset*/
+        self.sectionInset = sectionInset
     }
     
     required init?(coder: NSCoder) {
@@ -45,6 +40,8 @@ final class CollectionViewTableLayout: UICollectionViewFlowLayout {
         let cellWidth = (availableWidth / CGFloat(maxNumColumns)).rounded(.down)
         - sectionInset.left
         - sectionInset.right
+        - collectionView.contentInset.left
+        - collectionView.contentInset.right
         
         self.itemSize = CGSize(width: cellWidth >= 0
                                ? cellWidth
