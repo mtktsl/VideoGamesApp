@@ -42,6 +42,8 @@
 		6F7C4C9E2A632ADD00241AE6 /* GamesListCellRatingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */; };
 		6F7C4CA12A64893500241AE6 /* ImageViewPagerReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */; };
 		6F7C4CA32A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */; };
+		6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CDE2A657BBF00A1C518 /* LoadingView */; };
+		6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CE42A65EEB100A1C518 /* TextStepperView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +103,8 @@
 		6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListCellRatingModel.swift; sourceTree = "<group>"; };
 		6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableView.swift; sourceTree = "<group>"; };
 		6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableViewModel.swift; sourceTree = "<group>"; };
+		6FE66CDD2A657B3300A1C518 /* LoadingView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LoadingView; path = ../../LoadingView; sourceTree = "<group>"; };
+		6FE66CE32A65DE0100A1C518 /* TextStepperView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TextStepperView; path = ../../TextStepperView; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +114,10 @@
 			files = (
 				6F102D192A61686900C9781A /* ImageViewPager in Frameworks */,
 				6F102D222A62A0EA00C9781A /* NetworkStatusObserver in Frameworks */,
+				6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */,
 				6F102CF52A5F196100C9781A /* CoreData.framework in Frameworks */,
 				6F102CFE2A5F1B3900C9781A /* GridLayout in Frameworks */,
+				6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */,
 				6F102D102A60E97400C9781A /* RAWG_API in Frameworks */,
 				6F102CFC2A5F1B3300C9781A /* DataDownloader in Frameworks */,
 				6F102D242A62A0F100C9781A /* NSLayoutConstraintExtensionPackage in Frameworks */,
@@ -209,6 +215,8 @@
 		6F102CF72A5F19C500C9781A /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				6FE66CE32A65DE0100A1C518 /* TextStepperView */,
+				6FE66CDD2A657B3300A1C518 /* LoadingView */,
 				6F102D172A614FE200C9781A /* NSLayoutConstraintExtensionPackage */,
 				6F102CF82A5F19C500C9781A /* GridLayout */,
 				6F102CFA2A5F1A9000C9781A /* DataDownloader */,
@@ -244,6 +252,7 @@
 				6F102D112A6124AD00C9781A /* Splash */,
 				6F102D142A6124CE00C9781A /* Main */,
 				6F102D062A5F4F2000C9781A /* Home */,
+				6FE66CE62A66173500A1C518 /* Detail */,
 				6F102D132A6124C200C9781A /* Favorites */,
 			);
 			path = Views;
@@ -334,10 +343,25 @@
 		6F7C4C9F2A64890300241AE6 /* ReusableViews */ = {
 			isa = PBXGroup;
 			children = (
+				6FE66CE22A659BBC00A1C518 /* ImageViewPagerReusableView */,
+			);
+			path = ReusableViews;
+			sourceTree = "<group>";
+		};
+		6FE66CE22A659BBC00A1C518 /* ImageViewPagerReusableView */ = {
+			isa = PBXGroup;
+			children = (
 				6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */,
 				6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */,
 			);
-			path = ReusableViews;
+			path = ImageViewPagerReusableView;
+			sourceTree = "<group>";
+		};
+		6FE66CE62A66173500A1C518 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +387,8 @@
 				6F102D182A61686900C9781A /* ImageViewPager */,
 				6F102D212A62A0EA00C9781A /* NetworkStatusObserver */,
 				6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */,
+				6FE66CDE2A657BBF00A1C518 /* LoadingView */,
+				6FE66CE42A65EEB100A1C518 /* TextStepperView */,
 			);
 			productName = VideoGamesApp;
 			productReference = 6F102CBC2A5F193A00C9781A /* VideoGamesApp.app */;
@@ -842,6 +868,14 @@
 		6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NSLayoutConstraintExtensionPackage;
+		};
+		6FE66CDE2A657BBF00A1C518 /* LoadingView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LoadingView;
+		};
+		6FE66CE42A65EEB100A1C518 /* TextStepperView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TextStepperView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

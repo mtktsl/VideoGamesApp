@@ -10,6 +10,8 @@ import GridLayout
 import RAWG_API
 import ImageViewPager
 import NSLayoutConstraintExtensionPackage
+import LoadingView
+import TextStepperView
 
 //MARK: - Fileprivate values
 fileprivate typealias const = ApplicationConstants
@@ -27,13 +29,18 @@ fileprivate extension UIEdgeInsets {
     static let searchImageViewMargin = UIEdgeInsets(
         top: 0, left: 0, bottom: 0, right: 10
     )
+    
+    static let stepperMargin = UIEdgeInsets(10)
+    static let collectionViewMargin = UIEdgeInsets(
+        top: 10, left: 0, bottom: 5, right: 0
+    )
 }
 
 extension HomeViewController {
     fileprivate enum Constants {
         static let imageViewPagerHeaderHeight: CGFloat = 200
         static let collectionContentInset = UIEdgeInsets(
-            10
+            top: 0, left: 10, bottom: 10, right: 10
         )
     }
 }
@@ -93,6 +100,8 @@ class HomeViewController: UIViewController {
             for: .editingChanged
         )
         
+        searchField.delegate = self
+        
         return searchField
     }()
     
@@ -118,12 +127,41 @@ class HomeViewController: UIViewController {
         return container
     }()
     
+    lazy var textStepperView: TextStepperView = {
+        let textStepperView = TextStepperView(
+            startUpValue: viewModel.minimumPageNumber,
+            stepperText: "Page:"
+        )
+        
+        textStepperView.setDecreaseImage(UIImage(systemName: ApplicationConstants.SystemImages.chevronLeftCircle))
+        textStepperView.setIncreaseImage(UIImage(systemName: ApplicationConstants.SystemImages.chevronRightCircle))
+        
+        textStepperView.stepperTextLabel.textColor = .white
+        textStepperView.decreaseImageView.tintColor = .white
+        textStepperView.increaseImageView.tintColor = .white
+        
+        textStepperView.minimumValue = viewModel.minimumPageNumber
+        
+        textStepperView.delegate = self
+        
+        return textStepperView
+    }()
+    
+    let spacerView: UIView = {
+        let spacerView = UIView()
+        spacerView.backgroundColor = .darkGray
+        return spacerView
+    }()
     
     lazy var mainGrid = Grid.vertical {
         searchBar
             .Constant(value: 50)
+        textStepperView
+            .Constant(value: 50, margin: .stepperMargin)
+        spacerView
+            .Constant(value: 2)
         collectionView
-            .Expanded(margin: .init(top: 5, left: 0, bottom: 5, right: 0))
+            .Expanded(margin: .collectionViewMargin)
     }
     
     var viewModel: HomeViewModelProtocol! {
@@ -142,9 +180,10 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.queryForGamesList(
+        LoadingView.shared.startLoading(on: collectionView)
+        viewModel.performDefaultQuery(
             nil,
-            orderBy: nil
+            pageNumber: viewModel.minimumPageNumber
         )
     }
     
@@ -152,8 +191,14 @@ class HomeViewController: UIViewController {
         //TODO: add logic for 3 letter search
         viewModel.queryForGamesList(
             textField.text,
-            orderBy: nil
+            orderBy: nil,
+            pageNumber: textStepperView.currentValue
         )
+        LoadingView.shared.startLoading(on: collectionView)
+    }
+    
+    @objc private func onViewTap(_ recognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 }
 
@@ -182,7 +227,6 @@ extension HomeViewController: HomeViewControllerProtocol {
 
 //MARK: - UICollectionViewDataSource and Delegate implementations
 extension HomeViewController: UICollectionViewDataSource,
-                              UICollectionViewDelegate,
                               UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -240,6 +284,7 @@ extension HomeViewController: UICollectionViewDataSource,
         )
         
         suppView.contentInset = Constants.collectionContentInset
+        suppView.imageViewPager.delegate = self
         
         return suppView
     }
@@ -254,16 +299,51 @@ extension HomeViewController: UICollectionViewDataSource,
         - Constants.collectionContentInset.left
         - Constants.collectionContentInset.right
         
-        return .init(width: width, height: Constants.imageViewPagerHeaderHeight)
+        return viewModel.isImageViewPagerVisible
+        ? .init(width: width, height: Constants.imageViewPagerHeaderHeight)
+        : .zero
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        //TODO: navigate to detail
     }
 }
 
 //MARK: - ViewModel delegate implementations
 extension HomeViewController: HomeViewModelDelegate {
+    
     func onSearchResult() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
+            LoadingView.shared.hideLoading()
             collectionView.reloadData()
         }
+    }
+}
+
+extension HomeViewController: TextStepperViewDelegate {
+    func onCurrentValueChange(
+        _ textStepperView: TextStepperView,
+        oldValue: Int,
+        newValue: Int
+    ) {
+        if oldValue != newValue {
+            LoadingView.shared.startLoading(on: collectionView)
+            viewModel.queryForGamesList(
+                searchField.text,
+                orderBy: nil,
+                pageNumber: newValue
+            )
+        }
+    }
+}
+
+extension HomeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
     }
 }

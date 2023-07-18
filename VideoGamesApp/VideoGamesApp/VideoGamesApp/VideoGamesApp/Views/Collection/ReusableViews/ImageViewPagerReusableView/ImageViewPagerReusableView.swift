@@ -46,8 +46,11 @@ final class ImageViewPagerReusableView: UICollectionReusableView {
         var swipeContainers = [SwipeContainerModel]()
         for title in viewModel.titles {
             swipeContainers.append(
-                    .init(image: nil, title: title)
+                .init(
+                    image: UIImage(named: ApplicationConstants.ImageAssets.loading),
+                    title: title
                 )
+            )
         }
         
         imageViewPager.swipeContainers = swipeContainers

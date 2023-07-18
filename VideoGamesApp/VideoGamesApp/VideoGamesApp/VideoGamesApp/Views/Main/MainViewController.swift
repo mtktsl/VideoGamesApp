@@ -16,7 +16,7 @@ fileprivate extension UIColor {
     )
 }
 
-protocol MainViewControllerProtocol {
+protocol MainViewControllerProtocol: AnyObject {
     func setupTabBar()
 }
 

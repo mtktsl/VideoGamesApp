@@ -19,6 +19,14 @@ extension MainCoordinator {
 protocol MainCoordinatorProtocol: AnyObject {
     func checkInternetConnection()
     func navigate(to: MainCoordinator.Route)
+    func popupError(
+        title: String,
+        message: String,
+        okOption: String?,
+        cancelOption: String?,
+        onOk: ((UIAlertAction) -> Void)?,
+        onCancel: ((UIAlertAction) -> Void)?
+    )
 }
 
 final class MainCoordinator: CoordinatorProtocol {

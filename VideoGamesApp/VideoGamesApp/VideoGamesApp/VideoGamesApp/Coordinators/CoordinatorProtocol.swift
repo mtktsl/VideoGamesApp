@@ -53,6 +53,10 @@ extension CoordinatorProtocol {
             alertVC.addAction(exitAction)
         }
         
-        navigationController?.visibleViewController?.present(alertVC, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            navigationController?.visibleViewController?.present(alertVC, animated: true)
+        }
+        
     }
 }
