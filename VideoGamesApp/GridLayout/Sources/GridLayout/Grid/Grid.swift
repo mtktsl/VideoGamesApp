@@ -51,6 +51,8 @@ public class Grid: UIView {
         grid.gridType = gridType
         grid.setCells(gridLengths: cells)
         grid.calculateTotalStars()
+        //To prevent margin related constraint errors
+        grid.sizeToFit()
         return grid
     }
     
@@ -113,16 +115,20 @@ public class Grid: UIView {
                 }
                 
             case .auto(let view, _, _, let maxSize, let margin):
-                let size = calculateAutoCellSize(view: view,
+                let sizeResult = calculateAutoCellSize(view: view,
                                                  maxSize: maxSize,
-                                                 margin: margin)
+                                                 margin: margin,
+                                                 fitsSize: size
+                )
+                
+                
                 
                 if gridType == .vertical {
-                    totalWidth = max(totalWidth, size.width)
-                    totalHeight += size.height
+                    totalWidth = max(totalWidth, sizeResult.width)
+                    totalHeight += sizeResult.height
                 } else {
-                    totalHeight = max(totalHeight, size.height)
-                    totalWidth += size.width
+                    totalHeight = max(totalHeight, sizeResult.height)
+                    totalWidth += sizeResult.width
                 }
                 
             }
@@ -133,7 +139,9 @@ public class Grid: UIView {
     
     private func calculateAutoCellSize(view: UIView,
                                        maxSize: CGFloat,
-                                       margin: UIEdgeInsets) -> CGSize {
+                                       margin: UIEdgeInsets,
+                                       fitsSize: CGSize = .zero
+    ) -> CGSize {
         let label = view as? UILabel
         let grid = view as? Grid
         let imageView = view as? UIImageView
@@ -154,14 +162,26 @@ public class Grid: UIView {
             }
         }
         
-        var calculatedWidth = view.sizeThatFits(CGSize(width: 0, height: edgeHeight)).width
-        calculatedWidth += margin.left + margin.right
-        
-        var calculatedHeight = view.sizeThatFits(CGSize(width: edgeWidth, height: 0)).height
-        calculatedHeight += margin.top + margin.bottom
-        
-        return .init(width: calculatedWidth,
-                     height: calculatedHeight)
+        if fitsSize == .zero {
+            var calculatedWidth = view.sizeThatFits(CGSize(width: 0, height: edgeHeight)).width
+            calculatedWidth += margin.left + margin.right
+            
+            var calculatedHeight = view.sizeThatFits(CGSize(width: edgeWidth, height: 0)).height
+            calculatedHeight += margin.top + margin.bottom
+            
+            return .init(width: calculatedWidth,
+                         height: calculatedHeight)
+        } else {
+            var calculatedSize = view.sizeThatFits(
+                CGSize(
+                    width: fitsSize.width - margin.left - margin.right,
+                    height: fitsSize.height - margin.top - margin.bottom
+                )
+            )
+            calculatedSize.width += margin.left + margin.right
+            calculatedSize.height += margin.top + margin.bottom
+            return calculatedSize
+        }
     }
     
     private func setCells(gridLengths: [GridLength]) {
@@ -480,9 +500,6 @@ public class Grid: UIView {
                     if marginHeight < 0 {
                         marginHeight = 0
                     }
-                    
-                    //print("height:", height)
-                    //print("marginHeight:", marginHeight)
                     
                     let heightConstraint = cells[i].view.heightAnchor.constraint(equalToConstant: height > marginHeight ? marginHeight : height)
                     

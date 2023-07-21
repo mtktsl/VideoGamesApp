@@ -49,7 +49,7 @@ extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtoc
         for (index, urlString) in imageURLStrings.enumerated() {
             guard let urlString else { continue }
             
-            service.donwloadImage(urlString) { [weak self] result in
+            service.downloadImage(urlString) { [weak self] result in
                 guard let self else { return }
                 
                 switch result {

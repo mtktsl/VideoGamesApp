@@ -67,7 +67,7 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
             delegate?.onImageError(.urlError)
             return
         }
-        RAWG_GamesService.shared.donwloadImage(
+        RAWG_GamesService.shared.downloadImage(
             urlString) { [weak self] result in
                 guard let self else { return }
                 switch result {

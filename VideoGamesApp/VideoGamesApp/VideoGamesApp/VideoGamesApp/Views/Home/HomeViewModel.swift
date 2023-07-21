@@ -31,13 +31,13 @@ extension HomeViewModel {
     fileprivate enum ErrorParameters {
         static let networkErrorTitle = "Network Error"
         
-        static let responseCodeMessage = "Response code:"
-        static let noResponseMessage = "No response from the server."
-        static let emptyResponseMessage = "Server returned empty response"
-        static let decodeErrorMessage = "Server response was incorrect. Report the issue to the devs."
-        static let typeMissMatchMessage = "Type missmatch error. Report the issue to the devs."
-        static let urlError = "Invalid URL request."
+        static let responseCodeMessage = "Cannot connect to the server."
+        static let noResponseMessage = "Cannot connect to the server."
+        static let emptyResponseMessage = "No response from the server."
+        static let decodeErrorMessage = "Unknown error. Report the issue to the devs."
+        static let typeMissMatchMessage = "Unknown error. Report the issue to the devs."
         
+        static let urlError = "Invalid search."
         static let okOption = "OK"
     }
 }
@@ -69,10 +69,12 @@ protocol HomeViewModelProtocol {
     
     func getGameForCell(at index: Int) -> RAWG_GamesListModel?
     func getGameForHeader(at index: Int) -> RAWG_GamesListModel?
+    func cellDidSelect(at index: Int)
+    func pageControllerDidSelect(at index: Int)
 }
 
 final class HomeViewModel {
-    private(set) weak var coordinator: MainCoordinatorProtocol!
+    private(set) weak var coordinator: MainCoordinatorProtocol?
     weak var delegate: HomeViewModelDelegate?
     
     let service: RAWG_GamesServiceProtocol!
@@ -127,7 +129,7 @@ final class HomeViewModel {
             okOption = ErrorParameters.okOption
         }
         
-        coordinator.popupError(
+        coordinator?.popupError(
             title: title,
             message: message,
             okOption: okOption,
@@ -143,8 +145,6 @@ final class HomeViewModel {
         _ parameters: RAWG_GamesListParameters,
         filterText: String? = nil
     ) {
-        
-        print("ONLINE REQUEST", requestCount)
         requestCount += 1
         
         service.getGamesList(parameters) { [weak self] result in
@@ -174,6 +174,17 @@ final class HomeViewModel {
                 return false
             }
         })
+    }
+    
+    private func navigateToDetail(_ gameID: Int?) {
+        if let gameID {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                coordinator?.navigate(to: .detail(gameID: gameID))
+            }
+        } else {
+            generateError(.noResponse)
+        }
     }
 }
 
@@ -328,12 +339,21 @@ extension HomeViewModel: HomeViewModelProtocol {
     }
     
     func getGameForHeader(at index: Int) -> RAWG_GamesListModel? {
-        let results = filteredList
         
-        if index >= results.count || index < 0 {
+        if index >= filteredList.count || index < 0 {
             return nil
         } else {
-            return results[index]
+            return filteredList[index]
         }
+    }
+    
+    func cellDidSelect(at index: Int) {
+        let id = getGameForCell(at: index)?.id
+        navigateToDetail(id)
+    }
+    
+    func pageControllerDidSelect(at index: Int) {
+        let id = getGameForHeader(at: index)?.id
+        navigateToDetail(id)
     }
 }

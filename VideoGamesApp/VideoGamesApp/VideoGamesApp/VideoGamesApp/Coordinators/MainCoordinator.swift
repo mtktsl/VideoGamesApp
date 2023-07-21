@@ -12,13 +12,15 @@ import NetworkStatusObserver
 extension MainCoordinator {
     enum Route {
         case main
-        case detail
+        case detail(gameID: Int)
+        case back
     }
 }
 
 protocol MainCoordinatorProtocol: AnyObject {
     func checkInternetConnection()
     func navigate(to: MainCoordinator.Route)
+    
     func popupError(
         title: String,
         message: String,
@@ -68,58 +70,47 @@ extension MainCoordinator {
             coordinator: self
         )
         
-        let homeNavigationController = UINavigationController(
-            rootViewController: homeVC
-        )
-        
-        let favoritesNavigationController = UINavigationController(
-            rootViewController: favoritesVC
-        )
-        favoritesNavigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.barTitleColor]
-        
         mainVC.setViewControllers(
             [
-                homeNavigationController,
-                favoritesNavigationController
+                homeVC,
+                favoritesVC
             ],
             animated: false
         )
         
-        mainVC.setupTabBar()
-        mainVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(
-            mainVC,
-            animated: true
-        ) { [weak self] in
-            guard let self else { return }
-            navigationController?.view.window?.rootViewController = mainVC
-        }
+        navigationController?.setViewControllers([mainVC], animated: true)
+    }
+    
+    func navigateToDetail(_ gameID: Int) {
+        let detailVC = DetailViewController()
+        detailVC.viewModel = DetailViewModel(
+            service: RAWG_GamesService.shared,
+            coordinator: self,
+            gameID: gameID
+        )
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func start() {
-        guard let navigationController else {
-            fatalError("NavigationController instance for AppCoordinator hasn't been set.")
-        }
         let splashVC = SplashViewController()
         splashVC.viewModel = SplashViewModel(
             coordinator: self
         )
-        navigationController.pushViewController(
-            splashVC,
-            animated: true
-        )
+        navigationController?.setViewControllers([splashVC], animated: true)
     }
     
     func checkInternetConnection() {
         onConnectionChanged(NetworkStatusObserver.shared.isConnected)
     }
     
-    private func selectNavigation(_ route: Route) {
+    func selectNavigation(_ route: Route) {
         switch route {
         case .main:
             navigateToMain()
-        case .detail:
-            break
+        case .detail(let gameID):
+            navigateToDetail(gameID)
+        case .back:
+            navigationController?.popViewController(animated: true)
         }
     }
 }
@@ -127,15 +118,26 @@ extension MainCoordinator {
 extension MainCoordinator: MainCoordinatorProtocol {
     
     func navigate(to route: Route) {
-        Timer.scheduledTimer(
-            withTimeInterval: 1,
-            repeats: true) { [weak self] timer in
+        if isPopupOpen {
+            Timer.scheduledTimer(
+                withTimeInterval: 1,
+                repeats: true
+            ) { [weak self] timer in
                 guard let self else { return }
                 if !isPopupOpen {
                     timer.invalidate()
-                    selectNavigation(route)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        selectNavigation(route)
+                    }
                 }
             }
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                selectNavigation(route)
+            }
+        }
     }
 }
 

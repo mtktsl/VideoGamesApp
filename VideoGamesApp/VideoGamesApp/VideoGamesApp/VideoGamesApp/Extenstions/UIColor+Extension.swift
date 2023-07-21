@@ -31,6 +31,13 @@ extension UIColor {
         alpha: 1
     )
     
+    static let appContainerBackgroundColor = UIColor(
+        hue: 218 / maxHueValue,
+        saturation: 0.44,
+        brightness: 0.22,
+        alpha: 1
+    )
+    
     static let barTitleColor =  UIColor(
         hue: 204 / maxHueValue,
         saturation: 0.02,
@@ -50,6 +57,16 @@ extension UIColor {
         hue: 225 / maxHueValue,
         saturation: 0.16,
         brightness: 0.20,
+        alpha: 1
+    )
+    
+    static let ratingHighColor: UIColor = .systemGreen
+    static let ratingMediumColor: UIColor = .orange
+    static let ratingLowColor: UIColor = .red
+    static let ratingNilColor = UIColor(
+        hue: 222 / maxHueValue,
+        saturation: 0.15,
+        brightness: 0.59,
         alpha: 1
     )
 }

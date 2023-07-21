@@ -31,16 +31,6 @@ fileprivate extension UIColor {
         brightness: 0.27,
         alpha: 1
     )
-    
-    static let ratingHighColor: UIColor = .systemGreen
-    static let ratingMediumColor: UIColor = .orange
-    static let ratingLowColor: UIColor = .red
-    static let ratingNilColor = UIColor(
-        hue: 222 / maxHueValue,
-        saturation: 0.15,
-        brightness: 0.59,
-        alpha: 1
-    )
 }
 
 extension GamesListCell {

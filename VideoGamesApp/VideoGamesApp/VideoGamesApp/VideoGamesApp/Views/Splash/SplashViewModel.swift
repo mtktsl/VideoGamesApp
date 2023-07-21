@@ -39,13 +39,16 @@ extension SplashViewModel: SplashViewModelProtocol {
         
         connectionTimer = Timer.scheduledTimer(
             withTimeInterval: Constants.internetTimerInterval,
-            repeats: true) { [weak self] timer in
-                guard let self else { return }
-                if NetworkStatusObserver.shared.isConnected {
+            repeats: true
+        ) { [weak self] timer in
+            guard let self else { return }
+            if NetworkStatusObserver.shared.isConnected {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
                     coordinator?.navigate(to: .main)
-                    connectionTimer?.invalidate()
-                    connectionTimer = nil
                 }
+                connectionTimer?.invalidate()
             }
+        }
     }
 }

@@ -137,7 +137,7 @@ class HomeViewController: UIViewController {
         textStepperView.setIncreaseImage(UIImage(systemName: ApplicationConstants.SystemImages.chevronRightCircle))
         
         textStepperView.stepperTextLabel.textColor = .white
-        textStepperView.decreaseImageView.tintColor = .white
+        textStepperView.decreaseImageView.tintColor = .darkGray
         textStepperView.increaseImageView.tintColor = .white
         
         textStepperView.minimumValue = viewModel.minimumPageNumber
@@ -176,10 +176,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupColors()
         setupMainGrid()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
         LoadingView.shared.startLoading(on: collectionView)
         viewModel.performDefaultQuery(
             nil,
@@ -205,7 +202,7 @@ class HomeViewController: UIViewController {
 //MARK: - ImageViewPagerDelegate
 extension HomeViewController: ImageViewPagerDelegate {
     func onImageTap(imageViewPager: ImageViewPager, at index: Int) {
-        print(index)
+        viewModel.pageControllerDidSelect(at: index)
     }
 }
 
@@ -308,7 +305,7 @@ extension HomeViewController: UICollectionViewDataSource,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        //TODO: navigate to detail
+        viewModel.cellDidSelect(at: indexPath.row)
     }
 }
 
@@ -337,6 +334,12 @@ extension HomeViewController: TextStepperViewDelegate {
                 orderBy: nil,
                 pageNumber: newValue
             )
+        }
+        
+        if newValue == textStepperView.minimumValue {
+            textStepperView.decreaseImageView.tintColor = .darkGray
+        } else {
+            textStepperView.decreaseImageView.tintColor = .white
         }
     }
 }

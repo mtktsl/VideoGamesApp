@@ -13,7 +13,7 @@ public protocol RAWG_GamesServiceProtocol: AnyObject {
         completion: @escaping ((Result<RAWG_GameDetails, RAWG_NetworkError>) -> Void)
     )
     
-    func donwloadImage(
+    func downloadImage(
         _ imageURLString: String,
         completion: @escaping ((Result<Data, RAWG_NetworkError>) -> Void)
     )
@@ -76,7 +76,7 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
             }
     }
     
-    public func donwloadImage(
+    public func downloadImage(
         _ imageURLString: String,
         completion: @escaping ((Result<Data, RAWG_NetworkError>) -> Void)
     ) {

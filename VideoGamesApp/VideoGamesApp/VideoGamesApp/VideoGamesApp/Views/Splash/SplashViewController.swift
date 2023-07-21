@@ -19,7 +19,11 @@ fileprivate extension UIEdgeInsets {
 
 class SplashViewController: UIViewController {
     
-    var viewModel: SplashViewModelProtocol!
+    var viewModel: SplashViewModelProtocol! {
+        didSet {
+            setupImageView()
+        }
+    }
     
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -30,7 +34,6 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        setupImageView()
     }
     
     override func viewDidAppear(_ animated: Bool) {

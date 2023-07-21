@@ -22,6 +22,11 @@ protocol MainViewControllerProtocol: AnyObject {
 
 final class MainViewController: UITabBarController {
     var viewModel: MainViewModelProtocol!
+    
+    override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
+        super.setViewControllers(viewControllers, animated: animated)
+        setupTabBar()
+    }
 }
 
 extension MainViewController: MainViewControllerProtocol {
