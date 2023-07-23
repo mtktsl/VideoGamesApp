@@ -10,6 +10,7 @@ import GridLayout
 import NSLayoutConstraintExtensionPackage
 import LoadingView
 
+//MARK: - Constants
 extension DetailViewController {
     fileprivate enum Constants {
         
@@ -44,7 +45,7 @@ extension DetailViewController {
         static let descriptionLabelFont: UIFont = .systemFont(ofSize: 16)
         static let descriptionTextColor = lightColor
         
-        static let indicatorWidth: CGFloat = 110
+        static let indicatorWidth: CGFloat = 120
         
         static let ratingImageWidth: CGFloat = 25
     }
@@ -69,13 +70,16 @@ fileprivate extension UIEdgeInsets {
         top: 20, left: 10, bottom: 0, right: 10)
 }
 
+//MARK: - Protocol Definition
 protocol DetailViewControllerProtocol: AnyObject {
     func setupSubviews()
     func calculateScrollViewContentSize()
     func setupData()
 }
 
+//MARK: - Controllerdefinition
 final class DetailViewController: UIViewController {
+    //MARK: - View Definitions
     let gameImageView: UIImageView = {
         let gameImageView = UIImageView()
         gameImageView.contentMode = .scaleToFill
@@ -189,7 +193,7 @@ final class DetailViewController: UIViewController {
     }()
     
     lazy var reviewsContrainerGrid: Grid = {
-        let reviewsContainerGrid = Grid.vertical {
+        let reviewsContainerGrid = Grid.horizontal {
             
             Grid.horizontal {
                 rawgRatingImageView
@@ -199,7 +203,7 @@ final class DetailViewController: UIViewController {
                 rawgRatingLabel
                     .Auto(margin: .ratingInnerMargin)
             }.Expanded(margin: .init(
-                top: 10, left: 10, bottom: 5, right: 0)
+                top: 5, left: 10, bottom: 5, right: 0)
             )
             
             Grid.horizontal {
@@ -210,7 +214,7 @@ final class DetailViewController: UIViewController {
                 metacriticRatingLabel
                     .Auto(margin: .ratingInnerMargin)
             }.Expanded(margin: .init(
-                top: 5, left: 10, bottom: 10, right: 0)
+                top: 5, left: 0, bottom: 5, right: 10)
             )
         }
         
@@ -231,11 +235,39 @@ final class DetailViewController: UIViewController {
     let favoritesImageView: UIImageView = {
         let favoritesImageView = UIImageView()
         favoritesImageView.contentMode = .scaleAspectFit
-        favoritesImageView.image = UIImage(systemName: ApplicationConstants.SystemImages.heart)
+        favoritesImageView.image = UIImage(
+            systemName: ApplicationConstants.SystemImages.heart
+        )
         return favoritesImageView
     }()
     
     let scrollView = UIScrollView()
+    
+    lazy var developerInfoGrid = Grid.horizontal {
+        developerIndicatorLabel
+            .Constant(value: Constants.indicatorWidth,
+                      verticalAlignment: .autoTop,
+                      margin: .indicatorMargin)
+        developerNameLabel
+            .Expanded()
+    }
+    
+    lazy var publisherInfoGrid = Grid.horizontal {
+        publisherIndicatorLabel
+            .Constant(value: Constants.indicatorWidth,
+                      verticalAlignment: .autoTop,
+                      margin: .indicatorMargin)
+        publisherNameLabel
+            .Expanded()
+    }
+    
+    lazy var releaseDateInfoGrid = Grid.horizontal {
+        releaseDateIndicatorLabel
+            .Constant(value: Constants.indicatorWidth,
+                      margin: .indicatorMargin)
+        releaseDateLabel
+            .Expanded()
+    }
     
     lazy var mainGrid = Grid.vertical {
         
@@ -245,37 +277,20 @@ final class DetailViewController: UIViewController {
         gameNameLabel
             .Auto(margin: .titleMargin)
         
-        Grid.horizontal {
-            developerIndicatorLabel
-                .Constant(value: Constants.indicatorWidth,
-                          verticalAlignment: .autoTop,
-                          margin: .indicatorMargin)
-            developerNameLabel
-                .Expanded()
-        }.Auto(margin: .infoMargin)
+        developerInfoGrid
+            .Auto(margin: .infoMargin)
         
-        Grid.horizontal {
-            publisherIndicatorLabel
-                .Constant(value: Constants.indicatorWidth,
-                          verticalAlignment: .autoTop,
-                          margin: .indicatorMargin)
-            publisherNameLabel
-                .Expanded()
-        }.Auto(margin: .infoMargin)
+        publisherInfoGrid
+            .Auto(margin: .infoMargin)
         
-        Grid.horizontal {
-            releaseDateIndicatorLabel
-                .Constant(value: Constants.indicatorWidth,
-                          margin: .indicatorMargin)
-            releaseDateLabel
-                .Expanded()
-        }.Auto(margin: .infoMargin)
+        releaseDateInfoGrid
+            .Auto(margin: .infoMargin)
         
         reviewsIndicatorLabel
             .Auto(margin: .reviewIndicatorMargin)
         
         reviewsContrainerGrid
-            .Constant(value: Constants.ratingImageWidth * 4,
+            .Constant(value: Constants.ratingImageWidth * 3,
                        margin: .descriptionMargin)
         
         descriptionLabel
@@ -288,6 +303,7 @@ final class DetailViewController: UIViewController {
         }
     }
     
+    //MARK: - Controller Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .appBackgroundColor
@@ -303,6 +319,11 @@ final class DetailViewController: UIViewController {
         viewModel.downloadData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        LoadingView.shared.hideLoading()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         DispatchQueue.main.async { [weak self] in
@@ -314,10 +335,12 @@ final class DetailViewController: UIViewController {
     
     private func setImage(
         for imageView: UIImageView,
-        image: UIImage?
+        image: UIImage?,
+        contentMode: UIView.ContentMode
     ) {
         DispatchQueue.main.async {
             imageView.image = image
+            imageView.contentMode = contentMode
         }
     }
     
@@ -355,6 +378,8 @@ final class DetailViewController: UIViewController {
     }
 }
 
+
+//MARK: - Controller Protocol Implementations
 extension DetailViewController: DetailViewControllerProtocol {
     func setupSubviews() {
         scrollView.addSubview(mainGrid)
@@ -364,7 +389,8 @@ extension DetailViewController: DetailViewControllerProtocol {
         
         setImage(
             for: gameImageView,
-            image: UIImage(named: ApplicationConstants.ImageAssets.loading)
+            image: UIImage(named: ApplicationConstants.ImageAssets.loading),
+            contentMode: .scaleAspectFit
         )
     }
     
@@ -403,26 +429,25 @@ extension DetailViewController: DetailViewControllerProtocol {
         
         reviewsIndicatorLabel.text = viewModel.reviewsIndicator
         
-        rawgTitleLabel.text = viewModel.rawgRatingText + ":"
+        rawgTitleLabel.text = viewModel.rawgRatingText
         rawgRatingLabel.text = String(viewModel.rawgRating)
         
-        metacriticTitleLabel.text = viewModel.metacriticRatingText + ":"
+        metacriticTitleLabel.text = viewModel.metacriticRatingText
         metacriticRatingLabel.text = String(viewModel.metacriticRating)
         
         descriptionLabel.text = viewModel.gameDescription
     }
 }
 
+//MARK: - Controller ViewModel Delegate Implementation
 extension DetailViewController: DetailViewModelDelegate {
     
     func onImageDownloadSuccess(_ imageData: Data) {
         setImage(
             for: gameImageView,
-            image: UIImage(data: imageData)
+            image: UIImage(data: imageData),
+            contentMode: .scaleToFill
         )
-        DispatchQueue.main.async {
-            LoadingView.shared.hideLoading()
-        }
     }
     
     func onImageDownloadFailure() {
@@ -430,11 +455,9 @@ extension DetailViewController: DetailViewModelDelegate {
             for: gameImageView,
             image: UIImage(
                 systemName: ApplicationConstants.SystemImages.exclamationmarkTriangle
-            )
+            ),
+            contentMode: .scaleAspectFit
         )
-        DispatchQueue.main.async {
-            LoadingView.shared.hideLoading()
-        }
     }
     
     func onDataDownloadSuccess() {
@@ -442,8 +465,6 @@ extension DetailViewController: DetailViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             LoadingView.shared.hideLoading()
-            LoadingView.shared.startLoading(on: gameImageView)
-            
             setupData()
             setRatingColor()
             calculateScrollViewContentSize()

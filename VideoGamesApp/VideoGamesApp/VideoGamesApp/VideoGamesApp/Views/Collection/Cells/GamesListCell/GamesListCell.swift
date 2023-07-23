@@ -57,6 +57,9 @@ final class GamesListCell: UICollectionViewCell {
         let gameImageView = UIImageView()
         gameImageView.contentMode = .scaleToFill
         gameImageView.layer.masksToBounds = true
+        gameImageView.image = UIImage(
+            named: ApplicationConstants.ImageAssets.loading
+        )
         return gameImageView
     }()
     

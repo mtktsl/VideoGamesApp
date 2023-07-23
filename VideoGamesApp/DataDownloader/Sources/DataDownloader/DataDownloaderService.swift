@@ -1,10 +1,12 @@
 import Foundation
 
 public protocol DataDownloaderServiceProtocol: AnyObject {
-    func fetchData<T: Decodable>(from urlString: String,
-                                 dataType: T.Type,
-                                 decode: Bool,
-                                 completion: @escaping (Result<T, DataDownloaderServiceError>) -> Void)
+    func fetchData<T: Decodable>(
+        from urlString: String,
+        dataType: T.Type,
+        decode: Bool,
+        completion: @escaping (Result<T, DataDownloaderServiceError>) -> Void
+    ) -> URLSessionDataTask?
 }
 
 public class DataDownloaderService: DataDownloaderServiceProtocol {
@@ -13,22 +15,28 @@ public class DataDownloaderService: DataDownloaderServiceProtocol {
     
     private init() {}
     
-    public func fetchData<T: Decodable>(from urlString: String,
-                                        dataType: T.Type = Data.self,
-                                        decode: Bool = false,
-                                        completion: @escaping (Result<T, DataDownloaderServiceError>) -> Void) {
+    public func fetchData<T: Decodable>(
+        from urlString: String,
+        dataType: T.Type = Data.self,
+        decode: Bool = false,
+        completion: @escaping (Result<T, DataDownloaderServiceError>) -> Void
+    ) -> URLSessionDataTask? {
         
         guard let url = URL(string: urlString)
         else {
             completion(.failure(.urlError))
-            return
+            return nil
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let response = response as? HTTPURLResponse
             else {
-                completion(.failure(.noResponse))
+                if let error, error.localizedDescription == "cancelled" {
+                    completion(.failure(.cancelled))
+                } else {
+                    completion(.failure(.noResponse))
+                }
                 return
             }
             
@@ -57,7 +65,8 @@ public class DataDownloaderService: DataDownloaderServiceProtocol {
             } else {
                 completion(.failure(.decodeError))
             }
-            
-        }.resume()
+        }
+        task.resume()
+        return task
     }
 }

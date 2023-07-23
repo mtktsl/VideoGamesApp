@@ -15,6 +15,7 @@ extension DetailViewModel {
         static let responseCodeMessage = "Cannot connect to the server."
         static let noResponseMessage = "Cannot connect to the server."
         static let emptyResponseMessage = "No response from the server."
+        static let cancelledResponseMessage = "Web query cancelled."
         static let decodeErrorMessage = "Unknown error. Report the issue to the devs."
         static let typeMissMatchMessage = "Unknown error. Report the issue to the devs."
         
@@ -23,12 +24,12 @@ extension DetailViewModel {
     }
     
     fileprivate enum IndicatorTexts {
-        static let developer = "Developers"
-        static let publisher = "Publishers"
+        static let developer = "Developer(s)"
+        static let publisher = "Publisher(s)"
         static let releaseDate = "Released"
         static let reviews = "REVIEWS"
-        static let rawgRatingTitle = "RAWG"
-        static let metacriticTitle = "Metacritic"
+        static let rawgRatingTitle = "RAWG:"
+        static let metacriticTitle = "Metacritic:"
     }
     
     fileprivate enum NilTextIndicators {
@@ -92,6 +93,9 @@ final class DetailViewModel {
     
     weak var delegate: DetailViewModelDelegate?
     
+    private var imageDataTask: URLSessionDataTask?
+    private var gamesDataTask: URLSessionDataTask?
+    
     let service: RAWG_GamesServiceProtocol
     private(set) weak var coordinator: MainCoordinatorProtocol?
     
@@ -127,6 +131,9 @@ final class DetailViewModel {
         case .emptyResponse:
             errorTitle = ErrorParameters.networkErrorTitle
             errorMessage = ErrorParameters.emptyResponseMessage
+        case .cancelled:
+            errorTitle = ErrorParameters.networkErrorTitle
+            errorMessage = ErrorParameters.cancelledResponseMessage
         case .decodeError:
             errorTitle = ErrorParameters.networkErrorTitle
             errorMessage = ErrorParameters.decodeErrorMessage
@@ -288,7 +295,8 @@ extension DetailViewModel: DetailViewModelProtocol {
     }
     
     func downloadData() {
-        service.getGameDetails(
+        gamesDataTask?.cancel()
+        gamesDataTask = service.getGameDetails(
             gameID,
             apiKey: ApplicationConstants.RAWG_API_KEY
         ) { [weak self] result in
@@ -305,7 +313,8 @@ extension DetailViewModel: DetailViewModelProtocol {
     }
     
     func downloadImage() {
-
+        imageDataTask?.cancel()
+        
         var finalURLString = ""
         
         if let urlString = data?.backgroundImageURLString {
@@ -317,8 +326,10 @@ extension DetailViewModel: DetailViewModelProtocol {
             return
         }
         
-        service.downloadImage(
-            finalURLString) { [weak self] result in
+        imageDataTask = service.downloadImage(
+            finalURLString,
+            isCropped: false
+        ) { [weak self] result in
                 guard let self else { return }
                 
                 switch result {

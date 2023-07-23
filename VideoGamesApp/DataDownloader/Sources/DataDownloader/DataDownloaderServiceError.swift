@@ -10,6 +10,7 @@ import Foundation
 public enum DataDownloaderServiceError: Error {
     case statusCode(_ code: Int, responseData: Data?)
     case noResponse
+    case cancelled
     case emptyResponse
     case decodeError
     case typeMissMatchError
@@ -21,6 +22,8 @@ public enum DataDownloaderServiceError: Error {
             return "Connection error with status code: \(code)"
         case .noResponse:
             return "Connection error: No response from the server."
+        case .cancelled:
+            return "Data cancelled."
         case .emptyResponse:
             return "Connection error: Server response was empty."
         case .decodeError:

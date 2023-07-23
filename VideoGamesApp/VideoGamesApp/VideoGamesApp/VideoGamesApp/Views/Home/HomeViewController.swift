@@ -7,7 +7,6 @@
 
 import UIKit
 import GridLayout
-import RAWG_API
 import ImageViewPager
 import NSLayoutConstraintExtensionPackage
 import LoadingView
@@ -176,12 +175,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupColors()
         setupMainGrid()
-        
-        LoadingView.shared.startLoading(on: collectionView)
-        viewModel.performDefaultQuery(
-            nil,
-            pageNumber: viewModel.minimumPageNumber
-        )
     }
     
     @objc private func searchDidChange(_ textField: UITextField) {
@@ -194,8 +187,13 @@ class HomeViewController: UIViewController {
         LoadingView.shared.startLoading(on: collectionView)
     }
     
-    @objc private func onViewTap(_ recognizer: UITapGestureRecognizer) {
-        view.endEditing(true)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        LoadingView.shared.startLoading(on: collectionView)
+        viewModel.performDefaultQuery(
+            nil,
+            pageNumber: viewModel.minimumPageNumber
+        )
     }
 }
 

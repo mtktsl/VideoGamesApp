@@ -13,6 +13,8 @@ enum RAWG_Constants {
     
     static let defaultPageNumber: Int = 1
     static let defaultPageSize: Int = 20
+    static let fullSizeMediaBaseURL = "https://media.rawg.io/media/games/"
+    static let croppedSizeMediaBaseURL = "https://media.rawg.io/media/crop/600/400/games/"
     
     static let gamesURLConfiguration = RAWG_URLConfiguration(
         baseURLString: "https://api.rawg.io",
