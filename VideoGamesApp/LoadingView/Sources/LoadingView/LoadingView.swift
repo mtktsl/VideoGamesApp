@@ -70,6 +70,7 @@ public class LoadingView {
             x: calculatedFrame.size.width / 2,
             y: calculatedFrame.size.height / 2
         )
+        
         mainWindow.addSubview(blurView)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.startAnimating()

@@ -28,7 +28,10 @@ final class ImageViewPagerReusableViewModel {
     
     let service = RAWG_GamesService.shared
     
+    private var webImageTasks = [URLSessionDataTask?]()
+    
     weak var delegate: ImageViewPagerReusableViewModelDelegate?
+    
     
     var imageURLStrings = [String?]()
     var titles = [String?]()
@@ -40,6 +43,12 @@ final class ImageViewPagerReusableViewModel {
         self.imageURLStrings = imageURLStrings
         self.titles = titles
     }
+    
+    private func cancelPreviousWebImageTasks() {
+        for task in webImageTasks {
+            task?.cancel()
+        }
+    }
 }
 
 extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtocol {
@@ -49,7 +58,10 @@ extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtoc
         for (index, urlString) in imageURLStrings.enumerated() {
             guard let urlString else { continue }
             
-            service.downloadImage(urlString) { [weak self] result in
+            let task = service.downloadImage(
+                urlString,
+                isCropped: true
+            ) { [weak self] result in
                 guard let self else { return }
                 
                 switch result {
@@ -59,6 +71,8 @@ extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtoc
                     delegate?.onImageError(for: index)
                 }
             }
+            
+            webImageTasks.append(task)
         }
     }
 }

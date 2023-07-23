@@ -56,6 +56,7 @@ final class MainCoordinator: CoordinatorProtocol {
 extension MainCoordinator {
     
     func navigateToMain() {
+        
         let mainVC = MainViewController()
         mainVC.viewModel = MainViewModel()
         
@@ -118,12 +119,15 @@ extension MainCoordinator {
 extension MainCoordinator: MainCoordinatorProtocol {
     
     func navigate(to route: Route) {
+        
         if isPopupOpen {
             Timer.scheduledTimer(
                 withTimeInterval: 1,
                 repeats: true
+                
             ) { [weak self] timer in
                 guard let self else { return }
+                
                 if !isPopupOpen {
                     timer.invalidate()
                     DispatchQueue.main.async { [weak self] in
@@ -142,23 +146,29 @@ extension MainCoordinator: MainCoordinatorProtocol {
 }
 
 extension MainCoordinator: NetworkStatusObserverDelegate {
+    
     func onConnectionChanged(_ isConnected: Bool) {
+        
         if !isConnected && !isPopupOpen {
+            
             isPopupOpen = true
+
             DispatchQueue.main.async { [weak self] in
-                self?.popupError(title: "Connection Error",
-                           message: "There is no internet connection.",
-                           okOption: "Retry",
-                           cancelOption: nil)
-                { [weak self] _ in
-                    guard let self else { return }
-                    isPopupOpen = false
-                    checkInternetConnection()
+                self?.popupError(
+                    title: "Connection Error",
+                    message: "There is no internet connection.",
+                    okOption: "Retry",
+                    cancelOption: nil,
                     
-                } onCancel: { [weak self] _ in
-                    guard let self else { return }
-                    isPopupOpen = false
-                }
+                    onOk: { [weak self] _ in
+                        guard let self else { return }
+                        
+                        isPopupOpen = false
+                        checkInternetConnection()
+                        
+                    },
+                    onCancel: nil
+                )
             }
         }
     }

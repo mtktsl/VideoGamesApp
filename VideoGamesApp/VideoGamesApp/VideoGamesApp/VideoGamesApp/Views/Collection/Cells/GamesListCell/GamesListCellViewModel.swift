@@ -25,10 +25,15 @@ protocol GamesListCellViewModelProtocol {
 
 final class GamesListCellViewModel {
     private(set) var dataModel: RAWG_GamesListModel?
+    private var webTask: URLSessionDataTask?
     weak var delegate: GamesListCellViewModelDelegate?
     
     init(dataModel: RAWG_GamesListModel?) {
         self.dataModel = dataModel
+    }
+    
+    deinit {
+        webTask?.cancel()
     }
 }
 
@@ -67,8 +72,11 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
             delegate?.onImageError(.urlError)
             return
         }
-        RAWG_GamesService.shared.downloadImage(
-            urlString) { [weak self] result in
+        
+        webTask = RAWG_GamesService.shared.downloadImage(
+            urlString,
+            isCropped: true
+        ) { [weak self] result in
                 guard let self else { return }
                 switch result {
                 case .success(let data):

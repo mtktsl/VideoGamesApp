@@ -8,9 +8,10 @@
 import Foundation
 import DataDownloader
 
-public enum RAWG_NetworkError: Error {
+public enum RAWG_NetworkError: Error, Equatable {
     case statusCode(_ code: Int, responseData: Data?)
     case noResponse
+    case cancelled
     case emptyResponse
     case decodeError
     case typeMissMatchError
@@ -22,6 +23,8 @@ public enum RAWG_NetworkError: Error {
             return "Connection error with status code: \(code)"
         case .noResponse:
             return "Connection error: No response from the server."
+        case .cancelled:
+            return "Web query has been cancelled."
         case .emptyResponse:
             return "Connection error: Server response was empty."
         case .decodeError:
@@ -39,8 +42,10 @@ public enum RAWG_NetworkError: Error {
             return .statusCode(code, responseData: responseData)
         case .noResponse:
             return .noResponse
+        case .cancelled:
+            return .cancelled
         case .emptyResponse:
-            return emptyResponse
+            return .emptyResponse
         case .decodeError:
             return .decodeError
         case .typeMissMatchError:

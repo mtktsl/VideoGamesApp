@@ -33,6 +33,7 @@ extension HomeViewModel {
         
         static let responseCodeMessage = "Cannot connect to the server."
         static let noResponseMessage = "Cannot connect to the server."
+        static let cancelledResponseMessage = "Web query cancelled."
         static let emptyResponseMessage = "No response from the server."
         static let decodeErrorMessage = "Unknown error. Report the issue to the devs."
         static let typeMissMatchMessage = "Unknown error. Report the issue to the devs."
@@ -77,6 +78,8 @@ final class HomeViewModel {
     private(set) weak var coordinator: MainCoordinatorProtocol?
     weak var delegate: HomeViewModelDelegate?
     
+    private var gamesDataTask: URLSessionDataTask?
+    
     let service: RAWG_GamesServiceProtocol!
     var data: RAWG_GamesListResponse?
     var filteredList = [RAWG_GamesListModel]()
@@ -115,6 +118,10 @@ final class HomeViewModel {
             title = ErrorParameters.networkErrorTitle
             message = ErrorParameters.emptyResponseMessage
             okOption = ErrorParameters.okOption
+        case .cancelled:
+            title = ErrorParameters.networkErrorTitle
+            message = ErrorParameters.cancelledResponseMessage
+            okOption = ErrorParameters.okOption
         case .decodeError:
             title = ErrorParameters.networkErrorTitle
             message = ErrorParameters.decodeErrorMessage
@@ -139,15 +146,12 @@ final class HomeViewModel {
         )
     }
     
-    var requestCount = 0
-    
     private func performGetRequest(
         _ parameters: RAWG_GamesListParameters,
         filterText: String? = nil
     ) {
-        requestCount += 1
-        
-        service.getGamesList(parameters) { [weak self] result in
+        gamesDataTask?.cancel()
+        gamesDataTask = service.getGamesList(parameters) { [weak self] result in
             guard let self else { return }
             
             switch result {
@@ -157,7 +161,9 @@ final class HomeViewModel {
                 delegate?.onSearchResult()
                 
             case .failure(let error):
-                generateError(error)
+                if error != .cancelled {
+                    generateError(error)
+                }
             }
         }
     }
