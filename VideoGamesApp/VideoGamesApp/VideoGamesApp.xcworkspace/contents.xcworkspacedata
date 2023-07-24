@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:VideoGamesApp/VideoGamesApp.xcodeproj">
+      location = "group:/Users/metintarikkiki/Desktop/GYGY/Staj/MetinTarikKiki_InternshipProj1/VideoGamesApp/VideoGamesApp/VideoGamesApp/VideoGamesApp.xcodeproj">
    </FileRef>
 </Workspace>

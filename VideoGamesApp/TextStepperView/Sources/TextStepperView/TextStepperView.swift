@@ -32,8 +32,22 @@ public class TextStepperView: UIView {
     
     public let stepperTextLabel: UILabel = {
         let stepperTextLabel = UILabel()
-        stepperTextLabel.textAlignment = .center
+        stepperTextLabel.textAlignment = .right
         return stepperTextLabel
+    }()
+    
+    public let stepperTotalValueLabel: UILabel = {
+        let stepperTotalValueLabel = UILabel()
+        stepperTotalValueLabel.textAlignment = .left
+        return stepperTotalValueLabel
+    }()
+    
+    private lazy var stepperTextContainerView: UIStackView = {
+        let stepperTextContainer = UIStackView()
+        stepperTextContainer.axis = .horizontal
+        stepperTextContainer.addArrangedSubview(stepperTextLabel)
+        stepperTextContainer.addArrangedSubview(stepperTotalValueLabel)
+        return stepperTextContainer
     }()
     
     //MARK: - Class Setups
@@ -43,13 +57,16 @@ public class TextStepperView: UIView {
         didSet {
             if currentValue < minimumValue {
                 currentValue = minimumValue
+            } else if currentValue > maximumValue {
+                currentValue = maximumValue
             }
+            
             delegate?.onCurrentValueChange(
                 self,
                 oldValue: oldValue,
                 newValue: currentValue
             )
-            stepperTextLabel.text = "\(stepperText ?? "") \(currentValue)"
+            resetTextLabel()
         }
     }
     
@@ -57,6 +74,18 @@ public class TextStepperView: UIView {
         didSet {
             if currentValue < minimumValue {
                 currentValue = minimumValue
+            } else {
+                resetTextLabel()
+            }
+        }
+    }
+    
+    public var maximumValue: Int = 10 {
+        didSet {
+            if currentValue > maximumValue {
+                currentValue = maximumValue
+            } else {
+                resetTextLabel()
             }
         }
     }
@@ -88,6 +117,7 @@ public class TextStepperView: UIView {
     private var widthConstraints = [NSLayoutConstraint]()
     private var layoutConstraints = [NSLayoutConstraint]()
     
+    //MARK: - Private function implementations
     public init(
         startUpValue: Int = 0,
         stepperText: String? = nil
@@ -150,14 +180,14 @@ public class TextStepperView: UIView {
     
     private func setupSubviews() {
         addSubview(decreaseImageView)
-        addSubview(stepperTextLabel)
+        addSubview(stepperTextContainerView)
         addSubview(increaseImageView)
         
         decreaseImageView.translatesAutoresizingMaskIntoConstraints = false
-        stepperTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        stepperTextContainerView.translatesAutoresizingMaskIntoConstraints = false
         increaseImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        stepperTextLabel.text = "\(stepperText ?? "") \(currentValue)"
+        resetTextLabel()
     }
     
     private func setupWidthConstraints() {
@@ -192,7 +222,7 @@ public class TextStepperView: UIView {
                 constant: -contentInset.bottom
             ),
             
-            stepperTextLabel.topAnchor.constraint(
+            /*stepperTextLabel.topAnchor.constraint(
                 equalTo: self.topAnchor,
                 constant: contentInset.top
             ),
@@ -207,8 +237,22 @@ public class TextStepperView: UIView {
             stepperTextLabel.trailingAnchor.constraint(
                 equalTo: increaseImageView.leadingAnchor,
                 constant: -spacing
+            ),*/
+            
+            stepperTextContainerView.topAnchor.constraint(
+                equalTo: self.topAnchor,
+                constant: contentInset.top
+            ),
+            stepperTextContainerView.bottomAnchor.constraint(
+                equalTo: self.bottomAnchor,
+                constant: -contentInset.bottom
+            ),
+            
+            stepperTextContainerView.centerXAnchor.constraint(
+                equalTo: self.centerXAnchor
             ),
 
+            
             increaseImageView.topAnchor.constraint(
                 equalTo: self.topAnchor,
                 constant: contentInset.top
@@ -254,5 +298,10 @@ extension TextStepperView {
     
     public func setStepperText(_ text: String?) {
         stepperText = text
+    }
+    
+    public func resetTextLabel() {
+        stepperTextLabel.text = "\(stepperText ?? "") \(currentValue)"
+        stepperTotalValueLabel.text = " ... \(maximumValue)"
     }
 }

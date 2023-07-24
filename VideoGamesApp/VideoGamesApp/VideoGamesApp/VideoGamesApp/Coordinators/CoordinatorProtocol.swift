@@ -11,7 +11,7 @@ protocol CoordinatorProtocol: AnyObject {
     var childCoordinators: [CoordinatorProtocol] { get }
     var navigationController: UINavigationController? { get }
     var appDelegate: AppDelegate? { get }
-    func popupError(
+    func popUpAlert(
         title: String,
         message: String,
         okOption: String?,
@@ -23,7 +23,7 @@ protocol CoordinatorProtocol: AnyObject {
 }
 
 extension CoordinatorProtocol {
-    func popupError(
+    func popUpAlert(
         title: String,
         message: String,
         okOption: String? = nil,

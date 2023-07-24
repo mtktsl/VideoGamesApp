@@ -21,7 +21,7 @@ protocol MainCoordinatorProtocol: AnyObject {
     func checkInternetConnection()
     func navigate(to: MainCoordinator.Route)
     
-    func popupError(
+    func popUpAlert(
         title: String,
         message: String,
         okOption: String?,
@@ -97,6 +97,9 @@ extension MainCoordinator {
         splashVC.viewModel = SplashViewModel(
             coordinator: self
         )
+        
+        CoreDataManager.shared.fetchLatestUpdates()
+        
         navigationController?.setViewControllers([splashVC], animated: true)
     }
     
@@ -154,7 +157,7 @@ extension MainCoordinator: NetworkStatusObserverDelegate {
             isPopupOpen = true
 
             DispatchQueue.main.async { [weak self] in
-                self?.popupError(
+                self?.popUpAlert(
                     title: "Connection Error",
                     message: "There is no internet connection.",
                     okOption: "Retry",

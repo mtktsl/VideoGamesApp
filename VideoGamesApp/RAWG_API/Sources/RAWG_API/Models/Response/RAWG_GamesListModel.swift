@@ -19,6 +19,30 @@ public struct RAWG_GamesListModel: Decodable {
     public let reviewsCount: Int?
     public let shortScreenshots: [RAWG_ShortScreenshot]?
     
+    public init(
+        name: String? = nil,
+        released: String? = nil,
+        backgroundImageURLString: String? = nil,
+        rating: Double? = nil,
+        ratingTop: Double? = nil,
+        ratingsCount: Int? = nil,
+        metacritic: Int? = nil,
+        id: Int? = nil,
+        reviewsCount: Int? = nil,
+        shortScreenshots: [RAWG_ShortScreenshot]? = nil
+    ) {
+        self.name = name
+        self.released = released
+        self.backgroundImageURLString = backgroundImageURLString
+        self.rating = rating
+        self.ratingTop = ratingTop
+        self.ratingsCount = ratingsCount
+        self.metacritic = metacritic
+        self.id = id
+        self.reviewsCount = reviewsCount
+        self.shortScreenshots = shortScreenshots
+    }
+    
     enum CodingKeys: String, CodingKey {
         case name
         case released

@@ -272,7 +272,7 @@ final class DetailViewController: UIViewController {
     lazy var mainGrid = Grid.vertical {
         
         gameImageView
-            .Constant(value: 200)
+            .Constant(value: 250)
         
         gameNameLabel
             .Auto(margin: .titleMargin)
@@ -296,6 +296,13 @@ final class DetailViewController: UIViewController {
         descriptionLabel
             .Auto(margin: .descriptionMargin)
     }
+    
+    lazy var favoritesBarButtonItem = UIBarButtonItem(
+        image: nil,
+        style: .plain,
+        target: self,
+        action: #selector(onFavoriteButtonTap)
+    )
     
     var viewModel: DetailViewModelProtocol! {
         didSet {
@@ -331,6 +338,10 @@ final class DetailViewController: UIViewController {
             
             calculateScrollViewContentSize()
         }
+    }
+    
+    @objc private func onFavoriteButtonTap() {
+        viewModel.toggleFavorite()
     }
     
     private func setImage(
@@ -376,17 +387,38 @@ final class DetailViewController: UIViewController {
         rawgRatingLabel.textColor = rawgColor
         metacriticRatingLabel.textColor = metacriticColor
     }
+    
+    private func setupScrollView() {
+        scrollView.addSubview(mainGrid)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        NSLayoutConstraint.expand(scrollView, to: view.safeAreaLayoutGuide)
+    }
+    
+    private func setupFavoritesButton() {
+        navigationItem.rightBarButtonItem = favoritesBarButtonItem
+        setupFavoritesImage()
+    }
+    
+    private func setupFavoritesImage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            favoritesBarButtonItem.image = UIImage(
+                systemName: viewModel.isFavorite
+                ? ApplicationConstants.SystemImages.heartFill
+                : ApplicationConstants.SystemImages.heart
+            )
+        }
+    }
 }
 
 
 //MARK: - Controller Protocol Implementations
 extension DetailViewController: DetailViewControllerProtocol {
+    
     func setupSubviews() {
-        scrollView.addSubview(mainGrid)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
-        NSLayoutConstraint.expand(scrollView, to: view.safeAreaLayoutGuide)
-        
+        setupScrollView()
+        setupFavoritesButton()
         setImage(
             for: gameImageView,
             image: UIImage(named: ApplicationConstants.ImageAssets.loading),
@@ -469,5 +501,9 @@ extension DetailViewController: DetailViewModelDelegate {
             setRatingColor()
             calculateScrollViewContentSize()
         }
+    }
+    
+    func onFavoriteChange() {
+        setupFavoritesButton()
     }
 }
