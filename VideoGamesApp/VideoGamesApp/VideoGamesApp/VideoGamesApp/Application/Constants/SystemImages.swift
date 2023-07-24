@@ -11,6 +11,7 @@ extension ApplicationConstants {
     enum SystemImages {
         static let gameController = "gamecontroller"
         static let heart = "heart"
+        static let heartFill = "heart.fill"
         static let magnifyingGlass = "magnifyingglass"
         static let exclamationmarkTriangle = "exclamationmark.triangle"
         static let chevronRightCircle = "chevron.right.circle"

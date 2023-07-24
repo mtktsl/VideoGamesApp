@@ -8,70 +8,8 @@
 import Foundation
 import RAWG_API
 
-extension HomeViewModel {
-    fileprivate enum Constants {
-        static let viewControllerTitle = "RAWG Games"
-        static let imageViewPagerItemCount: Int = 3
-        
-        static let localSearchThreshold = 3
-        
-        static let defaultSearchText: String? = nil
-        static let defaultOrdering: RAWG_GamesListOrderingParameter? = nil
-        static let defaultPage: Int = 1
-        static let pageSize: Int = 20
-    }
-    
-    fileprivate enum SearchPreference {
-        case defaultLocal
-        case defaultOnline
-        case localSearch
-        case customSearch
-    }
-    
-    fileprivate enum ErrorParameters {
-        static let networkErrorTitle = "Network Error"
-        
-        static let responseCodeMessage = "Cannot connect to the server."
-        static let noResponseMessage = "Cannot connect to the server."
-        static let cancelledResponseMessage = "Web query cancelled."
-        static let emptyResponseMessage = "No response from the server."
-        static let decodeErrorMessage = "Unknown error. Report the issue to the devs."
-        static let typeMissMatchMessage = "Unknown error. Report the issue to the devs."
-        
-        static let urlError = "Invalid search."
-        static let okOption = "OK"
-    }
-}
-
 protocol HomeViewModelDelegate: AnyObject {
     func onSearchResult()
-}
-
-protocol HomeViewModelProtocol {
-    var viewControllerTitle: String { get }
-    var delegate: HomeViewModelDelegate? { get set }
-    
-    var imageViewPagerCount: Int { get }
-    var dataCount: Int { get }
-    var isImageViewPagerVisible: Bool { get }
-    
-    var minimumPageNumber: Int { get }
-    
-    func queryForGamesList(
-        _ searchText: String?,
-        orderBy: RAWG_GamesListOrderingParameter?,
-        pageNumber: Int
-    )
-    
-    func performDefaultQuery(
-        _ filterText: String?,
-        pageNumber: Int
-    )
-    
-    func getGameForCell(at index: Int) -> RAWG_GamesListModel?
-    func getGameForHeader(at index: Int) -> RAWG_GamesListModel?
-    func cellDidSelect(at index: Int)
-    func pageControllerDidSelect(at index: Int)
 }
 
 final class HomeViewModel {
@@ -136,7 +74,7 @@ final class HomeViewModel {
             okOption = ErrorParameters.okOption
         }
         
-        coordinator?.popupError(
+        coordinator?.popUpAlert(
             title: title,
             message: message,
             okOption: okOption,
@@ -200,6 +138,13 @@ extension HomeViewModel: HomeViewModelProtocol {
         return Constants.defaultPage
     }
     
+    var maximumPageNumber: Int {
+        let dataCount = data?.count ?? 0
+        let pageCount: Int = (dataCount / Constants.pageSize)
+        + (dataCount % Constants.pageSize != 0 ? 1 : 0)
+        return pageCount
+    }
+    
     var viewControllerTitle: String {
         return Constants.viewControllerTitle
     }
@@ -236,100 +181,63 @@ extension HomeViewModel: HomeViewModelProtocol {
         pageNumber: Int
     ) {
         
-        //TODO: make page number user chosen
-        
-        var searchParameters: RAWG_GamesListParameters?
-        
-        let lastSearchTextCount = lastSearchText?.count ?? 0
         let searchTextCount = searchText?.count ?? 0
+        let lastTextCount = lastSearchText?.count ?? 0
         
-        if lastSearchTextCount <= Constants.localSearchThreshold {
-            if searchTextCount < Constants.localSearchThreshold {
-                searchPreference = .defaultLocal
-                if pageNumber != lastSearchPage {
-                    performDefaultQuery(
-                        pageNumber: pageNumber
-                    )
-                }
-                
-            } else if searchTextCount == Constants.localSearchThreshold {
-                searchPreference = .localSearch
-                if pageNumber != lastSearchPage {
-                    performDefaultQuery(
-                        searchText,
-                        pageNumber: pageNumber
-                    )
-                }
-            } else {
-                searchPreference = .customSearch
-                searchParameters = .init(
-                    search: searchText,
-                    ordering: orderBy,
-                    page: pageNumber,
-                    page_size: Constants.pageSize,
-                    key: ApplicationConstants.RAWG_API_KEY
-                )
-            }
-        } else {
-            if searchTextCount < 3 {
-                searchPreference = .defaultOnline
-                searchParameters = .init(
-                    search: Constants.defaultSearchText,
-                    ordering: Constants.defaultOrdering,
-                    page: pageNumber,
-                    page_size: Constants.pageSize,
-                    key: ApplicationConstants.RAWG_API_KEY
-                )
-                
-            } else if searchTextCount == Constants.localSearchThreshold {
-                searchPreference = .localSearch
-                performDefaultQuery(
-                    searchText,
-                    pageNumber: pageNumber
-                )
-            } else {
-                searchPreference = .customSearch
-                searchParameters = .init(
-                    search: searchText,
-                    ordering: orderBy,
-                    page: pageNumber,
-                    page_size: Constants.pageSize,
-                    key: ApplicationConstants.RAWG_API_KEY
-                )
-            }
-        }
+        let isDefault = searchTextCount < Constants.localSearchThreshold
+                        && lastTextCount >= Constants.localSearchThreshold
         
-        switch searchPreference {
-        case .defaultLocal:
-            setFilteredList()
+        let isLocal = searchTextCount >= Constants.localSearchThreshold
+                      && lastTextCount < Constants.localSearchThreshold
+        
+        let filterString = searchTextCount >= Constants.localSearchThreshold
+        ? searchText
+        : nil
+        
+        if pageNumber != lastSearchPage {
+            let searchParameters = RAWG_GamesListParameters(
+                search: nil,
+                ordering: orderBy,
+                page: pageNumber,
+                page_size: Constants.pageSize,
+                key: ApplicationConstants.RAWG_API_KEY
+            )
+            
+            performGetRequest(
+                searchParameters,
+                filterText: filterString
+            )
+            
+        } else if isDefault {
+            setFilteredList(nil)
             delegate?.onSearchResult()
-        case .localSearch:
+            searchPreference = .defaultOnline
+        } else if isLocal {
             setFilteredList(searchText)
             delegate?.onSearchResult()
-        default:
-            //The reason we chose to force this is that if it's online search, parameters has to be set or else we want the app to crash to let the devs know about the issue.
-            performGetRequest(searchParameters!)
+            searchPreference = .localSearch
         }
         
-        lastSearchText = searchText
+        lastSearchText = filterString
         lastSearchPage = pageNumber
     }
     
     func performDefaultQuery(
-        _ filterText: String? = nil,
-        pageNumber: Int
+        
     ) {
         let searchParameters = RAWG_GamesListParameters(
             search: nil,
             ordering: Constants.defaultOrdering,
-            page: pageNumber,
+            page: Constants.defaultPage,
             page_size: Constants.pageSize,
             key: ApplicationConstants.RAWG_API_KEY
         )
         
+        lastSearchPage = Constants.defaultPage
+        
         performGetRequest(
             searchParameters,
-            filterText: filterText
+            filterText: nil
         )
     }
     

@@ -9,4 +9,5 @@ import Foundation
 
 enum ApplicationConstants {
     static let RAWG_API_KEY = "7fc0f758374f446f91e8f401c684a700"
+    static let favoritesCoreDataModelName = "CORE_FavoriteGameModel"
 }

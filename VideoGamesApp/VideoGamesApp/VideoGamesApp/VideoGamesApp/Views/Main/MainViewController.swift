@@ -27,6 +27,8 @@ final class MainViewController: UITabBarController {
         super.setViewControllers(viewControllers, animated: animated)
         setupTabBar()
     }
+    
+    //TODO: - listen notification center CoreData posts to show badges
 }
 
 extension MainViewController: MainViewControllerProtocol {

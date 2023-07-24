@@ -24,7 +24,6 @@ fileprivate extension UIEdgeInsets {
     )
     
     static let searchFieldMargin = UIEdgeInsets(10)
-    static let searchBarMargin = UIEdgeInsets(10)
     static let searchImageViewMargin = UIEdgeInsets(
         top: 0, left: 0, bottom: 0, right: 10
     )
@@ -136,6 +135,9 @@ class HomeViewController: UIViewController {
         textStepperView.setIncreaseImage(UIImage(systemName: ApplicationConstants.SystemImages.chevronRightCircle))
         
         textStepperView.stepperTextLabel.textColor = .white
+        textStepperView.stepperTextLabel.font = .boldSystemFont(ofSize: 18)
+        textStepperView.stepperTotalValueLabel.textColor = .white
+        textStepperView.stepperTotalValueLabel.textColor = .lightText
         textStepperView.decreaseImageView.tintColor = .darkGray
         textStepperView.increaseImageView.tintColor = .white
         
@@ -175,25 +177,17 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupColors()
         setupMainGrid()
+        LoadingView.shared.startLoading()
+        viewModel.performDefaultQuery()
     }
     
     @objc private func searchDidChange(_ textField: UITextField) {
-        //TODO: add logic for 3 letter search
         viewModel.queryForGamesList(
             textField.text,
             orderBy: nil,
             pageNumber: textStepperView.currentValue
         )
-        LoadingView.shared.startLoading(on: collectionView)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        LoadingView.shared.startLoading(on: collectionView)
-        viewModel.performDefaultQuery(
-            nil,
-            pageNumber: viewModel.minimumPageNumber
-        )
+        //LoadingView.shared.startLoading(on: collectionView)
     }
 }
 
@@ -315,6 +309,7 @@ extension HomeViewController: HomeViewModelDelegate {
             guard let self else { return }
             LoadingView.shared.hideLoading()
             collectionView.reloadData()
+            textStepperView.maximumValue = viewModel.maximumPageNumber
         }
     }
 }
@@ -338,6 +333,12 @@ extension HomeViewController: TextStepperViewDelegate {
             textStepperView.decreaseImageView.tintColor = .darkGray
         } else {
             textStepperView.decreaseImageView.tintColor = .white
+        }
+        
+        if newValue == textStepperView.maximumValue {
+            textStepperView.increaseImageView.tintColor = .darkGray
+        } else {
+            textStepperView.increaseImageView.tintColor = .white
         }
     }
 }

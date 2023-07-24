@@ -8,85 +8,14 @@
 import Foundation
 import RAWG_API
 
-extension DetailViewModel {
-    fileprivate enum ErrorParameters {
-        static let networkErrorTitle = "Network Error"
-        
-        static let responseCodeMessage = "Cannot connect to the server."
-        static let noResponseMessage = "Cannot connect to the server."
-        static let emptyResponseMessage = "No response from the server."
-        static let cancelledResponseMessage = "Web query cancelled."
-        static let decodeErrorMessage = "Unknown error. Report the issue to the devs."
-        static let typeMissMatchMessage = "Unknown error. Report the issue to the devs."
-        
-        static let urlError = "No entry found for the game."
-        static let okOption = "OK"
-    }
-    
-    fileprivate enum IndicatorTexts {
-        static let developer = "Developer(s)"
-        static let publisher = "Publisher(s)"
-        static let releaseDate = "Released"
-        static let reviews = "REVIEWS"
-        static let rawgRatingTitle = "RAWG:"
-        static let metacriticTitle = "Metacritic:"
-    }
-    
-    fileprivate enum NilTextIndicators {
-        static let unknown = "(-unknown-)"
-    }
-    
-    fileprivate enum RatingThresholds {
-        static let medium: Double = 2.5
-        static let high: Double = 3.75
-        static let max: Double = 5.0
-    }
-    
-    fileprivate enum MetacriticThresholds {
-        static let medium: Int = 50
-        static let high: Int = 75
-        static let max: Int = 100
-    }
-}
-
 protocol DetailViewModelDelegate: AnyObject {
+    
     func onImageDownloadSuccess(_ imageData: Data)
     func onImageDownloadFailure()
     
     func onDataDownloadSuccess()
-}
-
-protocol DetailViewModelProtocol: AnyObject {
     
-    var delegate: DetailViewModelDelegate? { get set }
-    
-    var isFavorite: Bool { get }
-    
-    var gameTitle: String? { get }
-    
-    var gameDeveloperIndicator: String { get }
-    var gameDeveloper: String? { get }
-    
-    var gamePublisherIndicator: String { get }
-    var gamePublisher: String? { get }
-    
-    var gameReleaseDateIndicator: String { get }
-    var gameReleaseDate: String? { get }
-    
-    var reviewsIndicator: String { get }
-    
-    var rawgRating: Double { get }
-    var rawgRatingText: String { get }
-    var rawgRatingLevel: GamesListCellRatingModel { get }
-    
-    var metacriticRating: Int { get }
-    var metacriticRatingText: String { get }
-    var metacriticRatingLevel: GamesListCellRatingModel { get }
-    
-    var gameDescription: String? { get }
-    
-    func downloadData()
-    func downloadImage()
+    func onFavoriteChange()
 }
 
 final class DetailViewModel {
@@ -123,29 +52,29 @@ final class DetailViewModel {
         
         switch error {
         case .statusCode(_, _):
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.responseCodeMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.responseCodeMessage
         case .noResponse:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.noResponseMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.noResponseMessage
         case .emptyResponse:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.emptyResponseMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.emptyResponseMessage
         case .cancelled:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.cancelledResponseMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.cancelledResponseMessage
         case .decodeError:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.decodeErrorMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.decodeErrorMessage
         case .typeMissMatchError:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.typeMissMatchMessage
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.typeMissMatchMessage
         case .urlError:
-            errorTitle = ErrorParameters.networkErrorTitle
-            errorMessage = ErrorParameters.urlError
+            errorTitle = AlertParameters.networkErrorTitle
+            errorMessage = AlertParameters.urlError
         }
         
-        coordinator?.popupError(
+        coordinator?.popUpAlert(
             title: errorTitle,
             message: errorMessage,
             okOption: okOption,
@@ -290,8 +219,7 @@ extension DetailViewModel: DetailViewModelProtocol {
     }
     
     var isFavorite: Bool {
-        //TODO: check core data
-        return false
+        return CoreDataManager.shared.exists(Int32(gameID))
     }
     
     func downloadData() {
@@ -328,7 +256,7 @@ extension DetailViewModel: DetailViewModelProtocol {
         
         imageDataTask = service.downloadImage(
             finalURLString,
-            isCropped: false
+            isCropped: true
         ) { [weak self] result in
                 guard let self else { return }
                 
@@ -339,5 +267,27 @@ extension DetailViewModel: DetailViewModelProtocol {
                     delegate?.onImageDownloadFailure()
                 }
             }
+    }
+    
+    func toggleFavorite() {
+        
+        if isFavorite {
+            coordinator?.popUpAlert(
+                title: AlertParameters.favoriteWarningTitle,
+                message: AlertParameters.favoriteWarningMessage,
+                okOption: AlertParameters.favoriteOkOption,
+                cancelOption: AlertParameters.favoriteCancelOption,
+                onOk: { [weak self] _ in
+                    guard let self else { return }
+                    CoreDataManager.shared.removeGameFromFavorites(Int32(gameID))
+                    delegate?.onFavoriteChange()
+                },
+                onCancel: nil
+            )
+            
+        } else if let data {
+            CoreDataManager.shared.addGameToFavorite(data)
+            delegate?.onFavoriteChange()
+        }
     }
 }

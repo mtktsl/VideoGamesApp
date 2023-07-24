@@ -33,6 +33,42 @@ public struct RAWG_GameDetails: Decodable {
     
     public let description: String?
     
+    public init(
+        id: Int? = nil,
+        name: String? = nil,
+        nameOriginal: String? = nil,
+        metacritic: Int? = nil,
+        released: String? = nil,
+        backgroundImageURLString: String? = nil,
+        backgroundImageAdditionalURLString: String? = nil,
+        website: String? = nil,
+        rating: Double? = nil,
+        ratingTop: Double? = nil,
+        ratings: [RAWG_Rating]? = nil,
+        platforms: [RAWG_GamePlatform]? = nil,
+        developers: [RAWG_GameDeveloper]? = nil,
+        publishers: [RAWG_GamePublisher]? = nil,
+        esrbRating: RAWG_ESRB_Rating? = nil,
+        description: String? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.nameOriginal = nameOriginal
+        self.metacritic = metacritic
+        self.released = released
+        self.backgroundImageURLString = backgroundImageURLString
+        self.backgroundImageAdditionalURLString = backgroundImageAdditionalURLString
+        self.website = website
+        self.rating = rating
+        self.ratingTop = ratingTop
+        self.ratings = ratings
+        self.platforms = platforms
+        self.developers = developers
+        self.publishers = publishers
+        self.esrbRating = esrbRating
+        self.description = description
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
