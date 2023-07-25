@@ -9,7 +9,7 @@ import Foundation
 import RAWG_API
 
 extension FavoritesViewModel {
-    fileprivate enum Constants {
+    enum Constants {
         static let viewControllerTitle = "Favorites"
     }
 }

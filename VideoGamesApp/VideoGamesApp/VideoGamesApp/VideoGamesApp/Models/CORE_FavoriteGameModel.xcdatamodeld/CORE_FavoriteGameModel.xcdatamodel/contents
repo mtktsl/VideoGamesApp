@@ -3,6 +3,7 @@
     <entity name="CORE_FavoriteGameModel" representedClassName="CORE_FavoriteGameModel" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="imageURLString" optional="YES" attributeType="String"/>
+        <attribute name="isSeen" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="metacriticRating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="rawgRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>

@@ -42,7 +42,7 @@ final class DetailViewModel {
         self.gameID = gameID
     }
     
-    func generateError(
+    private func generateError(
         _ error: RAWG_NetworkError
     ) {
         var errorTitle = ""
@@ -89,7 +89,7 @@ final class DetailViewModel {
         )
     }
     
-    func generateGameDevelopersText() -> String {
+    private func generateGameDevelopersText() -> String {
         var result = ""
         if let count = data?.developers?.count, count > 0 {
             for i in 0 ..< count - 1 {
@@ -103,7 +103,7 @@ final class DetailViewModel {
         return result
     }
     
-    func generateGamePublishersText() -> String {
+    private func generateGamePublishersText() -> String {
         var result = ""
         if let count = data?.publishers?.count, count > 0 {
             for i in 0 ..< count - 1 {
@@ -115,6 +115,13 @@ final class DetailViewModel {
         }
         
         return result
+    }
+    
+    private func markAsSeen() {
+        guard let id = data?.id else { return }
+        DispatchQueue.main.async {
+            CoreDataManager.shared.markFavoriteAsSeen(Int32(id))
+        }
     }
 }
 
@@ -233,6 +240,7 @@ extension DetailViewModel: DetailViewModelProtocol {
             switch result {
             case .success(let data):
                 self.data = data
+                markAsSeen()
                 delegate?.onDataDownloadSuccess()
             case .failure(let error):
                 generateError(error)
@@ -286,7 +294,7 @@ extension DetailViewModel: DetailViewModelProtocol {
             )
             
         } else if let data {
-            CoreDataManager.shared.addGameToFavorite(data)
+            CoreDataManager.shared.addGameToFavorites(data)
             delegate?.onFavoriteChange()
         }
     }

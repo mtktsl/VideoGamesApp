@@ -15,6 +15,12 @@ extension MainCoordinator {
         case detail(gameID: Int)
         case back
     }
+    
+    fileprivate enum CoreDataErrorParameters {
+        static let errorTitle = "Data Save Error"
+        static let errorMessage = "Changes cannot be saved. Try restarting the application."
+        static let okOption = "OK"
+    }
 }
 
 protocol MainCoordinatorProtocol: AnyObject {
@@ -49,6 +55,12 @@ final class MainCoordinator: CoordinatorProtocol {
         self.appDelegate = appDelegate
         NetworkStatusObserver.shared.delegates.append(.init(self))
         NetworkStatusObserver.shared.startObserving()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onCoreDataError(_:)),
+            name: CoreDataManager.NotificationNames.error,
+            object: nil
+        )
     }
 }
 
@@ -174,5 +186,16 @@ extension MainCoordinator: NetworkStatusObserverDelegate {
                 )
             }
         }
+    }
+}
+
+//MARK: - Notification Center Observer Functions
+extension MainCoordinator {
+    @objc func onCoreDataError(_ notification: Notification) {
+        popUpAlert(
+            title: CoreDataErrorParameters.errorTitle,
+            message: CoreDataErrorParameters.errorMessage,
+            okOption: CoreDataErrorParameters.okOption
+        )
     }
 }

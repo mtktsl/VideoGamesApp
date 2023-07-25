@@ -31,21 +31,31 @@ fileprivate extension UIColor {
         brightness: 0.27,
         alpha: 1
     )
+    
+    static let seenIndicatorColor = UIColor.systemOrange
 }
 
 extension GamesListCell {
     fileprivate enum Constants {
+        
+        static let mainGridPadding = UIEdgeInsets(5)
+        
         static let gameImageMargin = UIEdgeInsets(
             top: 0, left: 0, bottom: 0, right: 10
         )
         static let ratingMargin = UIEdgeInsets(
             top: 0, left: 5, bottom: 0, right: 5
         )
+        static let seenIndicatorMargin = UIEdgeInsets(
+            top: 5, left: 0, bottom: 0, right: 5)
+        
+        static let seenIndicatorSize: CGFloat = 15
     }
 }
 
 protocol GamesListCellProtocol {
     func setupCell()
+    func setupSubviews()
 }
 
 final class GamesListCell: UICollectionViewCell {
@@ -107,6 +117,14 @@ final class GamesListCell: UICollectionViewCell {
         return releasedLabel
     }()
     
+    let seenIndicatorView: UIView = {
+        let seenIndicator = UIView()
+        seenIndicator.backgroundColor = .seenIndicatorColor
+        seenIndicator.layer.cornerRadius = Constants.seenIndicatorSize / 2
+        seenIndicator.clipsToBounds = true
+        return seenIndicator
+    }()
+    
     lazy var mainGrid = Grid.horizontal {
         gameImageView
             .Constant(value: 150, margin: Constants.gameImageMargin)
@@ -145,15 +163,27 @@ final class GamesListCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
-        setupMainGrid()
+        setupSubviews()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onIsSeenChanged(_:)),
+            name: CoreDataManager.NotificationNames.newItem,
+            object: nil
+        )
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented for GamesListCell")
     }
+    
+    @objc private func onIsSeenChanged(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            seenIndicatorView.isHidden = !viewModel.isSeen
+        }
+    }
 
-    private func setupView() {
+    private func setupContentView() {
         contentView.backgroundColor = .gamesListCellBackgroundColor
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 5
@@ -162,7 +192,34 @@ final class GamesListCell: UICollectionViewCell {
     private func setupMainGrid() {
         mainGrid.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(mainGrid)
-        NSLayoutConstraint.expand(mainGrid, to: contentView, padding: .init(5))
+        NSLayoutConstraint.expand(
+            mainGrid,
+            to: contentView,
+            padding: Constants.mainGridPadding
+        )
+    }
+    
+    
+    private func setupIndicatorView() {
+        seenIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(seenIndicatorView)
+        NSLayoutConstraint.activate([
+            seenIndicatorView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: Constants.seenIndicatorMargin.top
+            ),
+            seenIndicatorView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -Constants.seenIndicatorMargin.right
+            ),
+            seenIndicatorView.widthAnchor.constraint(
+                equalToConstant: Constants.seenIndicatorSize
+            ),
+            seenIndicatorView.heightAnchor.constraint(
+                equalToConstant: Constants.seenIndicatorSize
+            )
+        ])
+        contentView.sendSubviewToBack(seenIndicatorView)
     }
     
     private func setImage(
@@ -222,7 +279,16 @@ extension GamesListCell: GamesListCellProtocol {
         
         rawgRatingLabel.text = String(data.rating ?? 0.0)
         metacriticRatingLabel.text = String(data.metacritic ?? 0)
+        
+        seenIndicatorView.isHidden = !viewModel.isSeen
+        
         mainGrid.setNeedsLayout()
+    }
+    
+    func setupSubviews() {
+        setupContentView()
+        setupMainGrid()
+        setupIndicatorView()
     }
 }
 
