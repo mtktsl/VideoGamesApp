@@ -16,5 +16,6 @@ extension ApplicationConstants {
         static let exclamationmarkTriangle = "exclamationmark.triangle"
         static let chevronRightCircle = "chevron.right.circle"
         static let chevronLeftCircle = "chevron.left.circle"
+        static let eyeSlashCircle = "eye.slash.circle"
     }
 }

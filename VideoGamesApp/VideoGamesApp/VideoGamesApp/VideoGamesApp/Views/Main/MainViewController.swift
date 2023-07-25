@@ -74,7 +74,7 @@ extension MainViewController: MainViewControllerProtocol {
         
         let favoriteItem = tabBar.items?[viewModel.badgeTabBarIndex]
         
-        favoriteItem?.badgeColor = .magenta
+        favoriteItem?.badgeColor = .systemBlue
         favoriteItem?.badgeValue = "!"
     }
     

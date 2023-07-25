@@ -106,11 +106,14 @@ final class HomeViewModel {
         }
     }
     
+    var count = 0
     private func setFilteredList(_ filterText: String? = nil) {
         filteredList = (data?.results ?? []).filter({
             if let name = $0.name?.lowercased() {
                 if let filterText {
-                    return name.contains(filterText.lowercased())
+                    print("FILTERED", count)
+                    count += 1
+                    return name.lowercased().contains(filterText.lowercased())
                 } else {
                     return true
                 }
@@ -180,6 +183,9 @@ extension HomeViewModel: HomeViewModelProtocol {
         orderBy: RAWG_GamesListOrderingParameter?,
         pageNumber: Int
     ) {
+        
+        //TODO: - ERROR: it only searches for only 3 words. FIX THIS
+        //TODO: - ERROR2: Set filtered is trigered 19 times just for 3 words
         
         let searchTextCount = searchText?.count ?? 0
         let lastTextCount = lastSearchText?.count ?? 0
