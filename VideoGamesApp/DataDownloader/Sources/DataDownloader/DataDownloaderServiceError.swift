@@ -23,7 +23,7 @@ public enum DataDownloaderServiceError: Error {
         case .noResponse:
             return "Connection error: No response from the server."
         case .cancelled:
-            return "Data cancelled."
+            return "Data task cancelled."
         case .emptyResponse:
             return "Connection error: Server response was empty."
         case .decodeError:

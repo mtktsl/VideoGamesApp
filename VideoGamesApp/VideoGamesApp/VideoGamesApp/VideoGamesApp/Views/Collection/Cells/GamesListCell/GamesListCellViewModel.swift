@@ -20,6 +20,9 @@ protocol GamesListCellViewModelProtocol {
     var rawgRating: GamesListCellRatingModel { get }
     var metacriticRating: GamesListCellRatingModel { get }
     
+    var isSeen: Bool { get }
+    var isFavorite: Bool { get }
+    
     func downloadGameImage()
 }
 
@@ -66,6 +69,23 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
         }
     }
     
+    var isSeen: Bool {
+        if let id = dataModel?.id, isFavorite {
+            let result = CoreDataManager.shared.isNotSeen(Int32(id))
+            return result
+        } else {
+            return false
+        }
+    }
+    
+    var isFavorite: Bool {
+        if let id = dataModel?.id {
+            return CoreDataManager.shared.exists(Int32(id))
+        } else {
+            return false
+        }
+    }
+    
     func downloadGameImage() {
         guard let urlString = dataModel?.backgroundImageURLString
         else {
@@ -86,4 +106,5 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
                 }
             }
     }
+    
 }

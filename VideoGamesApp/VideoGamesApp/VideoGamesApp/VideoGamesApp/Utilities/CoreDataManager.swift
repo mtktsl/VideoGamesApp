@@ -14,6 +14,12 @@ extension CoreDataManager {
         static let error = Notification.Name("CoreDataError")
         static let added = Notification.Name("CoreDataAdded")
         static let removed = Notification.Name("CoreDataRemoved")
+        static let newItem = Notification.Name("CoreDataNewItem")
+    }
+    
+    enum NotificationType {
+        case error
+        case favoritesChanged(_ isEmpty: Bool)
     }
 }
 
@@ -21,10 +27,12 @@ protocol CoreDataManagerProtocol {
     
     var favoriteGames: [RAWG_GamesListModel] { get }
     
-    func addGameToFavorite(_ item: RAWG_GameDetails)
+    func addGameToFavorites(_ item: RAWG_GameDetails)
     func removeGameFromFavorites(_ id: Int32)
     func fetchLatestUpdates()
     func exists(_ id: Int32) -> Bool
+    func isNotSeen(_ id: Int32) -> Bool
+    func markFavoriteAsSeen(_ id: Int32)
 }
 
 //MARK: - Class definition
@@ -38,7 +46,33 @@ class CoreDataManager {
     
     private var lastFetch = [CORE_FavoriteGameModel]()
     
+    private var newItems = Set<Int?>() {
+        didSet {
+            notifyObservers(.favoritesChanged(newItems.isEmpty))
+        }
+    }
+    
     private init() {}
+    
+    private func notifyObservers(_ notificationType: NotificationType) {
+        
+        var notificationName: Notification.Name!
+        var object: Bool? = nil
+        
+        switch notificationType {
+        case .error:
+            notificationName = NotificationNames.error
+        case .favoritesChanged(let isEmpty):
+            print("NEW ITEM")
+            notificationName = NotificationNames.newItem
+            object = isEmpty
+        }
+        
+        NotificationCenter.default.post(
+            name: notificationName,
+            object: object
+        )
+    }
     
     private func saveContext(_ context: NSManagedObjectContext) -> Bool {
         do {
@@ -81,6 +115,7 @@ class CoreDataManager {
     
     private func gameDetailsToCore(
         _ model: RAWG_GameDetails,
+        isNew: Bool,
         context: NSManagedObjectContext
     ) -> CORE_FavoriteGameModel? {
         let newItem = CORE_FavoriteGameModel(context: context)
@@ -93,29 +128,9 @@ class CoreDataManager {
         newItem.released = model.released ?? ""
         newItem.rawgRating = model.rating ?? 0.0
         newItem.metacriticRating = Int16(model.metacritic ?? 0)
+        newItem.isSeen = !isNew
         
         return newItem
-    }
-    
-    private func notifyError() {
-        NotificationCenter.default.post(
-            name: NotificationNames.error,
-            object: nil
-        )
-    }
-    
-    private func notifyAddEvent() {
-        NotificationCenter.default.post(
-            name: NotificationNames.added,
-            object: nil
-        )
-    }
-    
-    private func notifyRemoveEvent() {
-        NotificationCenter.default.post(
-            name: NotificationNames.removed,
-            object: nil
-        )
     }
 }
 
@@ -126,56 +141,80 @@ extension CoreDataManager: CoreDataManagerProtocol {
         return lastFetch.map( { coreToGamesList($0) })
     }
     
-    func addGameToFavorite(_ item: RAWG_GameDetails) {
+    func addGameToFavorites(_ item: RAWG_GameDetails) {
         guard let context,
-              let _ = gameDetailsToCore(
-                item,
-                context: context
-              )
+              let _ = gameDetailsToCore(item,
+                                        isNew: true,
+                                        context: context)
         else {
-            notifyError()
+            notifyObservers(.error)
             return
         }
         
-        saveContext(context)
-        ? notifyAddEvent()
-        : notifyError()
-        
+        if saveContext(context) {
+            newItems.insert(item.id)
+        } else {
+            notifyObservers(.error)
+        }
+
         fetchLatestUpdates()
     }
     
     func removeGameFromFavorites(_ id: Int32) {
-        let item = lastFetch.first(where: { $0.id == id } )
         guard let context else { return }
+        
+        let item = lastFetch.first(where: { $0.id == id } )
+        
         if let item {
-            
             context.delete(item)
             
-            saveContext(context)
-            ? notifyRemoveEvent()
-            : notifyError()
+            if saveContext(context) {
+                newItems.remove(Int(id))
+            } else {
+                notifyObservers(.error)
+            }
             
             fetchLatestUpdates()
         } else {
-            notifyError()
+            notifyObservers(.error)
         }
     }
     
     func fetchLatestUpdates() {
+        lastFetch = []
+        newItems = []
         guard let context = self.context
-        else {
-            lastFetch = []
-            return
-        }
+        else { return }
         
         if let items = try? context.fetch(CORE_FavoriteGameModel.fetchRequest()) {
+           
             lastFetch = items
-        } else {
-            lastFetch = []
+            
+            for item in lastFetch {
+                if !item.isSeen {
+                    newItems.insert(Int(item.id))
+                }
+            }
         }
     }
     
     func exists(_ id: Int32) -> Bool {
         return lastFetch.contains(where: { $0.id == id })
+    }
+    
+    func isNotSeen(_ id: Int32) -> Bool {
+        return newItems.contains(Int(id))
+    }
+    
+    func markFavoriteAsSeen(_ id: Int32) {
+        guard let context else { return }
+        if let item = lastFetch.first(where: { $0.id == id }) {
+            item.isSeen = true
+            if saveContext(context) {
+                newItems.remove(Int(id))
+            } else {
+                notifyObservers(.error)
+            }
+        }
     }
 }

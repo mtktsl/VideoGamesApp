@@ -248,6 +248,7 @@ final class DetailViewController: UIViewController {
             .Constant(value: Constants.indicatorWidth,
                       verticalAlignment: .autoTop,
                       margin: .indicatorMargin)
+        
         developerNameLabel
             .Expanded()
     }
@@ -257,6 +258,7 @@ final class DetailViewController: UIViewController {
             .Constant(value: Constants.indicatorWidth,
                       verticalAlignment: .autoTop,
                       margin: .indicatorMargin)
+        
         publisherNameLabel
             .Expanded()
     }

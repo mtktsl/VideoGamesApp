@@ -9,6 +9,8 @@ import Foundation
 
 protocol MainViewModelProtocol: AnyObject {
     var tabbarImages: [String] { get }
+    var badgeTabBarIndex: Int { get }
+    func fetchCoreData()
 }
 
 final class MainViewModel {
@@ -25,5 +27,13 @@ extension MainViewModel: MainViewModelProtocol {
     
     var tabbarImages: [String] {
         return imageNames
+    }
+    
+    var badgeTabBarIndex: Int {
+        return 1
+    }
+    
+    func fetchCoreData() {
+        CoreDataManager.shared.fetchLatestUpdates()
     }
 }
