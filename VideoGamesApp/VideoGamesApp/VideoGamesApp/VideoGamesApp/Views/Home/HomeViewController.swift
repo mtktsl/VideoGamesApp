@@ -40,6 +40,8 @@ extension HomeViewController {
         static let collectionContentInset = UIEdgeInsets(
             top: 0, left: 10, bottom: 10, right: 10
         )
+        static let notFoundImageHeight: CGFloat = 200
+        static let notFoundText = "Oops. We couldn't find what you are looking for."
     }
 }
 
@@ -47,10 +49,36 @@ extension HomeViewController {
 protocol HomeViewControllerProtocol {
     func setupColors()
     func setupMainGrid()
+    func showNotFoundView()
+    func hideNotFoundView()
 }
 
 //MARK: - HomeViewController View Implementations
 class HomeViewController: UIViewController {
+    
+    let notFoundImage: UIImageView = {
+        let notFoundImage = UIImageView(
+            image: UIImage(systemName: const.SystemImages.eyeSlashCircle)
+        )
+        notFoundImage.contentMode = .scaleAspectFit
+        notFoundImage.tintColor = .white
+        return notFoundImage
+    }()
+    
+    let notFoundLabel: UILabel = {
+        let notFoundLabel = UILabel()
+        notFoundLabel.text = Constants.notFoundText
+        notFoundLabel.textColor = .white
+        notFoundLabel.textAlignment = .center
+        return notFoundLabel
+    }()
+    
+    lazy var notFoundView = Grid.vertical {
+        notFoundImage
+            .Constant(value: Constants.notFoundImageHeight)
+        notFoundLabel
+            .Auto(margin: .collectionViewMargin)
+    }
     
     lazy var collectionView: UICollectionView = {
         let layout = CollectionViewTableLayout(
@@ -77,6 +105,8 @@ class HomeViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        collectionView.backgroundView = notFoundView
         
         return collectionView
     }()
@@ -212,6 +242,20 @@ extension HomeViewController: HomeViewControllerProtocol {
         mainGrid.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.expand(mainGrid, to: view.safeAreaLayoutGuide)
     }
+    
+    func showNotFoundView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            collectionView.backgroundView?.isHidden = false
+        }
+    }
+    
+    func hideNotFoundView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            collectionView.backgroundView?.isHidden = true
+        }
+    }
 }
 
 //MARK: - UICollectionViewDataSource and Delegate implementations
@@ -221,7 +265,13 @@ extension HomeViewController: UICollectionViewDataSource,
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return viewModel.dataCount
+        let count = viewModel.dataCount
+        if count == .zero {
+            showNotFoundView()
+        } else {
+            hideNotFoundView()
+        }
+        return count
     }
     
     func collectionView(

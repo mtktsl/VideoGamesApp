@@ -63,7 +63,6 @@ class CoreDataManager {
         case .error:
             notificationName = NotificationNames.error
         case .favoritesChanged(let isEmpty):
-            print("NEW ITEM")
             notificationName = NotificationNames.newItem
             object = isEmpty
         }

@@ -25,11 +25,22 @@ public class RAWG_GamesService {
     public static let shared = RAWG_GamesService()
     let webService = DataDownloaderService.shared
     
-    public init() {}
+    public var imageCacheSize = RAWG_Constants.imageCacheSize
+    
+    private var webImageCache = [String: Data]()
+    
+    private func cacheImageData(_ key: String, value: Data) {
+        let count = webImageCache.count
+        if count > imageCacheSize {
+            _ = webImageCache.popFirst()
+        }
+        webImageCache[key] = value
+    }
+    
+    private init() {}
 }
 
 extension RAWG_GamesService: RAWG_GamesServiceProtocol {
-    
     
     public func getGamesList(
         _ parameters: RAWG_GamesListParameters,
@@ -58,6 +69,7 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
         apiKey: String,
         completion: @escaping ((Result<RAWG_GameDetails, RAWG_NetworkError>) -> Void)
     ) -> URLSessionDataTask? {
+        
         let gamesListURLString = RAWG_Constants
             .gamesURLConfiguration
             .generateGameDetailURLString(
@@ -91,12 +103,20 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
         )
         : imageURLString
         
+        if let cachedData = webImageCache[urlString] {
+            completion(.success(cachedData))
+            return nil
+        }
+        
         return webService.fetchData(
             from: urlString,
             dataType: Data.self,
-            decode: false) { result in
+            decode: false) { [weak self] result in
+                guard let self else { return }
+                
                 switch result {
                 case .success(let data):
+                    cacheImageData(urlString, value: data)
                     completion(.success(data))
                 case .failure(let error):
                     completion(.failure(.generateError(error)))
