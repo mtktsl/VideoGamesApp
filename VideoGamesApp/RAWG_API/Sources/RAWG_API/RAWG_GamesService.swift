@@ -22,7 +22,7 @@ public protocol RAWG_GamesServiceProtocol: AnyObject {
 
 public class RAWG_GamesService {
     
-    public static let shared = RAWG_GamesService()
+    public static let shared: RAWG_GamesServiceProtocol = RAWG_GamesService()
     let webService = DataDownloaderService.shared
     
     public var imageCacheSize = RAWG_Constants.imageCacheSize

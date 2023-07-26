@@ -199,7 +199,9 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout,
         }
         
         let data = viewModel.getGame(at: indexPath.row)
-        cell.viewModel = GamesListCellViewModel(dataModel: data)
+        cell.viewModel = GamesListCellViewModel(
+            dataModel: data
+        )
         return cell
     }
     

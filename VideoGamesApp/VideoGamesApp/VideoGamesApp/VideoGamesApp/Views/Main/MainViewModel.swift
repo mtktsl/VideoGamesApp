@@ -15,12 +15,18 @@ protocol MainViewModelProtocol: AnyObject {
 
 final class MainViewModel {
     
+    private var coreDataService: CoreDataManagerProtocol
+    
     typealias appConst = ApplicationConstants
     
     private let imageNames: [String] = [
         appConst.SystemImages.gameController,
         appConst.SystemImages.heart
     ]
+    
+    init(coreDataService: CoreDataManagerProtocol) {
+        self.coreDataService = coreDataService
+    }
 }
 
 extension MainViewModel: MainViewModelProtocol {
@@ -34,6 +40,6 @@ extension MainViewModel: MainViewModelProtocol {
     }
     
     func fetchCoreData() {
-        CoreDataManager.shared.fetchLatestUpdates()
+        coreDataService.fetchLatestUpdates()
     }
 }

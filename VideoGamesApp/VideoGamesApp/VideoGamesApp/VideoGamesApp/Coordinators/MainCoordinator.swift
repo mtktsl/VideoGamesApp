@@ -70,7 +70,9 @@ extension MainCoordinator {
     func navigateToMain() {
         
         let mainVC = MainViewController()
-        mainVC.viewModel = MainViewModel()
+        mainVC.viewModel = MainViewModel(
+            coreDataService: CoreDataManager.shared
+        )
         
         let homeVC = HomeViewController()
         homeVC.viewModel = HomeViewModel(
@@ -80,7 +82,8 @@ extension MainCoordinator {
         
         let favoritesVC = FavoritesViewController()
         favoritesVC.viewModel = FavoritesViewModel(
-            coordinator: self
+            coordinator: self,
+            coreDataService: CoreDataManager.shared
         )
         
         mainVC.setViewControllers(
@@ -98,6 +101,7 @@ extension MainCoordinator {
         let detailVC = DetailViewController()
         detailVC.viewModel = DetailViewModel(
             service: RAWG_GamesService.shared,
+            coreDataService: CoreDataManager.shared,
             coordinator: self,
             gameID: gameID
         )
