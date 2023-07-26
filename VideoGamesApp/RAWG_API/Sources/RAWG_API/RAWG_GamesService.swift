@@ -27,8 +27,9 @@ public class RAWG_GamesService {
     
     public var imageCacheSize = RAWG_Constants.imageCacheSize
     
+    //TODO: - Make a proper cache algorithm that brings last reached element to front and removes oldest element.
     private var webImageCache = [String: Data]()
-    
+
     private func cacheImageData(_ key: String, value: Data) {
         let count = webImageCache.count
         if count > imageCacheSize {

@@ -14,6 +14,16 @@ fileprivate extension UIEdgeInsets {
     static let searchImageViewMargin = UIEdgeInsets(
         top: 0, left: 0, bottom: 0, right: 10
     )
+    
+    static let collectionViewMargin = UIEdgeInsets(10)
+}
+
+extension FavoritesViewController {
+    fileprivate enum Constants {
+        static let notFoundText = "Ooops. We could not find the game you are looking for."
+        
+        static let notFoundImageHeight: CGFloat = 200
+    }
 }
 
 protocol FavoritesViewControllerProtocol {
@@ -66,6 +76,31 @@ final class FavoritesViewController: UIViewController {
         return container
     }()
     
+    let notFoundImage: UIImageView = {
+        let notFoundImage = UIImageView(
+            image: UIImage(systemName: ApplicationConstants.SystemImages.eyeSlashCircle)
+        )
+        notFoundImage.contentMode = .scaleAspectFit
+        notFoundImage.tintColor = .white
+        return notFoundImage
+    }()
+    
+    let notFoundLabel: UILabel = {
+        let notFoundLabel = UILabel()
+        notFoundLabel.text = Constants.notFoundText
+        notFoundLabel.textColor = .white
+        notFoundLabel.textAlignment = .center
+        notFoundLabel.numberOfLines = 0
+        return notFoundLabel
+    }()
+    
+    lazy var notFoundView = Grid.vertical {
+        notFoundImage
+            .Constant(value: Constants.notFoundImageHeight)
+        notFoundLabel
+            .Auto(margin: .collectionViewMargin)
+    }
+    
     lazy var collectionView: UICollectionView = {
         let layout = CollectionViewTableLayout(
             cellHeight: GamesListCell.defaultHeight,
@@ -91,6 +126,8 @@ final class FavoritesViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        collectionView.backgroundView = notFoundView
         
         return collectionView
     }()
@@ -139,11 +176,21 @@ extension FavoritesViewController: FavoritesViewControllerProtocol {
 
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout,
                                    UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.itemCount
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        
+        let count = viewModel.itemCount
+        notFoundView.isHidden = viewModel.itemCount > 0
+        return count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: GamesListCell.reuseIdentifier,
             for: indexPath
@@ -156,7 +203,10 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout,
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         viewModel.didSelectGame(at: indexPath.row)
     }
 }
