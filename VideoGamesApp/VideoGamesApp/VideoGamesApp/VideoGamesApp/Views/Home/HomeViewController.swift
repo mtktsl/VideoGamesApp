@@ -285,6 +285,7 @@ extension HomeViewController: UICollectionViewDataSource,
         ) as? GamesListCell
         else { fatalError("Failed to cast GamesListCell") }
         
+        //TODO: - Research that is giving service parameter here the right way or not.
         cell.viewModel = GamesListCellViewModel(
             dataModel: viewModel.getGameForCell(at: indexPath.row)
         )

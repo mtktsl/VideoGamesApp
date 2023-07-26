@@ -12,8 +12,6 @@ import RAWG_API
 extension CoreDataManager {
     enum NotificationNames {
         static let error = Notification.Name("CoreDataError")
-        static let added = Notification.Name("CoreDataAdded")
-        static let removed = Notification.Name("CoreDataRemoved")
         static let newItem = Notification.Name("CoreDataNewItem")
     }
     

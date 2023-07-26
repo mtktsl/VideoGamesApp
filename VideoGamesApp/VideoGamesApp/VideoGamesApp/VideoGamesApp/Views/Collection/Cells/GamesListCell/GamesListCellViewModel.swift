@@ -28,11 +28,17 @@ protocol GamesListCellViewModelProtocol {
 
 final class GamesListCellViewModel {
     private(set) var dataModel: RAWG_GamesListModel?
+    private var coreDataService: CoreDataManagerProtocol
+    
     private var webTask: URLSessionDataTask?
     weak var delegate: GamesListCellViewModelDelegate?
     
-    init(dataModel: RAWG_GamesListModel?) {
+    init(
+        dataModel: RAWG_GamesListModel?,
+        coreDataService: CoreDataManagerProtocol = CoreDataManager.shared
+    ) {
         self.dataModel = dataModel
+        self.coreDataService = coreDataService
     }
     
     deinit {
@@ -71,7 +77,7 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
     
     var isSeen: Bool {
         if let id = dataModel?.id, isFavorite {
-            let result = CoreDataManager.shared.isNotSeen(Int32(id))
+            let result = coreDataService.isNotSeen(Int32(id))
             return result
         } else {
             return false
@@ -80,7 +86,7 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
     
     var isFavorite: Bool {
         if let id = dataModel?.id {
-            return CoreDataManager.shared.exists(Int32(id))
+            return coreDataService.exists(Int32(id))
         } else {
             return false
         }

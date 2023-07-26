@@ -35,14 +35,19 @@ protocol FavoritesViewModelProtocol: AnyObject {
 final class FavoritesViewModel {
     
     private weak var coordinator: MainCoordinatorProtocol!
+    private let coreDataService: CoreDataManagerProtocol
     
     weak var delegate: FavoritesViewModelDelegate?
     
     private var favoriteGames = [RAWG_GamesListModel]()
     private var filteredGames = [RAWG_GamesListModel]()
     
-    init(coordinator: MainCoordinatorProtocol) {
+    init(
+        coordinator: MainCoordinatorProtocol,
+        coreDataService: CoreDataManagerProtocol
+    ) {
         self.coordinator = coordinator
+        self.coreDataService = coreDataService
     }
 }
 

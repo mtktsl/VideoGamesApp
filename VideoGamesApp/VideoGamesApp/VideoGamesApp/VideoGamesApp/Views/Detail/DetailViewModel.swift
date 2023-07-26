@@ -26,6 +26,7 @@ final class DetailViewModel {
     private var gamesDataTask: URLSessionDataTask?
     
     let service: RAWG_GamesServiceProtocol
+    let coreDataService: CoreDataManagerProtocol
     private(set) weak var coordinator: MainCoordinatorProtocol?
     
     let gameID: Int
@@ -34,12 +35,14 @@ final class DetailViewModel {
     
     init(
         service: RAWG_GamesServiceProtocol,
+        coreDataService: CoreDataManagerProtocol,
         coordinator: MainCoordinatorProtocol,
         gameID: Int
     ) {
         self.service = service
         self.coordinator = coordinator
         self.gameID = gameID
+        self.coreDataService = coreDataService
     }
     
     private func generateError(
@@ -119,8 +122,9 @@ final class DetailViewModel {
     
     private func markAsSeen() {
         guard let id = data?.id else { return }
-        DispatchQueue.main.async {
-            CoreDataManager.shared.markFavoriteAsSeen(Int32(id))
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            coreDataService.markFavoriteAsSeen(Int32(id))
         }
     }
 }
@@ -226,7 +230,7 @@ extension DetailViewModel: DetailViewModelProtocol {
     }
     
     var isFavorite: Bool {
-        return CoreDataManager.shared.exists(Int32(gameID))
+        return coreDataService.exists(Int32(gameID))
     }
     
     func downloadData() {
@@ -287,14 +291,14 @@ extension DetailViewModel: DetailViewModelProtocol {
                 cancelOption: AlertParameters.favoriteCancelOption,
                 onOk: { [weak self] _ in
                     guard let self else { return }
-                    CoreDataManager.shared.removeGameFromFavorites(Int32(gameID))
+                    coreDataService.removeGameFromFavorites(Int32(gameID))
                     delegate?.onFavoriteChange()
                 },
                 onCancel: nil
             )
             
         } else if let data {
-            CoreDataManager.shared.addGameToFavorites(data)
+            coreDataService.addGameToFavorites(data)
             delegate?.onFavoriteChange()
         }
     }
