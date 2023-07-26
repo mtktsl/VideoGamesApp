@@ -106,14 +106,15 @@ final class HomeViewModel {
         }
     }
     
-    var count = 0
     private func setFilteredList(_ filterText: String? = nil) {
         filteredList = (data?.results ?? []).filter({
             if let name = $0.name?.lowercased() {
                 if let filterText {
-                    print("FILTERED", count)
-                    count += 1
-                    return name.lowercased().contains(filterText.lowercased())
+                    return name.lowercased().contains(
+                        filterText
+                            .trimmingCharacters(in: .whitespaces)
+                            .lowercased()
+                    )
                 } else {
                     return true
                 }
@@ -184,9 +185,6 @@ extension HomeViewModel: HomeViewModelProtocol {
         pageNumber: Int
     ) {
         
-        //TODO: - ERROR: it only searches for only 3 words. FIX THIS
-        //TODO: - ERROR2: Set filtered is trigered 19 times just for 3 words
-        
         let searchTextCount = searchText?.count ?? 0
         let lastTextCount = lastSearchText?.count ?? 0
         
@@ -194,7 +192,6 @@ extension HomeViewModel: HomeViewModelProtocol {
                         && lastTextCount >= Constants.localSearchThreshold
         
         let isLocal = searchTextCount >= Constants.localSearchThreshold
-                      && lastTextCount < Constants.localSearchThreshold
         
         let filterString = searchTextCount >= Constants.localSearchThreshold
         ? searchText
@@ -228,9 +225,7 @@ extension HomeViewModel: HomeViewModelProtocol {
         lastSearchPage = pageNumber
     }
     
-    func performDefaultQuery(
-        
-    ) {
+    func performDefaultQuery() {
         let searchParameters = RAWG_GamesListParameters(
             search: nil,
             ordering: Constants.defaultOrdering,

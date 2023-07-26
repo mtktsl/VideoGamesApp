@@ -70,6 +70,7 @@ class HomeViewController: UIViewController {
         notFoundLabel.text = Constants.notFoundText
         notFoundLabel.textColor = .white
         notFoundLabel.textAlignment = .center
+        notFoundLabel.numberOfLines = 0
         return notFoundLabel
     }()
     
@@ -217,7 +218,6 @@ class HomeViewController: UIViewController {
             orderBy: nil,
             pageNumber: textStepperView.currentValue
         )
-        //LoadingView.shared.startLoading(on: collectionView)
     }
 }
 
