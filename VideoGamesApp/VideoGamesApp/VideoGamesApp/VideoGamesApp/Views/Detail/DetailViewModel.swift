@@ -268,7 +268,8 @@ extension DetailViewModel: DetailViewModelProtocol {
         
         imageDataTask = service.downloadImage(
             finalURLString,
-            isCropped: true
+            isCropped: false,
+            usesCache: true
         ) { [weak self] result in
                 guard let self else { return }
                 

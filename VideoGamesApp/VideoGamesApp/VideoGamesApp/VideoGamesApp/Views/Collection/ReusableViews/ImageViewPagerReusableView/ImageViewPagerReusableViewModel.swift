@@ -60,7 +60,8 @@ extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtoc
             
             let task = service.downloadImage(
                 urlString,
-                isCropped: true
+                isCropped: true,
+                usesCache: true
             ) { [weak self] result in
                 guard let self else { return }
                 

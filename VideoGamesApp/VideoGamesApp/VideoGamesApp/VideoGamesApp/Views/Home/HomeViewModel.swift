@@ -193,7 +193,7 @@ extension HomeViewModel: HomeViewModelProtocol {
         
         let isLocal = searchTextCount >= Constants.localSearchThreshold
         
-        let filterString = searchTextCount >= Constants.localSearchThreshold
+        let filterString = isLocal
         ? searchText
         : nil
         

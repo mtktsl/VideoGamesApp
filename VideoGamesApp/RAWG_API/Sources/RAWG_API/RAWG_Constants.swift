@@ -16,7 +16,7 @@ enum RAWG_Constants {
     static let fullSizeMediaBaseURL = "https://media.rawg.io/media/games/"
     static let croppedSizeMediaBaseURL = "https://media.rawg.io/media/crop/600/400/games/"
     
-    static let imageCacheSize: Int = 10
+    static let imageCacheSize: Int = 30
     
     static let gamesURLConfiguration = RAWG_URLConfiguration(
         baseURLString: "https://api.rawg.io",

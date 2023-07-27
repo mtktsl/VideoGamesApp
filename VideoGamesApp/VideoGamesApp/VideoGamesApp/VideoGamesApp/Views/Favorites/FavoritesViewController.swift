@@ -15,7 +15,8 @@ fileprivate extension UIEdgeInsets {
         top: 0, left: 0, bottom: 0, right: 10
     )
     
-    static let collectionViewMargin = UIEdgeInsets(10)
+    static let collectionViewMargin = UIEdgeInsets(
+        top: 10, left: 2.5, bottom: 5, right: 2.5)
 }
 
 extension FavoritesViewController {
@@ -98,7 +99,7 @@ final class FavoritesViewController: UIViewController {
         notFoundImage
             .Constant(value: Constants.notFoundImageHeight)
         notFoundLabel
-            .Auto(margin: .collectionViewMargin)
+            .Auto()
     }
     
     lazy var collectionView: UICollectionView = {
@@ -136,8 +137,7 @@ final class FavoritesViewController: UIViewController {
         searchBar
             .Constant(value: 50)
         collectionView
-            .Expanded(margin: UIEdgeInsets(
-                top: 10, left: 0, bottom: 0, right: 0))
+            .Expanded(margin: .collectionViewMargin)
     }
     
     var viewModel: FavoritesViewModelProtocol! {
@@ -155,6 +155,7 @@ final class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.updateFavoriteGames(for: nil)
+        notFoundView.bounds = collectionView.bounds
     }
     
     @objc private func searchDidChange(_ textField: UITextField) {

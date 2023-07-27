@@ -14,8 +14,9 @@ public class Grid: UIView {
     private var totalGridConstants: CGFloat = 0
     private var totalGridStarts: CGFloat = 0
     
-    private var starMultiplier: CGFloat {
-        let length = (gridType == .vertical) ? bounds.size.height
+    private var expandMultiplier: CGFloat {
+        let length = (gridType == .vertical)
+        ? bounds.size.height
         : bounds.size.width
         if length > 0 {
             if totalGridConstants > 0 {
@@ -308,7 +309,7 @@ public class Grid: UIView {
         case .expanded(_, _, _, _, _):
             
             if gridType == .vertical {
-                var height = self.bounds.size.height * (cell.value / totalGridStarts) * starMultiplier
+                var height = self.bounds.size.height * (cell.value / totalGridStarts) * expandMultiplier
                 height -= (cell.margin.top + cell.margin.bottom)
                 
                 height = calculateVerticalSpacing(cell: cell, size: height)
@@ -317,7 +318,7 @@ public class Grid: UIView {
                 cell.constraints.append(constraint)
                 constraint.isActive = true
             } else {
-                var width = self.bounds.size.width * (cell.value / totalGridStarts) * starMultiplier
+                var width = self.bounds.size.width * (cell.value / totalGridStarts) * expandMultiplier
                 width -= (cell.margin.left + cell.margin.right)
                 
                 width = calculateHorizontalSpacing(cell: cell, size: width)

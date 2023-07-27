@@ -48,6 +48,8 @@ extension DetailViewController {
         static let indicatorWidth: CGFloat = 120
         
         static let ratingImageWidth: CGFloat = 25
+        
+        static let gameImageHeightRatio: CGFloat = 9.0 / 16.0
     }
 }
 
@@ -79,10 +81,29 @@ protocol DetailViewControllerProtocol: AnyObject {
 
 //MARK: - Controllerdefinition
 final class DetailViewController: UIViewController {
+    
+    var gameImageHeight: CGFloat {
+        let wideScreenHeight = view.bounds.size.width * Constants.gameImageHeightRatio
+        let minSpacing = rawgTitleLabel.sizeThatFits(
+            .init(
+                width: mainGrid.bounds.size.width,
+                height: .zero
+            )
+        ).height
+        
+        let viewHeight = view.bounds.inset(by: view.safeAreaInsets).size.height
+        
+        return min(
+            wideScreenHeight,
+            viewHeight - minSpacing
+        )
+    }
+    
     //MARK: - View Definitions
     let gameImageView: UIImageView = {
         let gameImageView = UIImageView()
-        gameImageView.contentMode = .scaleToFill
+        gameImageView.contentMode = .scaleAspectFit
+        gameImageView.clipsToBounds = true
         return gameImageView
     }()
     
@@ -273,9 +294,6 @@ final class DetailViewController: UIViewController {
     
     lazy var mainGrid = Grid.vertical {
         
-        gameImageView
-            .Constant(value: 250)
-        
         gameNameLabel
             .Auto(margin: .titleMargin)
         
@@ -310,6 +328,10 @@ final class DetailViewController: UIViewController {
         didSet {
             viewModel.delegate = self
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     //MARK: - Controller Functions
@@ -391,10 +413,15 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupScrollView() {
+        scrollView.addSubview(gameImageView)
         scrollView.addSubview(mainGrid)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
         NSLayoutConstraint.expand(scrollView, to: view.safeAreaLayoutGuide)
+    }
+    
+    private func setupNavigationBarAppearance() {
+        navigationController?.navigationBar.standardAppearance = .standardTransparent()
     }
     
     private func setupFavoritesButton() {
@@ -420,6 +447,7 @@ extension DetailViewController: DetailViewControllerProtocol {
     
     func setupSubviews() {
         setupScrollView()
+        setupNavigationBarAppearance()
         setupFavoritesButton()
         setImage(
             for: gameImageView,
@@ -437,15 +465,23 @@ extension DetailViewController: DetailViewControllerProtocol {
             )
         ).height
         
+        let calculatedGameImageHeight = gameImageHeight
+        
         let finalSize = CGSize(
             width: width,
-            height: height
+            height: height + calculatedGameImageHeight
         )
-
+        
         scrollView.contentSize = finalSize
         mainGrid.frame = CGRect(
-            origin: .zero,
+            origin: CGPoint(x: .zero,
+                            y: calculatedGameImageHeight),
             size: finalSize
+        )
+        gameImageView.frame = CGRect(
+            origin: .zero,
+            size: CGSize(width: width,
+                         height: calculatedGameImageHeight)
         )
     }
     
