@@ -49,14 +49,21 @@ final class ImageViewPagerReusableViewModel {
             task?.cancel()
         }
     }
+    
+    var count = 0
+    var er = 0
 }
 
 extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtocol {
     
     func downloadImages() {
-        
+        cancelPreviousWebImageTasks()
         for (index, urlString) in imageURLStrings.enumerated() {
-            guard let urlString else { continue }
+            
+            guard let urlString else {
+                delegate?.onImageError(for: index)
+                continue
+            }
             
             let task = service.downloadImage(
                 urlString,
@@ -64,9 +71,9 @@ extension ImageViewPagerReusableViewModel: ImageViewPagerReusableViewModelProtoc
                 usesCache: true
             ) { [weak self] result in
                 guard let self else { return }
-                
                 switch result {
                 case .success(let data):
+                    count += 1
                     delegate?.onImageSuccess(data, for: index)
                 case .failure(_):
                     delegate?.onImageError(for: index)

@@ -11,11 +11,13 @@ import ImageViewPager
 import NSLayoutConstraintExtensionPackage
 import LoadingView
 import TextStepperView
+import SegmentedPickerView
 
 //MARK: - Fileprivate values
 fileprivate typealias const = ApplicationConstants
 
 fileprivate extension UIEdgeInsets {
+    
     static let imageViewPagerMargin = UIEdgeInsets(
         top: 10,
         left: 10,
@@ -24,13 +26,21 @@ fileprivate extension UIEdgeInsets {
     )
     
     static let searchFieldMargin = UIEdgeInsets(10)
+    
     static let searchImageViewMargin = UIEdgeInsets(
         top: 0, left: 0, bottom: 0, right: 10
     )
     
+    static let pickerMargin = UIEdgeInsets(
+        top: 0, left: 5, bottom: 0, right: 0)
+    
     static let stepperMargin = UIEdgeInsets(10)
+    
+    static let orderMargin = UIEdgeInsets(
+        top: 15, left: 10, bottom: 10, right: 10)
+    
     static let collectionViewMargin = UIEdgeInsets(
-        top: 10, left: 0, bottom: 5, right: 0
+        top: 5, left: 0, bottom: 5, right: 0
     )
 }
 
@@ -160,10 +170,55 @@ class HomeViewController: UIViewController {
         return container
     }()
     
+    lazy var orderingView: SegmentedPickerView = {
+        let picker = SegmentedPickerView.build(
+            segmentedFilters: viewModel.orderingVisibleSegments,
+            moreFilters: viewModel.orderingMoreSegments,
+            moreButtonTitle: viewModel.orderingMoreText,
+            moreButtonImage: UIImage(
+                systemName: ApplicationConstants
+                    .SystemImages
+                    .line3HorizontalDecrease
+            ),
+            pickerTitle: viewModel.orderingPickerTitle,
+            pickerConfig: .init(
+                viewColor: .appContainerBackgroundColor,
+                titleTextColor: .white,
+                tableColor: .clear,
+                cellColor: .appGamesListCellBackgroundColor,
+                cellTextColor: .white,
+                searchColor: .systemGray4,
+                searchTextColor: .black,
+                cancelColor: .systemBlue,
+                cancelTextColor: .white
+            )
+        )
+        
+        picker.normalTitleColor = .lightText
+        picker.popupCancelColor = .systemBlue
+        picker.selectedSegmentTintColor = .systemGray
+        picker.selectedSegmentTitleColor = .white
+        
+        picker.backgroundColor = .appGamesListCellBackgroundColor
+        picker.clipsToBounds = true
+        picker.layer.cornerRadius = 5
+        
+        picker.delegate = self
+        
+        return picker
+    }()
+    
+    lazy var orderingIndicatorLabel: UILabel = {
+        let orderingIndicatorLabel = UILabel()
+        orderingIndicatorLabel.textColor = .lightText
+        orderingIndicatorLabel.text = viewModel.orderingIndicatorText
+        return orderingIndicatorLabel
+    }()
+    
     lazy var textStepperView: TextStepperView = {
         let textStepperView = TextStepperView(
             startUpValue: viewModel.minimumPageNumber,
-            stepperText: "Page:"
+            stepperText: viewModel.paginationIndicatorText
         )
         
         textStepperView.setDecreaseImage(UIImage(systemName: ApplicationConstants.SystemImages.chevronLeftCircle))
@@ -189,13 +244,24 @@ class HomeViewController: UIViewController {
         return spacerView
     }()
     
+    //MARK: - Main Grid
     lazy var mainGrid = Grid.vertical {
         searchBar
             .Constant(value: 50)
+        
         textStepperView
             .Constant(value: 50, margin: .stepperMargin)
+        
         spacerView
             .Constant(value: 2)
+        
+        Grid.horizontal {
+            orderingIndicatorLabel
+                .Auto()
+            orderingView
+                .Expanded(margin: .pickerMargin)
+        }.Constant(value: 60, margin: .orderMargin)
+        
         collectionView
             .Expanded(margin: .collectionViewMargin)
     }
@@ -219,7 +285,7 @@ class HomeViewController: UIViewController {
     @objc private func searchDidChange(_ textField: UITextField) {
         viewModel.queryForGamesList(
             textField.text,
-            orderBy: nil,
+            orderBy: orderingView.selectedValue,
             pageNumber: textStepperView.currentValue
         )
     }
@@ -289,7 +355,6 @@ extension HomeViewController: UICollectionViewDataSource,
         ) as? GamesListCell
         else { fatalError("Failed to cast GamesListCell") }
         
-        //TODO: - Research that is giving service parameter here the right way or not.
         cell.viewModel = GamesListCellViewModel(
             dataModel: viewModel.getGameForCell(at: indexPath.row)
         )
@@ -361,10 +426,6 @@ extension HomeViewController: UICollectionViewDataSource,
         )
         : .zero
         
-        //print(finalSize)
-        
-        
-        
         return finalSize
     }
     
@@ -399,7 +460,7 @@ extension HomeViewController: TextStepperViewDelegate {
             LoadingView.shared.startLoading(on: collectionView)
             viewModel.queryForGamesList(
                 searchField.text,
-                orderBy: nil,
+                orderBy: orderingView.selectedValue,
                 pageNumber: newValue
             )
         }
@@ -422,5 +483,16 @@ extension HomeViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
+    }
+}
+
+extension HomeViewController: SegmentedPickerViewDelegate {
+    func onSelectionChanged(_ newSelection: String) {
+        LoadingView.shared.startLoading(on: collectionView)
+        viewModel.queryForGamesList(
+            searchField.text,
+            orderBy: newSelection,
+            pageNumber: textStepperView.currentValue
+        )
     }
 }

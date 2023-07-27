@@ -12,6 +12,12 @@ extension HomeViewModel {
     
     enum Constants {
         static let viewControllerTitle = "RAWG Games"
+        
+        static let orderingLabelText = "Order:"
+        static let orderingDefaultOption = "Suggested"
+        static let orderingMoreText = "More"
+        static let orderingPickerTitle = "Order By:"
+        
         static let paginationIndicator = "Page:"
         static let imageViewPagerItemCount: Int = 3
         
@@ -21,6 +27,8 @@ extension HomeViewModel {
         static let defaultOrdering: RAWG_GamesListOrderingParameter? = nil
         static let defaultPage: Int = 1
         static let pageSize: Int = 50
+        
+        static let visibleFilterCount = 2
     }
     
     enum SearchPreference {

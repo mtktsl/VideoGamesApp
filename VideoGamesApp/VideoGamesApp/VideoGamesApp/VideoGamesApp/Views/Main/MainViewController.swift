@@ -43,7 +43,6 @@ final class MainViewController: UITabBarController {
         viewModel.fetchCoreData()
     }
     
-    //TODO: - listen notification center CoreData posts to show badges
     @objc private func onFavoritesChanged(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }

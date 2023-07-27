@@ -19,9 +19,17 @@ protocol HomeViewModelProtocol {
     var maximumPageNumber: Int { get }
     var minimumPageNumber: Int { get }
     
+    var paginationIndicatorText: String { get }
+    
+    var orderingIndicatorText: String { get }
+    var orderingMoreText: String { get }
+    var orderingPickerTitle: String { get }
+    var orderingVisibleSegments: [String] { get }
+    var orderingMoreSegments: [String] { get }
+    
     func queryForGamesList(
         _ searchText: String?,
-        orderBy: RAWG_GamesListOrderingParameter?,
+        orderBy: String?,
         pageNumber: Int
     )
     

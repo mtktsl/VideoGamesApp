@@ -67,7 +67,7 @@ final class GamesListCell: UICollectionViewCell {
     
     let gameImageView: UIImageView = {
         let gameImageView = UIImageView()
-        gameImageView.contentMode = .scaleToFill
+        gameImageView.contentMode = .scaleAspectFit
         gameImageView.layer.masksToBounds = true
         gameImageView.image = UIImage(
             named: ApplicationConstants.ImageAssets.loading
@@ -225,20 +225,11 @@ final class GamesListCell: UICollectionViewCell {
         contentView.sendSubviewToBack(seenIndicatorView)
     }
     
-    private func setImage(
-        for imageView: UIImageView,
-        image: UIImage?
-    ) {
-        DispatchQueue.main.async {
-            imageView.image = image
-        }
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
-        setImage(
-            for: gameImageView,
-            image: UIImage(named: ApplicationConstants.ImageAssets.loading)
+        gameImageView.setImageAsync(
+            UIImage(named: ApplicationConstants.ImageAssets.loading),
+            newContentMode: .scaleAspectFit
         )
         releasedLabel.text = ""
         rawgRatingLabel.text = "nil"
@@ -297,16 +288,17 @@ extension GamesListCell: GamesListCellProtocol {
 
 extension GamesListCell: GamesListCellViewModelDelegate {
     func onImageResult(_ imageData: Data) {
-        setImage(
-            for: gameImageView,
-            image: UIImage(data: imageData)
+        gameImageView.setImageAsync(
+            UIImage(data: imageData)
         )
     }
     
     func onImageError(_ error: RAWG_NetworkError) {
-        setImage(
-            for: gameImageView,
-            image: UIImage(systemName: ApplicationConstants.SystemImages.exclamationmarkTriangle)
+        gameImageView.setImageAsync(
+            UIImage(systemName: ApplicationConstants
+                .SystemImages
+                .exclamationmarkTriangle),
+            newContentMode: .scaleAspectFit
         )
     }
 }

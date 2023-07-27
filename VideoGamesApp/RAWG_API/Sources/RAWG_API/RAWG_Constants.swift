@@ -11,6 +11,8 @@ import Foundation
 
 enum RAWG_Constants {
     
+    static let defaultDateFormat = "yyyy-MM-dd"
+    
     static let defaultPageNumber: Int = 1
     static let defaultPageSize: Int = 20
     static let fullSizeMediaBaseURL = "https://media.rawg.io/media/games/"

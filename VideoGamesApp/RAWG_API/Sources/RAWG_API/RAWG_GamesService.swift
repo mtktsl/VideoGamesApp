@@ -2,6 +2,9 @@ import DataDownloader
 import Foundation
 
 public protocol RAWG_GamesServiceProtocol: AnyObject {
+    
+    var defaultDateFormat: String { get }
+    
     func getGamesList(
         _ parameters: RAWG_GamesListParameters,
         completion: @escaping ((Result<RAWG_GamesListResponse, RAWG_NetworkError>) -> Void)
@@ -28,7 +31,6 @@ public class RAWG_GamesService {
     
     public var imageCacheSize = RAWG_Constants.imageCacheSize
     
-    //TODO: - Make a proper cache algorithm that brings last reached element to front and removes oldest element.
     private var imageCache = BasicCache<String, Data>(capacity: RAWG_Constants.imageCacheSize)
     
     var count = 0
@@ -37,6 +39,10 @@ public class RAWG_GamesService {
 }
 
 extension RAWG_GamesService: RAWG_GamesServiceProtocol {
+    
+    public var defaultDateFormat: String {
+        return RAWG_Constants.defaultDateFormat
+    }
     
     public func getGamesList(
         _ parameters: RAWG_GamesListParameters,

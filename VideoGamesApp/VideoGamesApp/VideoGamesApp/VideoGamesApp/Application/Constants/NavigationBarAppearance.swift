@@ -7,11 +7,16 @@
 
 import UIKit
 
-extension UINavigationBarAppearance {
+extension ApplicationConstants {
     static func standardTransparent() -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.backgroundColor = .clear
         return appearance
+    }
+    
+    //TODO: - make a global variable and return a style according to that color style of the app.
+    static var appStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }
