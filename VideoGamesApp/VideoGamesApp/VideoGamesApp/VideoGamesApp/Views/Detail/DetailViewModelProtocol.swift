@@ -14,6 +14,8 @@ protocol DetailViewModelProtocol: AnyObject {
     
     var isFavorite: Bool { get }
     
+    var isFuture: Bool { get }
+    
     var gameTitle: String? { get }
     
     var gameDeveloperIndicator: String { get }

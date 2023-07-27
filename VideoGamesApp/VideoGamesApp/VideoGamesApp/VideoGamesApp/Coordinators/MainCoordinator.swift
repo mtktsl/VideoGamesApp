@@ -102,6 +102,7 @@ extension MainCoordinator {
         detailVC.viewModel = DetailViewModel(
             service: RAWG_GamesService.shared,
             coreDataService: CoreDataManager.shared,
+            notificationService: NotificationManager.shared,
             coordinator: self,
             gameID: gameID
         )

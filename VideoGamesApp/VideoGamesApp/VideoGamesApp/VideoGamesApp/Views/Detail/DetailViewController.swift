@@ -324,14 +324,17 @@ final class DetailViewController: UIViewController {
         action: #selector(onFavoriteButtonTap)
     )
     
+    lazy var notificationBarButtonItem = UIBarButtonItem(
+        image: nil,
+        style: .plain,
+        target: nil,
+        action: nil //TODO: set
+    )
+    
     var viewModel: DetailViewModelProtocol! {
         didSet {
             viewModel.delegate = self
         }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     //MARK: - Controller Functions
@@ -344,7 +347,7 @@ final class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         LoadingView.shared.startLoading(
-            view.frame,
+            view.frame.inset(by: view.safeAreaInsets),
             cornerRadius: 0
         )
         viewModel.downloadData()
@@ -368,15 +371,9 @@ final class DetailViewController: UIViewController {
         viewModel.toggleFavorite()
     }
     
-    private func setImage(
-        for imageView: UIImageView,
-        image: UIImage?,
-        contentMode: UIView.ContentMode
-    ) {
-        DispatchQueue.main.async {
-            imageView.image = image
-            imageView.contentMode = contentMode
-        }
+    @objc private func onNotificationButtonTap() {
+        //TODO: Set notification
+        print("NOTIF TAP")
     }
     
     private func setRatingColor() {
@@ -420,13 +417,13 @@ final class DetailViewController: UIViewController {
         NSLayoutConstraint.expand(scrollView, to: view.safeAreaLayoutGuide)
     }
     
-    private func setupNavigationBarAppearance() {
-        navigationController?.navigationBar.standardAppearance = .standardTransparent()
-    }
-    
     private func setupFavoritesButton() {
         navigationItem.rightBarButtonItem = favoritesBarButtonItem
         setupFavoritesImage()
+    }
+    
+    private func setupNotificationButton() {
+        navigationItem.rightBarButtonItems?.append(notificationBarButtonItem)
     }
     
     private func setupFavoritesImage() {
@@ -439,6 +436,13 @@ final class DetailViewController: UIViewController {
             )
         }
     }
+    
+    private func setupNotificationImage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            //TODO: check if there is a notification set for the game.
+        }
+    }
 }
 
 
@@ -447,12 +451,10 @@ extension DetailViewController: DetailViewControllerProtocol {
     
     func setupSubviews() {
         setupScrollView()
-        setupNavigationBarAppearance()
         setupFavoritesButton()
-        setImage(
-            for: gameImageView,
-            image: UIImage(named: ApplicationConstants.ImageAssets.loading),
-            contentMode: .scaleAspectFit
+        gameImageView.setImageAsync(
+            UIImage(named: ApplicationConstants.ImageAssets.loading),
+            newContentMode: .scaleAspectFit
         )
     }
     
@@ -513,21 +515,20 @@ extension DetailViewController: DetailViewControllerProtocol {
 extension DetailViewController: DetailViewModelDelegate {
     
     func onImageDownloadSuccess(_ imageData: Data) {
-        setImage(
-            for: gameImageView,
-            image: UIImage(data: imageData),
-            contentMode: .scaleToFill
+        gameImageView.setImageAsync(
+            UIImage(data: imageData),
+            newContentMode: .scaleToFill
         )
     }
     
     func onImageDownloadFailure() {
-        setImage(
-            for: gameImageView,
-            image: UIImage(
+        gameImageView.setImageAsync(
+            UIImage(
                 systemName: ApplicationConstants.SystemImages.exclamationmarkTriangle
             ),
-            contentMode: .scaleAspectFit
+            newContentMode: .scaleAspectFit
         )
+        
     }
     
     func onDataDownloadSuccess() {

@@ -17,5 +17,6 @@ extension ApplicationConstants {
         static let chevronRightCircle = "chevron.right.circle"
         static let chevronLeftCircle = "chevron.left.circle"
         static let eyeSlashCircle = "eye.slash.circle"
+        static let line3HorizontalDecrease = "line.3.horizontal.decrease"
     }
 }

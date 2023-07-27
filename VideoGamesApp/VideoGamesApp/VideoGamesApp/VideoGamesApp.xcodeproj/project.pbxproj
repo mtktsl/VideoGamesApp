@@ -45,10 +45,12 @@
 		6F6D8FBE2A71139100E729B6 /* MockGameDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D8FBD2A71139100E729B6 /* MockGameDetails.json */; };
 		6F6D8FC02A71142C00E729B6 /* MockGamesList.json in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D8FBF2A71142C00E729B6 /* MockGamesList.json */; };
 		6F6D8FC22A715B8C00E729B6 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC12A715B8C00E729B6 /* Bundle+Extension.swift */; };
-		6F6D8FC42A719B7A00E729B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC32A719B7A00E729B6 /* GoogleService-Info.plist */; };
-		6F6D8FC52A719B7A00E729B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC32A719B7A00E729B6 /* GoogleService-Info.plist */; };
-		6F6D8FC62A719B7A00E729B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC32A719B7A00E729B6 /* GoogleService-Info.plist */; };
 		6F6D8FC82A72175D00E729B6 /* NavigationBarAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC72A72175D00E729B6 /* NavigationBarAppearance.swift */; };
+		6F6D8FCB2A721DB600E729B6 /* ColoredNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FCA2A721DB600E729B6 /* ColoredNavigationController.swift */; };
+		6F6D8FCE2A7220F100E729B6 /* SegmentedPickerView in Frameworks */ = {isa = PBXBuildFile; productRef = 6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */; };
+		6F6D8FD02A722BF300E729B6 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FCF2A722BF300E729B6 /* String+Extension.swift */; };
+		6F6D8FD22A7243C400E729B6 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FD12A7243C400E729B6 /* UIImageView+Extension.swift */; };
+		6F6D8FD42A7285D200E729B6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */; };
 		6F7C4C8E2A62F65100241AE6 /* GamesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C8D2A62F65100241AE6 /* GamesListCell.swift */; };
 		6F7C4C902A62F65C00241AE6 /* GamesListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C8F2A62F65C00241AE6 /* GamesListCellViewModel.swift */; };
 		6F7C4C942A62FF2F00241AE6 /* CollectionViewTableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C932A62FF2F00241AE6 /* CollectionViewTableLayout.swift */; };
@@ -125,8 +127,12 @@
 		6F6D8FBD2A71139100E729B6 /* MockGameDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockGameDetails.json; sourceTree = "<group>"; };
 		6F6D8FBF2A71142C00E729B6 /* MockGamesList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockGamesList.json; sourceTree = "<group>"; };
 		6F6D8FC12A715B8C00E729B6 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
-		6F6D8FC32A719B7A00E729B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6F6D8FC72A72175D00E729B6 /* NavigationBarAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarAppearance.swift; sourceTree = "<group>"; };
+		6F6D8FCA2A721DB600E729B6 /* ColoredNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredNavigationController.swift; sourceTree = "<group>"; };
+		6F6D8FCC2A7220DE00E729B6 /* SegmentedPickerView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SegmentedPickerView; path = ../../SegmentedPickerView; sourceTree = "<group>"; };
+		6F6D8FCF2A722BF300E729B6 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		6F6D8FD12A7243C400E729B6 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		6F7C4C8D2A62F65100241AE6 /* GamesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListCell.swift; sourceTree = "<group>"; };
 		6F7C4C8F2A62F65C00241AE6 /* GamesListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListCellViewModel.swift; sourceTree = "<group>"; };
 		6F7C4C932A62FF2F00241AE6 /* CollectionViewTableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableLayout.swift; sourceTree = "<group>"; };
@@ -152,6 +158,7 @@
 				6F102D222A62A0EA00C9781A /* NetworkStatusObserver in Frameworks */,
 				6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */,
 				6F102CF52A5F196100C9781A /* CoreData.framework in Frameworks */,
+				6F6D8FCE2A7220F100E729B6 /* SegmentedPickerView in Frameworks */,
 				6F102CFE2A5F1B3900C9781A /* GridLayout in Frameworks */,
 				6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */,
 				6F102D102A60E97400C9781A /* RAWG_API in Frameworks */,
@@ -208,7 +215,6 @@
 				6F102D002A5F1EA500C9781A /* Coordinators */,
 				6F102D012A5F1EAE00C9781A /* Views */,
 				6F66F5482A6DC30B005D1E18 /* Models */,
-				6F6D8FC32A719B7A00E729B6 /* GoogleService-Info.plist */,
 				6F102CD02A5F193B00C9781A /* Info.plist */,
 			);
 			path = VideoGamesApp;
@@ -266,6 +272,7 @@
 				6F102D0B2A60018700C9781A /* RAWG_API */,
 				6F102D152A6147F400C9781A /* ImageViewPager */,
 				6F102D202A62A0A900C9781A /* NetworkStatusObserver */,
+				6F6D8FCC2A7220DE00E729B6 /* SegmentedPickerView */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -275,6 +282,8 @@
 			children = (
 				6F7C4C952A63007C00241AE6 /* UIEdgeInsets+Extension.swift */,
 				6F7C4C972A630DA100241AE6 /* UIColor+Extension.swift */,
+				6F6D8FCF2A722BF300E729B6 /* String+Extension.swift */,
+				6F6D8FD12A7243C400E729B6 /* UIImageView+Extension.swift */,
 			);
 			path = Extenstions;
 			sourceTree = "<group>";
@@ -291,6 +300,7 @@
 		6F102D012A5F1EAE00C9781A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6F6D8FC92A721D9900E729B6 /* NavigationControllers */,
 				6F7C4C8B2A62F4B200241AE6 /* Collection */,
 				6F102D112A6124AD00C9781A /* Splash */,
 				6F102D142A6124CE00C9781A /* Main */,
@@ -361,6 +371,7 @@
 		6F66F54C2A6DC5DD005D1E18 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				6F6D8FD52A72871200E729B6 /* NotificationManager */,
 				6F66F54D2A6DC5ED005D1E18 /* CoreDataManager.swift */,
 			);
 			path = Utilities;
@@ -399,6 +410,22 @@
 				6F6D8FBB2A71115700E729B6 /* MockMainCoordinator.swift */,
 			);
 			path = MockCoordinators;
+			sourceTree = "<group>";
+		};
+		6F6D8FC92A721D9900E729B6 /* NavigationControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6F6D8FCA2A721DB600E729B6 /* ColoredNavigationController.swift */,
+			);
+			path = NavigationControllers;
+			sourceTree = "<group>";
+		};
+		6F6D8FD52A72871200E729B6 /* NotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */,
+			);
+			path = NotificationManager;
 			sourceTree = "<group>";
 		};
 		6F7C4C8B2A62F4B200241AE6 /* Collection */ = {
@@ -490,6 +517,7 @@
 				6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */,
 				6FE66CDE2A657BBF00A1C518 /* LoadingView */,
 				6FE66CE42A65EEB100A1C518 /* TextStepperView */,
+				6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */,
 			);
 			productName = VideoGamesApp;
 			productReference = 6F102CBC2A5F193A00C9781A /* VideoGamesApp.app */;
@@ -581,7 +609,6 @@
 			files = (
 				6F102D0A2A5F56B300C9781A /* LaunchScreen.storyboard in Resources */,
 				6F102CCC2A5F193B00C9781A /* Assets.xcassets in Resources */,
-				6F6D8FC42A719B7A00E729B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,7 +618,6 @@
 			files = (
 				6F6D8FBE2A71139100E729B6 /* MockGameDetails.json in Resources */,
 				6F6D8FC02A71142C00E729B6 /* MockGamesList.json in Resources */,
-				6F6D8FC52A719B7A00E729B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,7 +625,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F6D8FC62A719B7A00E729B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,7 +643,9 @@
 				6F102D082A5F4F3400C9781A /* HomeViewController.swift in Sources */,
 				6F6D8FAD2A6E00E400E729B6 /* HomeViewModelConstants.swift in Sources */,
 				6F102D1D2A629EA400C9781A /* CoordinatorProtocol.swift in Sources */,
+				6F6D8FD02A722BF300E729B6 /* String+Extension.swift in Sources */,
 				6F66F54E2A6DC5ED005D1E18 /* CoreDataManager.swift in Sources */,
+				6F6D8FCB2A721DB600E729B6 /* ColoredNavigationController.swift in Sources */,
 				6F102D282A62A4E900C9781A /* SplashViewModel.swift in Sources */,
 				6F102D2C2A62C50B00C9781A /* MainViewModel.swift in Sources */,
 				6F102D302A62C70D00C9781A /* FavoritesViewModel.swift in Sources */,
@@ -638,6 +665,8 @@
 				6F6D8FA92A6DFFFE00E729B6 /* DetailViewModelConstants.swift in Sources */,
 				6F6D8FA72A6DCB2300E729B6 /* CORE_FavoriteGameModel.xcdatamodeld in Sources */,
 				6F102D262A62A46000C9781A /* SplashViewController.swift in Sources */,
+				6F6D8FD42A7285D200E729B6 /* NotificationManager.swift in Sources */,
+				6F6D8FD22A7243C400E729B6 /* UIImageView+Extension.swift in Sources */,
 				6F102CC22A5F193A00C9781A /* SceneDelegate.swift in Sources */,
 				6F7C4CA12A64893500241AE6 /* ImageViewPagerReusableView.swift in Sources */,
 				6F7C4C9E2A632ADD00241AE6 /* GamesListCellRatingModel.swift in Sources */,
@@ -988,6 +1017,10 @@
 		6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NSLayoutConstraintExtensionPackage;
+		};
+		6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SegmentedPickerView;
 		};
 		6FE66CDE2A657BBF00A1C518 /* LoadingView */ = {
 			isa = XCSwiftPackageProductDependency;

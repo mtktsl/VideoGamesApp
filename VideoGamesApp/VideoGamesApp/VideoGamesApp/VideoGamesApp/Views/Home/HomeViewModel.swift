@@ -26,6 +26,7 @@ final class HomeViewModel {
     
     var lastSearchText: String?
     var lastSearchPage: Int?
+    var lastSearchOrder: String?
     
     fileprivate var searchPreference = SearchPreference.defaultOnline
     
@@ -79,7 +80,16 @@ final class HomeViewModel {
             message: message,
             okOption: okOption,
             cancelOption: nil,
-            onOk: nil,
+            onOk: { [weak self] _ in
+                guard let self else { return }
+                performGetRequest(.init(
+                    search: lastSearchText,
+                    ordering: RAWG_GamesListOrderingParameter(rawValue: lastSearchOrder ?? ""),
+                    page: lastSearchPage,
+                    page_size: Constants.pageSize,
+                    key: ApplicationConstants.RAWG_API_KEY)
+                )
+            },
             onCancel: nil
         )
     }
@@ -179,9 +189,54 @@ extension HomeViewModel: HomeViewModelProtocol {
         (lastSearchText?.count ?? 0) < Constants.localSearchThreshold
     }
     
+    var paginationIndicatorText: String {
+        return Constants.paginationIndicator
+    }
+    
+    var orderingPickerTitle: String {
+        return Constants.orderingPickerTitle
+    }
+    
+    var orderingMoreText: String {
+        return Constants.orderingMoreText
+    }
+    
+    var orderingIndicatorText: String {
+        return Constants.orderingLabelText
+    }
+    
+    var orderingVisibleSegments: [String] {
+        var result = Array(
+            RAWG_GamesListOrderingParameter.allCases
+                .map({ $0.rawValue.firstUpperCased() })
+                .prefix(Constants.visibleFilterCount)
+                .dropFirst(1)
+        )
+        result.insert(Constants.orderingDefaultOption, at: 0)
+        return result
+    }
+    
+    var orderingMoreSegments: [String] {
+        let result = RAWG_GamesListOrderingParameter.allCases
+            .map({
+                var str = $0.rawValue
+                if !str.isEmpty && str[str.startIndex] != "-" {
+                    return str.firstUpperCased()
+                } else if !str.isEmpty {
+                    str.remove(at: str.startIndex)
+                    return str.firstUpperCased() + " Descending"
+                } else {
+                    return ""
+                }
+            })
+        return Array(
+            result[Constants.visibleFilterCount ..< result.count]
+        )
+    }
+    
     func queryForGamesList(
         _ searchText: String?,
-        orderBy: RAWG_GamesListOrderingParameter?,
+        orderBy: String?,
         pageNumber: Int
     ) {
         
@@ -197,10 +252,24 @@ extension HomeViewModel: HomeViewModelProtocol {
         ? searchText
         : nil
         
-        if pageNumber != lastSearchPage {
+        var orderingParameter = orderBy ?? ""
+        orderingParameter = orderingParameter.lowercased()
+        
+        if orderingParameter.contains("descending") {
+            orderingParameter = orderingParameter.replacingOccurrences(
+                of: " descending",
+                with: ""
+            )
+            orderingParameter.insert("-", at: orderingParameter.startIndex)
+        }
+        
+        if pageNumber != lastSearchPage
+            || orderBy != lastSearchOrder
+            || orderingMoreSegments.contains(orderBy ?? "--")
+        {
             let searchParameters = RAWG_GamesListParameters(
                 search: nil,
-                ordering: orderBy,
+                ordering: RAWG_GamesListOrderingParameter(rawValue: orderingParameter),
                 page: pageNumber,
                 page_size: Constants.pageSize,
                 key: ApplicationConstants.RAWG_API_KEY
@@ -223,6 +292,7 @@ extension HomeViewModel: HomeViewModelProtocol {
         
         lastSearchText = filterString
         lastSearchPage = pageNumber
+        lastSearchOrder = orderBy
     }
     
     func performDefaultQuery() {

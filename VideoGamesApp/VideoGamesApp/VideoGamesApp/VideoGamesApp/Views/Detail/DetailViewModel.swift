@@ -25,8 +25,11 @@ final class DetailViewModel {
     private var imageDataTask: URLSessionDataTask?
     private var gamesDataTask: URLSessionDataTask?
     
+    private var currentDate = Date()
+    
     let service: RAWG_GamesServiceProtocol
     let coreDataService: CoreDataManagerProtocol
+    let notificationService: NotificationManagerProtocol
     private(set) weak var coordinator: MainCoordinatorProtocol?
     
     let gameID: Int
@@ -36,13 +39,15 @@ final class DetailViewModel {
     init(
         service: RAWG_GamesServiceProtocol,
         coreDataService: CoreDataManagerProtocol,
+        notificationService: NotificationManagerProtocol,
         coordinator: MainCoordinatorProtocol,
         gameID: Int
     ) {
         self.service = service
+        self.notificationService = notificationService
+        self.coreDataService = coreDataService
         self.coordinator = coordinator
         self.gameID = gameID
-        self.coreDataService = coreDataService
     }
     
     private func generateError(
@@ -125,6 +130,18 @@ final class DetailViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             coreDataService.markFavoriteAsSeen(Int32(id))
+        }
+    }
+    
+    private func getDate() -> Date? {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = service.defaultDateFormat
+        
+        if let date = data?.released {
+            return formatter.date(from: date)
+        } else {
+            return nil
         }
     }
 }
@@ -231,6 +248,14 @@ extension DetailViewModel: DetailViewModelProtocol {
     
     var isFavorite: Bool {
         return coreDataService.exists(Int32(gameID))
+    }
+    
+    var isFuture: Bool {
+        if let gameDate = getDate() {
+            return gameDate > currentDate
+        } else {
+            return false
+        }
     }
     
     func downloadData() {

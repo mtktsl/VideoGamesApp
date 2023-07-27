@@ -9,19 +9,27 @@ import Foundation
 
 //The reason we use this as a caseIterable enum is, to make programmers able to use it to generate filter lists
 public enum RAWG_GamesListOrderingParameter: String, CaseIterable {
-    case name
-    case released
-    case added
-    case created
-    case updated
-    case rating
-    case metacritic
     
+    case suggested = ""
+    
+    case name
     case nameReversed = "-name"
+    
+    case released
     case releasedReversed = "-released"
+    
+    case added
     case addedReversed = "-added"
+    
+    case created
     case createdReversed = "-created"
+    
+    case updated
     case updatedReversed = "-updated"
+    
+    case rating
     case ratingReversed = "-rating"
+    
+    case metacritic
     case metacriticReversed = "-metacritic"
 }
