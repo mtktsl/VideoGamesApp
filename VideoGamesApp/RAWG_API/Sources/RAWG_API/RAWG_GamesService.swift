@@ -16,6 +16,7 @@ public protocol RAWG_GamesServiceProtocol: AnyObject {
     func downloadImage(
         _ imageURLString: String,
         isCropped: Bool,
+        usesCache: Bool,
         completion: @escaping ((Result<Data, RAWG_NetworkError>) -> Void)
     ) -> URLSessionDataTask?
 }
@@ -28,15 +29,9 @@ public class RAWG_GamesService {
     public var imageCacheSize = RAWG_Constants.imageCacheSize
     
     //TODO: - Make a proper cache algorithm that brings last reached element to front and removes oldest element.
-    private var webImageCache = [String: Data]()
-
-    private func cacheImageData(_ key: String, value: Data) {
-        let count = webImageCache.count
-        if count > imageCacheSize {
-            _ = webImageCache.popFirst()
-        }
-        webImageCache[key] = value
-    }
+    private var imageCache = BasicCache<String, Data>(capacity: RAWG_Constants.imageCacheSize)
+    
+    var count = 0
     
     private init() {}
 }
@@ -91,9 +86,11 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
             }
     }
     
+    
     public func downloadImage(
         _ imageURLString: String,
         isCropped: Bool,
+        usesCache: Bool,
         completion: @escaping ((Result<Data, RAWG_NetworkError>) -> Void)
     ) -> URLSessionDataTask? {
         
@@ -104,7 +101,7 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
         )
         : imageURLString
         
-        if let cachedData = webImageCache[urlString] {
+        if usesCache, let cachedData = imageCache.get(urlString) {
             completion(.success(cachedData))
             return nil
         }
@@ -117,7 +114,7 @@ extension RAWG_GamesService: RAWG_GamesServiceProtocol {
                 
                 switch result {
                 case .success(let data):
-                    cacheImageData(urlString, value: data)
+                    imageCache.cache((key: urlString, value: data))
                     completion(.success(data))
                 case .failure(let error):
                     completion(.failure(.generateError(error)))

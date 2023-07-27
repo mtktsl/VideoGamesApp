@@ -20,7 +20,7 @@ extension HomeViewModel {
         static let defaultSearchText: String? = nil
         static let defaultOrdering: RAWG_GamesListOrderingParameter? = nil
         static let defaultPage: Int = 1
-        static let pageSize: Int = 20
+        static let pageSize: Int = 50
     }
     
     enum SearchPreference {

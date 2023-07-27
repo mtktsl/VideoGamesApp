@@ -60,6 +60,8 @@ protocol GamesListCellProtocol {
 
 final class GamesListCell: UICollectionViewCell {
     
+    static var cellCount = 0
+    
     static let reuseIdentifier = "GamesListCellReuseIdentifier"
     static let defaultHeight: CGFloat = 90
     
@@ -163,6 +165,7 @@ final class GamesListCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setupSubviews()
         NotificationCenter.default.addObserver(
             self,

@@ -101,7 +101,8 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
         
         webTask = RAWG_GamesService.shared.downloadImage(
             urlString,
-            isCropped: true
+            isCropped: true,
+            usesCache: true
         ) { [weak self] result in
                 guard let self else { return }
                 switch result {

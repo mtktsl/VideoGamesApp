@@ -41,6 +41,10 @@ extension HomeViewController {
             top: 0, left: 10, bottom: 10, right: 10
         )
         static let notFoundImageHeight: CGFloat = 200
+        
+        static let viewPagerHeightRatio: CGFloat = 9.0 / 16.0
+        static let viewPagerMinHeightSpacing: CGFloat = 50
+        
         static let notFoundText = "Oops. We couldn't find what you are looking for."
     }
 }
@@ -338,10 +342,30 @@ extension HomeViewController: UICollectionViewDataSource,
         let width: CGFloat = collectionView.bounds.size.width
         - Constants.collectionContentInset.left
         - Constants.collectionContentInset.right
+        let height: CGFloat = collectionView.bounds.size.height
+        - Constants.collectionContentInset.bottom
+        - Constants.collectionContentInset.top
         
-        return viewModel.isImageViewPagerVisible
-        ? .init(width: width, height: Constants.imageViewPagerHeaderHeight)
+        let viewWidth = view.bounds.inset(by: view.safeAreaInsets).size.width
+        
+        let calculatedHeight = viewWidth * Constants.viewPagerHeightRatio
+        
+        let calculatedWidth = (calculatedHeight > height)
+        ? width * Constants.viewPagerHeightRatio
+        : width
+        
+        let finalSize: CGSize = viewModel.isImageViewPagerVisible
+        ? .init(
+            width: calculatedWidth,
+            height: calculatedHeight
+        )
         : .zero
+        
+        //print(finalSize)
+        
+        
+        
+        return finalSize
     }
     
     func collectionView(
