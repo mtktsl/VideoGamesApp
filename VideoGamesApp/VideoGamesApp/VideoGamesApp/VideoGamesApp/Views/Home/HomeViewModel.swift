@@ -217,6 +217,8 @@ extension HomeViewModel: HomeViewModelProtocol {
     }
     
     var orderingMoreSegments: [String] {
+        
+        //Remove "-" character from descending value and add appropriate text
         let result = RAWG_GamesListOrderingParameter.allCases
             .map({
                 var str = $0.rawValue
@@ -224,7 +226,7 @@ extension HomeViewModel: HomeViewModelProtocol {
                     return str.firstUpperCased()
                 } else if !str.isEmpty {
                     str.remove(at: str.startIndex)
-                    return str.firstUpperCased() + " Descending"
+                    return "\(str.firstUpperCased()) \(Constants.orderingReversedText)"
                 } else {
                     return ""
                 }
@@ -255,9 +257,9 @@ extension HomeViewModel: HomeViewModelProtocol {
         var orderingParameter = orderBy ?? ""
         orderingParameter = orderingParameter.lowercased()
         
-        if orderingParameter.contains("descending") {
+        if orderingParameter.contains(Constants.orderingReversedText.lowercased()) {
             orderingParameter = orderingParameter.replacingOccurrences(
-                of: " descending",
+                of: " \(Constants.orderingReversedText.lowercased())",
                 with: ""
             )
             orderingParameter.insert("-", at: orderingParameter.startIndex)

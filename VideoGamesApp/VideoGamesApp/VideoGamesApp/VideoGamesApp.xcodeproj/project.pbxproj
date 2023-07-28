@@ -371,8 +371,8 @@
 		6F66F54C2A6DC5DD005D1E18 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				6F6D8FD52A72871200E729B6 /* NotificationManager */,
 				6F66F54D2A6DC5ED005D1E18 /* CoreDataManager.swift */,
+				6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -418,14 +418,6 @@
 				6F6D8FCA2A721DB600E729B6 /* ColoredNavigationController.swift */,
 			);
 			path = NavigationControllers;
-			sourceTree = "<group>";
-		};
-		6F6D8FD52A72871200E729B6 /* NotificationManager */ = {
-			isa = PBXGroup;
-			children = (
-				6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */,
-			);
-			path = NotificationManager;
 			sourceTree = "<group>";
 		};
 		6F7C4C8B2A62F4B200241AE6 /* Collection */ = {

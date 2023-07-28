@@ -30,6 +30,7 @@ protocol CoreDataManagerProtocol {
     func fetchLatestUpdates()
     func exists(_ id: Int32) -> Bool
     func isNotSeen(_ id: Int32) -> Bool
+    func markFavoriteAsNotSeen(_ id: Int32)
     func markFavoriteAsSeen(_ id: Int32)
 }
 
@@ -201,6 +202,10 @@ extension CoreDataManager: CoreDataManagerProtocol {
     
     func isNotSeen(_ id: Int32) -> Bool {
         return newItems.contains(Int(id))
+    }
+    
+    func markFavoriteAsNotSeen(_ id: Int32) {
+        newItems.insert(Int(id))
     }
     
     func markFavoriteAsSeen(_ id: Int32) {

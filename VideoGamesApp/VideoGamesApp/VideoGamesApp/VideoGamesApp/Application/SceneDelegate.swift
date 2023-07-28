@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        UNUserNotificationCenter.current().delegate = self
+        
         let navigationController = ColoredNavigationController()
         
         coordinator = MainCoordinator(
@@ -28,6 +31,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         coordinator?.start()
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -60,7 +65,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
 }
 
+extension SceneDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        if let gameID = Int(response.notification.request.identifier) {
+            let coordinator = coordinator as? MainCoordinator
+            if coordinator?.isMainOpen == true {
+                coordinator?.navigate(to: .detail(gameID: gameID))
+            } else {
+                coordinator?.notificationRoute = .detail(gameID: gameID)
+            }
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+}

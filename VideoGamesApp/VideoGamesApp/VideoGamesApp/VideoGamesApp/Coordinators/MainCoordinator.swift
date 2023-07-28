@@ -8,12 +8,14 @@
 import UIKit
 import RAWG_API
 import NetworkStatusObserver
+import UserNotifications
 
 extension MainCoordinator {
     enum Route {
         case main
         case detail(gameID: Int)
         case back
+        case phoneSettings
     }
     
     fileprivate enum CoreDataErrorParameters {
@@ -47,6 +49,14 @@ final class MainCoordinator: CoordinatorProtocol {
     
     var appDelegate: AppDelegate?
     
+    var isMainOpen = false
+    var notificationRoute: MainCoordinator.Route?
+    
+    /*private var notificationTimer: Timer?
+    
+    var gameIDNotificationDidTap = false
+    var tappedNotificationGameID: Int?*/
+    
     init(
         navigationController: UINavigationController? = nil,
         appDelegate: AppDelegate? = nil
@@ -61,6 +71,20 @@ final class MainCoordinator: CoordinatorProtocol {
             name: CoreDataManager.NotificationNames.error,
             object: nil
         )
+        
+        /*notificationTimer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true,
+            block: { [weak self] timer in
+                guard let self else { return }
+                print("CHECK")
+                if let tappedNotificationGameID, !isPopupOpen {
+                    print("NAVIGATED")
+                    navigate(to: .detail(gameID: tappedNotificationGameID))
+                    timer.invalidate()
+                }
+            }
+        )*/
     }
 }
 
@@ -95,6 +119,11 @@ extension MainCoordinator {
         )
         
         navigationController?.setViewControllers([mainVC], animated: true)
+        isMainOpen = true
+        if let notificationRoute {
+            selectNavigation(notificationRoute)
+            self.notificationRoute = nil
+        }
     }
     
     func navigateToDetail(_ gameID: Int) {
@@ -102,7 +131,7 @@ extension MainCoordinator {
         detailVC.viewModel = DetailViewModel(
             service: RAWG_GamesService.shared,
             coreDataService: CoreDataManager.shared,
-            notificationService: NotificationManager.shared,
+            notificationService: NotificationManager(),
             coordinator: self,
             gameID: gameID
         )
@@ -132,6 +161,15 @@ extension MainCoordinator {
             navigateToDetail(gameID)
         case .back:
             navigationController?.popViewController(animated: true)
+        case .phoneSettings:
+            let url = URL(string: UIApplication.openSettingsURLString)!
+            if #available(iOS 16, *) {
+                UIApplication.shared.open(
+                    URL(string: UIApplication.openNotificationSettingsURLString)!
+                )
+            } else {
+                UIApplication.shared.open(url)
+            }
         }
     }
 }
