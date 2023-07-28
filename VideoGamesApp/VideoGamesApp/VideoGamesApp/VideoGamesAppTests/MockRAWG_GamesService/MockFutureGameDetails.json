@@ -1,0 +1,218 @@
+{
+  "id": 963218,
+  "slug": "ea-sports-fc-24",
+  "name": "EA SPORTS FC 24",
+  "name_original": "EA SPORTS FC 24",
+  "description": "<p>EA SPORTS FCâ„¢ 24 welcomes you to The Worldâ€™s Gameâ€”the most true-to-football experience ever with HyperMotionV*, PlayStyles optimised by Opta, and a revolutionised Frostbiteâ„¢ Engine reinventing how 19,000+ authentic players move, play and look in every match.</p>",
+  "metacritic": null,
+  "metacritic_platforms": [
+    
+  ],
+  "released": "2023-09-22",
+  "tba": false,
+  "updated": "2023-07-13T20:37:35",
+  "background_image": "https://media.rawg.io/media/screenshots/da1/da1099e93de7775e1dcfded28ff58e5d.jpg",
+  "background_image_additional": null,
+  "website": "https://www.ea.com/games/ea-sports-fc/fc-24",
+  "rating": 0.0,
+  "rating_top": 0,
+  "ratings": [
+    
+  ],
+  "reactions": null,
+  "added": 2,
+  "added_by_status": {
+    "yet": 1,
+    "toplay": 1
+  },
+  "playtime": 0,
+  "screenshots_count": 1,
+  "movies_count": 0,
+  "creators_count": 0,
+  "achievements_count": 0,
+  "parent_achievements_count": 0,
+  "reddit_url": "",
+  "reddit_name": "",
+  "reddit_description": "",
+  "reddit_logo": "",
+  "reddit_count": 0,
+  "twitch_count": 0,
+  "youtube_count": 0,
+  "reviews_text_count": 0,
+  "ratings_count": 0,
+  "suggestions_count": 56,
+  "alternative_names": [
+    "FIFA 24"
+  ],
+  "metacritic_url": "",
+  "parents_count": 0,
+  "additions_count": 0,
+  "game_series_count": 0,
+  "user_game": null,
+  "reviews_count": 0,
+  "community_rating": 0,
+  "saturated_color": "0f0f0f",
+  "dominant_color": "0f0f0f",
+  "parent_platforms": [
+    {
+      "platform": {
+        "id": 1,
+        "name": "PC",
+        "slug": "pc"
+      }
+    },
+    {
+      "platform": {
+        "id": 2,
+        "name": "PlayStation",
+        "slug": "playstation"
+      }
+    },
+    {
+      "platform": {
+        "id": 3,
+        "name": "Xbox",
+        "slug": "xbox"
+      }
+    },
+    {
+      "platform": {
+        "id": 7,
+        "name": "Nintendo",
+        "slug": "nintendo"
+      }
+    }
+  ],
+  "platforms": [
+    {
+      "platform": {
+        "id": 7,
+        "name": "Nintendo Switch",
+        "slug": "nintendo-switch",
+        "image": null,
+        "year_end": null,
+        "year_start": null,
+        "games_count": 5282,
+        "image_background": "https://media.rawg.io/media/games/e04/e04963f3ac4c4fa83a1dc0b9231e50db.jpg"
+      },
+      "released_at": "2023-09-22",
+      "requirements": {
+        
+      }
+    },
+    {
+      "platform": {
+        "id": 186,
+        "name": "Xbox Series S/X",
+        "slug": "xbox-series-x",
+        "image": null,
+        "year_end": null,
+        "year_start": 2020,
+        "games_count": 781,
+        "image_background": "https://media.rawg.io/media/games/739/73990e3ec9f43a9e8ecafe207fa4f368.jpg"
+      },
+      "released_at": "2023-09-22",
+      "requirements": {
+        
+      }
+    },
+    {
+      "platform": {
+        "id": 187,
+        "name": "PlayStation 5",
+        "slug": "playstation5",
+        "image": null,
+        "year_end": null,
+        "year_start": 2020,
+        "games_count": 905,
+        "image_background": "https://media.rawg.io/media/games/b4a/b4adf80c36e267b35acc3497ed2af19c.jpg"
+      },
+      "released_at": "2023-09-22",
+      "requirements": {
+        
+      }
+    },
+    {
+      "platform": {
+        "id": 4,
+        "name": "PC",
+        "slug": "pc",
+        "image": null,
+        "year_end": null,
+        "year_start": null,
+        "games_count": 514431,
+        "image_background": "https://media.rawg.io/media/games/456/456dea5e1c7e3cd07060c14e96612001.jpg"
+      },
+      "released_at": "2023-09-22",
+      "requirements": {
+        
+      }
+    }
+  ],
+  "stores": [
+    {
+      "id": 962345,
+      "url": "",
+      "store": {
+        "id": 1,
+        "name": "Steam",
+        "slug": "steam",
+        "domain": "store.steampowered.com",
+        "games_count": 77298,
+        "image_background": "https://media.rawg.io/media/games/fc1/fc1307a2774506b5bd65d7e8424664a7.jpg"
+      }
+    },
+    {
+      "id": 962344,
+      "url": "",
+      "store": {
+        "id": 3,
+        "name": "PlayStation Store",
+        "slug": "playstation-store",
+        "domain": "store.playstation.com",
+        "games_count": 7831,
+        "image_background": "https://media.rawg.io/media/games/bc0/bc06a29ceac58652b684deefe7d56099.jpg"
+      }
+    }
+  ],
+  "developers": [
+    {
+      "id": 195956,
+      "name": "EA Group",
+      "slug": "ea-group",
+      "games_count": 3,
+      "image_background": "https://media.rawg.io/media/screenshots/9e9/9e95c601e43f54a33ac5422f4c8452ca.jpg"
+    }
+  ],
+  "genres": [
+    {
+      "id": 15,
+      "name": "Sports",
+      "slug": "sports",
+      "games_count": 20667,
+      "image_background": "https://media.rawg.io/media/games/8cc/8cce7c0e99dcc43d66c8efd42f9d03e3.jpg"
+    },
+    {
+      "id": 40,
+      "name": "Casual",
+      "slug": "casual",
+      "games_count": 45631,
+      "image_background": "https://media.rawg.io/media/games/89a/89a700d3c6a76bd0610ca89ccd20da54.jpg"
+    }
+  ],
+  "tags": [
+    
+  ],
+  "publishers": [
+    {
+      "id": 11220,
+      "name": "EA SPORTS",
+      "slug": "ea-sports",
+      "games_count": 112,
+      "image_background": "https://media.rawg.io/media/screenshots/ea6/ea6944ae8b2ba6f3f0748e196237e44e_ZPyVNDg.jpg"
+    }
+  ],
+  "esrb_rating": null,
+  "clip": null,
+  "description_raw": "EA SPORTS FCâ„¢ 24 welcomes you to The Worldâ€™s Gameâ€”the most true-to-football experience ever with HyperMotionV*, PlayStyles optimised by Opta, and a revolutionised Frostbiteâ„¢ Engine reinventing how 19,000+ authentic players move, play and look in every match."
+}

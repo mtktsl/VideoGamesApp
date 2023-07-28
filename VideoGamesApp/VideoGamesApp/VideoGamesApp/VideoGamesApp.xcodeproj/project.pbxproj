@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F07B5A12A73B504005A4BA5 /* FavoritesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F07B5A02A73B504005A4BA5 /* FavoritesViewModelTests.swift */; };
+		6F07B5A32A73BB2C005A4BA5 /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F07B5A22A73BB2C005A4BA5 /* MainViewModelTests.swift */; };
 		6F102CC02A5F193A00C9781A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102CBF2A5F193A00C9781A /* AppDelegate.swift */; };
 		6F102CC22A5F193A00C9781A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102CC12A5F193A00C9781A /* SceneDelegate.swift */; };
 		6F102CCC2A5F193B00C9781A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F102CCB2A5F193B00C9781A /* Assets.xcassets */; };
@@ -61,6 +63,9 @@
 		6F7C4C9E2A632ADD00241AE6 /* GamesListCellRatingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */; };
 		6F7C4CA12A64893500241AE6 /* ImageViewPagerReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */; };
 		6F7C4CA32A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */; };
+		6FA6505A2A7394E500323422 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA650592A7394E500323422 /* DetailViewModelTests.swift */; };
+		6FA6505C2A7396A500323422 /* MockFutureGameDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */; };
+		6FA6505F2A7398CD00323422 /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */; };
 		6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CDE2A657BBF00A1C518 /* LoadingView */; };
 		6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CE42A65EEB100A1C518 /* TextStepperView */; };
 		6FE66CE82A6617A300A1C518 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE66CE72A6617A300A1C518 /* DetailViewController.swift */; };
@@ -85,6 +90,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F07B5A02A73B504005A4BA5 /* FavoritesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModelTests.swift; sourceTree = "<group>"; };
+		6F07B5A22A73BB2C005A4BA5 /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
 		6F102CBC2A5F193A00C9781A /* VideoGamesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoGamesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F102CBF2A5F193A00C9781A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6F102CC12A5F193A00C9781A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +150,9 @@
 		6F7C4C9D2A632ADD00241AE6 /* GamesListCellRatingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListCellRatingModel.swift; sourceTree = "<group>"; };
 		6F7C4CA02A64893500241AE6 /* ImageViewPagerReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableView.swift; sourceTree = "<group>"; };
 		6F7C4CA22A6498B800241AE6 /* ImageViewPagerReusableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewPagerReusableViewModel.swift; sourceTree = "<group>"; };
+		6FA650592A7394E500323422 /* DetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
+		6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockFutureGameDetails.json; sourceTree = "<group>"; };
+		6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
 		6FE66CDD2A657B3300A1C518 /* LoadingView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LoadingView; path = ../../LoadingView; sourceTree = "<group>"; };
 		6FE66CE32A65DE0100A1C518 /* TextStepperView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TextStepperView; path = ../../TextStepperView; sourceTree = "<group>"; };
 		6FE66CE72A6617A300A1C518 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +233,7 @@
 		6F102CD82A5F193B00C9781A /* VideoGamesAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				6FA6505D2A7398B600323422 /* MockNotificationManager */,
 				6F6D8FBA2A71114400E729B6 /* MockCoordinators */,
 				6F6D8FB42A7109C000E729B6 /* MockRAWG_GamesService */,
 				6F6D8FB32A7109B600E729B6 /* MockCoreDataManager */,
@@ -264,10 +275,10 @@
 		6F102CF72A5F19C500C9781A /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				6F102CF82A5F19C500C9781A /* GridLayout */,
 				6FE66CE32A65DE0100A1C518 /* TextStepperView */,
 				6FE66CDD2A657B3300A1C518 /* LoadingView */,
 				6F102D172A614FE200C9781A /* NSLayoutConstraintExtensionPackage */,
-				6F102CF82A5F19C500C9781A /* GridLayout */,
 				6F102CFA2A5F1A9000C9781A /* DataDownloader */,
 				6F102D0B2A60018700C9781A /* RAWG_API */,
 				6F102D152A6147F400C9781A /* ImageViewPager */,
@@ -389,6 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				6F6D8FBF2A71142C00E729B6 /* MockGamesList.json */,
+				6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */,
 				6F6D8FBD2A71139100E729B6 /* MockGameDetails.json */,
 				6F6D8FB52A710B0400E729B6 /* MockRAWG_GamesService.swift */,
 				6F6D8FC12A715B8C00E729B6 /* Bundle+Extension.swift */,
@@ -400,6 +412,9 @@
 			isa = PBXGroup;
 			children = (
 				6F6D8FB12A71097B00E729B6 /* HomeViewModelTests.swift */,
+				6FA650592A7394E500323422 /* DetailViewModelTests.swift */,
+				6F07B5A02A73B504005A4BA5 /* FavoritesViewModelTests.swift */,
+				6F07B5A22A73BB2C005A4BA5 /* MainViewModelTests.swift */,
 			);
 			path = ViewModelTests;
 			sourceTree = "<group>";
@@ -462,6 +477,14 @@
 				6FE66CE22A659BBC00A1C518 /* ImageViewPagerReusableView */,
 			);
 			path = ReusableViews;
+			sourceTree = "<group>";
+		};
+		6FA6505D2A7398B600323422 /* MockNotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */,
+			);
+			path = MockNotificationManager;
 			sourceTree = "<group>";
 		};
 		6FE66CE22A659BBC00A1C518 /* ImageViewPagerReusableView */ = {
@@ -610,6 +633,7 @@
 			files = (
 				6F6D8FBE2A71139100E729B6 /* MockGameDetails.json in Resources */,
 				6F6D8FC02A71142C00E729B6 /* MockGamesList.json in Resources */,
+				6FA6505C2A7396A500323422 /* MockFutureGameDetails.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,9 +697,13 @@
 				6F6D8FB82A710BBB00E729B6 /* MockCoreDataManager.swift in Sources */,
 				6F6D8FC22A715B8C00E729B6 /* Bundle+Extension.swift in Sources */,
 				6F6D8FB62A710B0400E729B6 /* MockRAWG_GamesService.swift in Sources */,
+				6F07B5A12A73B504005A4BA5 /* FavoritesViewModelTests.swift in Sources */,
+				6FA6505A2A7394E500323422 /* DetailViewModelTests.swift in Sources */,
+				6FA6505F2A7398CD00323422 /* MockNotificationManager.swift in Sources */,
 				6F6D8FBC2A71115700E729B6 /* MockMainCoordinator.swift in Sources */,
 				6F102CDA2A5F193B00C9781A /* VideoGamesAppTests.swift in Sources */,
 				6F6D8FB22A71097B00E729B6 /* HomeViewModelTests.swift in Sources */,
+				6F07B5A32A73BB2C005A4BA5 /* MainViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

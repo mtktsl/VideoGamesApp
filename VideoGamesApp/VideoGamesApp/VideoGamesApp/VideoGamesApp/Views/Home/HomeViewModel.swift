@@ -136,10 +136,7 @@ final class HomeViewModel {
     
     private func navigateToDetail(_ gameID: Int?) {
         if let gameID {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                coordinator?.navigate(to: .detail(gameID: gameID))
-            }
+            coordinator?.navigate(to: .detail(gameID: gameID))
         } else {
             generateError(.noResponse)
         }

@@ -21,6 +21,7 @@ final class MockCoreDataManager {
 }
 
 extension MockCoreDataManager: CoreDataManagerProtocol {
+    
     var favoriteGames: [RAWG_GamesListModel] {
         return lastFetch
     }
@@ -32,7 +33,8 @@ extension MockCoreDataManager: CoreDataManagerProtocol {
                 released: item.released,
                 backgroundImageURLString: item.backgroundImageURLString,
                 rating: item.rating,
-                metacritic: item.metacritic
+                metacritic: item.metacritic,
+                id: item.id
             )
         )
         if let id = item.id {
@@ -74,5 +76,7 @@ extension MockCoreDataManager: CoreDataManagerProtocol {
         newGames.remove(Int(id))
     }
     
-    
+    func markFavoriteAsNotSeen(_ id: Int32) {
+        newGames.insert(Int(id))
+    }
 }

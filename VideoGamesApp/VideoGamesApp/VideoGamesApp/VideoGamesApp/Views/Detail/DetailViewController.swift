@@ -223,7 +223,7 @@ final class DetailViewController: UIViewController {
                     .Auto(margin: .ratingInnerMargin)
                 rawgRatingLabel
                     .Auto(margin: .ratingInnerMargin)
-            }.Expanded(margin: .init(
+            }.Auto(margin: .init(
                 top: 5, left: 10, bottom: 5, right: 0)
             )
             
@@ -234,8 +234,8 @@ final class DetailViewController: UIViewController {
                     .Auto(margin: .ratingInnerMargin)
                 metacriticRatingLabel
                     .Auto(margin: .ratingInnerMargin)
-            }.Expanded(margin: .init(
-                top: 5, left: 0, bottom: 5, right: 10)
+            }.Auto(margin: .init(
+                top: 5, left: 30, bottom: 5, right: 0)
             )
         }
         

@@ -6,26 +6,75 @@
 //
 
 import Foundation
-import RAWG_API
+@testable import RAWG_API
 
-final class MockRAWG_GamesService: RAWG_GamesServiceProtocol {
+final class MockRAWG_GamesService {
+    var defaultDateFormat: String = "yyyy-MM-dd"
+    var cache = BasicCache<String, Data>(capacity: 20)
     
+    let gamesListJSON = "MockGamesList"
+    let futureGameDetailJSON = "MockFutureGameDetails"
+    let oldGameDetailJSON = "MockGameDetails"
+    
+    static let availableDetails: [Int] = [963218, 3498]
+    static let oldGameID = 3498
+    static let futureGameID = 963218
 }
 
-extension MockRAWG_GamesService {
+extension MockRAWG_GamesService: RAWG_GamesServiceProtocol {
     func getGamesList(_ parameters: RAWG_API.RAWG_GamesListParameters, completion: @escaping ((Result<RAWG_API.RAWG_GamesListResponse, RAWG_API.RAWG_NetworkError>) -> Void)) -> URLSessionDataTask? {
-        let data = Bundle().decode(type: RAWG_GamesListResponse.self, file: "MockGamesList.json")
-        
-        //TODO: make data optional in bundle
+        do {
+            let data = try Bundle(for: type(of: self)).jsonDecode(
+                decodeType: RAWG_GamesListResponse.self,
+                file: gamesListJSON,
+                extenstion: ".json"
+            )
+            completion(.success(data))
+        } catch {
+            completion(.failure(.decodeError))
+        }
         
         return nil
     }
     
     func getGameDetails(_ gameID: Int, apiKey: String, completion: @escaping ((Result<RAWG_API.RAWG_GameDetails, RAWG_API.RAWG_NetworkError>) -> Void)) -> URLSessionDataTask? {
+        
+        if !MockRAWG_GamesService.availableDetails.contains(gameID) {
+            completion(.failure(.noResponse))
+            return nil
+        }
+        
+        do {
+            let data = try Bundle(for: type(of: self)).jsonDecode(
+                decodeType: RAWG_GameDetails.self,
+                file: gameID == MockRAWG_GamesService.oldGameID
+                ? oldGameDetailJSON
+                : futureGameDetailJSON,
+                extenstion: ".json"
+            )
+            completion(.success(data))
+        } catch {
+            completion(.failure(.decodeError))
+        }
+        
         return nil
     }
     
-    func downloadImage(_ imageURLString: String, isCropped: Bool, completion: @escaping ((Result<Data, RAWG_API.RAWG_NetworkError>) -> Void)) -> URLSessionDataTask? {
+    func downloadImage(
+        _ imageURLString: String,
+        isCropped: Bool,
+        usesCache: Bool,
+        completion: @escaping ((Result<Data, RAWG_API.RAWG_NetworkError>) -> Void)
+    ) -> URLSessionDataTask? {
+        
+        if let data = cache.get(imageURLString) {
+            completion(.success(data))
+        } else {
+            cache.cache((key: imageURLString, value: Data()))
+            completion(.failure(.noResponse))
+        }
+        
         return nil
     }
+    
 }

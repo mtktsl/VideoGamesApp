@@ -24,6 +24,8 @@ final class MockMainCoordinator: MainCoordinatorProtocol {
     
     var invokeCountPopUpAlert: Int = 0
     func popUpAlert(title: String, message: String, okOption: String?, cancelOption: String?, onOk: ((UIAlertAction) -> Void)?, onCancel: ((UIAlertAction) -> Void)?) {
+        onOk?(UIAlertAction())
+        //onCancel?(UIAlertAction())
         invokeCountPopUpAlert += 1
     }
     

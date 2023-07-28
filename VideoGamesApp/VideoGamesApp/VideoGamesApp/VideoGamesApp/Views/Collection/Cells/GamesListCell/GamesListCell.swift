@@ -143,14 +143,15 @@ final class GamesListCell: UICollectionViewCell {
                         .Constant(value: 23)
                     rawgRatingLabel
                         .Auto(margin: Constants.ratingMargin)
-                }.Expanded()
+                }.Auto()
                 
                 Grid.horizontal {
                     metacriticImageView
                         .Constant(value: 23)
                     metacriticRatingLabel
                         .Auto(margin: Constants.ratingMargin)
-                }.Expanded()
+                }.Auto(margin: .init(
+                    top: 0, left: 30, bottom: 0, right: 0))
             }.Expanded()
             
         }.Expanded()

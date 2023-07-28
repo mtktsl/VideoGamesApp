@@ -75,8 +75,8 @@ extension FavoritesViewModel: FavoritesViewModelProtocol {
     }
     
     func updateFavoriteGames(for searchText: String?) {
-        CoreDataManager.shared.fetchLatestUpdates()
-        favoriteGames = CoreDataManager.shared.favoriteGames
+        coreDataService.fetchLatestUpdates()
+        favoriteGames = coreDataService.favoriteGames
         filter(for: searchText)
         delegate?.onListUpdate()
     }
