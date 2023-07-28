@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UserNotifications
+import RAWG_API
 
 extension DetailViewModel {
     
@@ -52,5 +54,21 @@ extension DetailViewModel {
         static let medium: Int = 50
         static let high: Int = 75
         static let max: Int = 100
+    }
+    
+    enum NotificationConstants {
+        static let notificationOptions: UNAuthorizationOptions = [
+            .alert,
+            .badge,
+            .sound
+        ]
+        
+        static let releaseDateNotificationBody = "Today is the release date you've been waitin for!"
+    }
+    
+    enum NotificationError {
+        case notAuthorized
+        case missingData
+        case unknownError
     }
 }

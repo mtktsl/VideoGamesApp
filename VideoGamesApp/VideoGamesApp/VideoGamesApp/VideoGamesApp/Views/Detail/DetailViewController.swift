@@ -325,10 +325,10 @@ final class DetailViewController: UIViewController {
     )
     
     lazy var notificationBarButtonItem = UIBarButtonItem(
-        image: nil,
+        image: UIImage(systemName: "bell"),
         style: .plain,
-        target: nil,
-        action: nil //TODO: set
+        target: self,
+        action: #selector(onNotificationButtonTap)
     )
     
     var viewModel: DetailViewModelProtocol! {
@@ -372,8 +372,7 @@ final class DetailViewController: UIViewController {
     }
     
     @objc private func onNotificationButtonTap() {
-        //TODO: Set notification
-        print("NOTIF TAP")
+        viewModel.requestNotificationAuthorization()
     }
     
     private func setRatingColor() {
@@ -423,7 +422,10 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupNotificationButton() {
-        navigationItem.rightBarButtonItems?.append(notificationBarButtonItem)
+        if viewModel.isFuture {
+            navigationItem.rightBarButtonItems?.append(notificationBarButtonItem)
+            viewModel.checkNotificationSetStatus()
+        }
     }
     
     private func setupFavoritesImage() {
@@ -437,10 +439,14 @@ final class DetailViewController: UIViewController {
         }
     }
     
-    private func setupNotificationImage() {
+    private func setupNotificationImage(_ isSet: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            //TODO: check if there is a notification set for the game.
+            notificationBarButtonItem.image = UIImage(
+                systemName: isSet
+                ? "bell.fill"
+                : "bell"
+            )
         }
     }
 }
@@ -514,6 +520,14 @@ extension DetailViewController: DetailViewControllerProtocol {
 //MARK: - Controller ViewModel Delegate Implementation
 extension DetailViewController: DetailViewModelDelegate {
     
+    func onNotificationToggle(_ toggleResult: Bool) {
+        setupNotificationImage(toggleResult)
+    }
+    
+    func onNotificationStatus(_ isSet: Bool) {
+        setupNotificationImage(isSet)
+    }
+    
     func onImageDownloadSuccess(_ imageData: Data) {
         gameImageView.setImageAsync(
             UIImage(data: imageData),
@@ -539,6 +553,7 @@ extension DetailViewController: DetailViewModelDelegate {
             setupData()
             setRatingColor()
             calculateScrollViewContentSize()
+            setupNotificationButton()
         }
     }
     

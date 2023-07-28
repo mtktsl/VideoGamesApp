@@ -18,6 +18,8 @@ extension HomeViewModel {
         static let orderingMoreText = "More"
         static let orderingPickerTitle = "Order By:"
         
+        static let orderingReversedText = "Descending"
+        
         static let paginationIndicator = "Page:"
         static let imageViewPagerItemCount: Int = 3
         

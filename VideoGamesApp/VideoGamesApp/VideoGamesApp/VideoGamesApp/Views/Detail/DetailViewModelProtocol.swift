@@ -42,4 +42,7 @@ protocol DetailViewModelProtocol: AnyObject {
     func downloadData()
     func downloadImage()
     func toggleFavorite()
+    
+    func requestNotificationAuthorization()
+    func checkNotificationSetStatus()
 }

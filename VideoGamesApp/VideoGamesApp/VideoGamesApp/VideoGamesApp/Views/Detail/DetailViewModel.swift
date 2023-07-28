@@ -16,6 +16,9 @@ protocol DetailViewModelDelegate: AnyObject {
     func onDataDownloadSuccess()
     
     func onFavoriteChange()
+    
+    func onNotificationStatus(_ isSet: Bool)
+    func onNotificationToggle(_ toggleResult: Bool)
 }
 
 final class DetailViewModel {
@@ -35,6 +38,8 @@ final class DetailViewModel {
     let gameID: Int
     
     var data: RAWG_GameDetails?
+    
+    var isNotificationSet = false
     
     init(
         service: RAWG_GamesServiceProtocol,
@@ -97,6 +102,35 @@ final class DetailViewModel {
         )
     }
     
+    private func generateNotificationError(_ error: NotificationError) {
+        
+        let title = "Error"
+        var message = ""
+        let okOption = "OK"
+        
+        switch error {
+        case .missingData:
+            message = "Not found enough data for the game to schedule a notification."
+        case .notAuthorized:
+            message = "Your App Is Not Authorized for sending notifications. Please allow notifications for your application to send notifications."
+        case .unknownError:
+            message = "Unknown error occured when setting notification."
+        }
+        
+        coordinator?.popUpAlert(
+            title: title,
+            message: message,
+            okOption: okOption,
+            cancelOption: nil,
+            onOk: { [weak self] _ in
+                if error == .notAuthorized {
+                    self?.coordinator?.navigate(to: .phoneSettings)
+                }
+            },
+            onCancel: nil
+        )
+    }
+    
     private func generateGameDevelopersText() -> String {
         var result = ""
         if let count = data?.developers?.count, count > 0 {
@@ -144,8 +178,141 @@ final class DetailViewModel {
             return nil
         }
     }
+    
+    //MARK: - Notification Logic
+    private func handleNotificationResult(_ success: Bool) {
+        if !success {
+            generateNotificationError(.unknownError)
+            delegate?.onNotificationToggle(isNotificationSet)
+        } else {
+            coordinator?.popUpAlert(
+                title: "Scheduled Notification",
+                message: "You'll be notified when the game releases.",
+                okOption: "OK",
+                cancelOption: nil,
+                onOk: nil,
+                onCancel: nil
+            )
+            isNotificationSet = true
+            delegate?.onNotificationToggle(true)
+            requestAuthForCalendar()
+        }
+    }
+    
+    private func showCalendarError(_ message: String) {
+        coordinator?.popUpAlert(
+            title: "Calendar Error",
+            message: message,
+            okOption: "Go To Settings",
+            cancelOption: "Cancel",
+            onOk: { [weak self] _ in
+                guard let self else { return }
+                coordinator?.navigate(to: .phoneSettings)
+            },
+            onCancel: nil
+        )
+    }
+    
+    private func requestAuthForCalendar() {
+        notificationService.requestCalendarAuth { [weak self] isAuthorized in
+            guard let self else { return }
+            if isAuthorized {
+                setCalendar()
+            } else {
+                let errorMessage = "Your app has no access to your calendar to set game release date event. Please check your permission settings."
+                showCalendarError(errorMessage)
+            }
+        }
+    }
+    
+    private func showCalendarSuccess() {
+        coordinator?.popUpAlert(
+            title: "Calendar Action",
+            message: "Added event reminder to your calendar for the date of release of the game.",
+            okOption: "OK",
+            cancelOption: nil,
+            onOk: nil,
+            onCancel: nil
+        )
+    }
+    
+    private func setCalendar() {
+        
+        guard let releaseDate = getDate() else { return }
+        
+        notificationService.addToCalendar(
+            for: releaseDate,
+            title: data?.name ?? "",
+            body: NotificationConstants.releaseDateNotificationBody
+        ) { [weak self] success in
+            guard let self else { return }
+            if success {
+                showCalendarSuccess()
+            } else {
+                showCalendarError("Unknown error occured when adding calendar reminder for the release date.")
+            }
+        }
+    }
+    
+    private func cancelNotification() {
+        coordinator?.popUpAlert(
+            title: "WARNING",
+            message: "You are about to cancel the relase date notificaiton for the game",
+            okOption: "Confirm",
+            cancelOption: "Cancel",
+            onOk: { [weak self] _ in
+                guard let self else { return }
+                notificationService.cancelNotification(
+                    id: String(gameID)
+                )
+                isNotificationSet = false
+                delegate?.onNotificationToggle(false)
+            },
+            onCancel: nil
+        )
+    }
+    
+    private func scheduleNotification() {
+        
+        if let releaseDate = getDate(),
+           let gameID = data?.id {
+            
+            notificationService.scheduleNotification(
+                for: releaseDate,
+                formatString: service.defaultDateFormat,
+                id: String(gameID),
+                title: data?.name ?? "",
+                body: NotificationConstants.releaseDateNotificationBody
+            ) { [weak self] success in
+                guard let self else { return }
+                handleNotificationResult(success)
+            }
+            
+        } else {
+            generateNotificationError(.missingData)
+            delegate?.onNotificationToggle(isNotificationSet)
+        }
+        
+        
+    }
+    
+    private func handleNotificationAuthorization(_ isAuthorized: Bool) {
+        if isAuthorized {
+            if !isNotificationSet
+            {
+                scheduleNotification()
+            } else {
+                cancelNotification()
+            }
+        } else {
+            generateNotificationError(.notAuthorized)
+            delegate?.onNotificationToggle(isNotificationSet)
+        }
+    }
+    
 }
 
+//MARK: - Protocol Implementation
 extension DetailViewModel: DetailViewModelProtocol {
     
     var gameTitle: String? {
@@ -326,6 +493,28 @@ extension DetailViewModel: DetailViewModelProtocol {
         } else if let data {
             coreDataService.addGameToFavorites(data)
             delegate?.onFavoriteChange()
+        }
+    }
+    
+    func checkNotificationSetStatus() {
+        guard let gameID = data?.id else {
+            delegate?.onNotificationStatus(false)
+            return
+        }
+        notificationService.checkIfScheduled(
+            String(gameID)
+        ) { [weak self] exists in
+            guard let self else { return }
+            isNotificationSet = exists
+            delegate?.onNotificationStatus(exists)
+        }
+    }
+    
+    func requestNotificationAuthorization() {
+        notificationService.requestNotificationAuth(NotificationConstants.notificationOptions
+        ) { [weak self] isAuthorized in
+            guard let self else { return }
+            handleNotificationAuthorization(isAuthorized)
         }
     }
 }
