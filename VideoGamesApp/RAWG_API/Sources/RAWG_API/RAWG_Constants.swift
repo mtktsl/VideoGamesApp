@@ -24,4 +24,5 @@ enum RAWG_Constants {
         baseURLString: "https://api.rawg.io",
         routeString: "api/games"
     )
+    
 }

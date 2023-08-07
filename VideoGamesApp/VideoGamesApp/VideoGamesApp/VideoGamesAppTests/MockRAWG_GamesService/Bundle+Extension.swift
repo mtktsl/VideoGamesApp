@@ -8,30 +8,12 @@
 import Foundation
 
 extension Bundle {
-    func decode<T: Decodable>(type: T.Type, file: String) throws -> T {
-        
-        guard let url = self.url(forResource: file, withExtension: nil) else {
-            fatalError("Fail \(file)")
-        }
-        
-        guard let data = try? Data(contentsOf: url) else {
-            fatalError("Failed to load \(file)")
-        }
-        
-        let decoder = JSONDecoder()
-        
-        guard let contents = try? decoder.decode(T.self, from: data) else {
-            fatalError("Failed to decode \(file)")
-        }
-        
-        return contents
-    }
     
-    func jsonDecode<D>(
-        decodeType: D.Type,
+    func jsonDecode<T>(
+        decodeType: T.Type,
         file: String,
         extenstion: String
-    ) throws -> D where D: Decodable {
+    ) throws -> T where T: Decodable {
         
         let fileName = "\(file).\(extenstion)"
         guard let pathString = path(forResource: file, ofType: extenstion) else {
@@ -53,11 +35,6 @@ extension Bundle {
             fatalError("Unable to decode \(file).\(extenstion) to type \(decodeType)")
         }
 
-        /*guard let jsonDictionary = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String:Any] else {
-            fatalError("Unable to convert \(file).\(extenstion) to JSON dictionary")
-        }*/
-
-        //print("The JSON dictionary is: \(jsonDictionary)")
         return result
     }
 }

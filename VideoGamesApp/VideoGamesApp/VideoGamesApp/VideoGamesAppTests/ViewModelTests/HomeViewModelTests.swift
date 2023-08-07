@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import RAWG_API
 @testable import VideoGamesApp
 
 final class HomeViewModelTests: XCTestCase {
@@ -96,5 +97,46 @@ final class HomeViewModelTests: XCTestCase {
         
         XCTAssertNotNil(firstCell)
         XCTAssertNotNil(firstHeader)
+    }
+    
+    func testImageCachingPerformance() {
+        
+        let gamesService = MockRAWG_GamesService()
+        
+        viewModel = HomeViewModel(
+            coordinator: coordinator,
+            service: gamesService
+        )
+        
+        viewModel.performDefaultQuery()
+        
+        let count = viewModel.dataCount
+        
+        XCTAssertTrue(count > 0)
+        
+        for i in 0 ..< count {
+            if let imageURL = viewModel.getGameForCell(at: i)?.backgroundImageURLString {
+                _ = gamesService.downloadImage(
+                    imageURL,
+                    isCropped: true,
+                    usesCache: true,
+                    completion: { _ in }
+                )
+            }
+        }
+        
+        self.measure {
+            
+            for i in stride(from: count-1, to: -1, by: -1) {
+                if let imageURL = viewModel.getGameForCell(at: i)?.backgroundImageURLString {
+                    _ = gamesService.downloadImage(
+                        imageURL,
+                        isCropped: true,
+                        usesCache: true,
+                        completion: { _ in }
+                    )
+                }
+            }
+        }
     }
 }

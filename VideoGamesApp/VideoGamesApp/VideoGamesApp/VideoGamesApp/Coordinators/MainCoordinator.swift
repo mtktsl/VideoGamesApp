@@ -71,20 +71,6 @@ final class MainCoordinator: CoordinatorProtocol {
             name: CoreDataManager.NotificationNames.error,
             object: nil
         )
-        
-        /*notificationTimer = Timer.scheduledTimer(
-            withTimeInterval: 1,
-            repeats: true,
-            block: { [weak self] timer in
-                guard let self else { return }
-                print("CHECK")
-                if let tappedNotificationGameID, !isPopupOpen {
-                    print("NAVIGATED")
-                    navigate(to: .detail(gameID: tappedNotificationGameID))
-                    timer.invalidate()
-                }
-            }
-        )*/
     }
 }
 

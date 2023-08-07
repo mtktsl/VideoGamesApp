@@ -84,6 +84,18 @@ public class Grid: UIView {
         var totalHeight: CGFloat = 0
         
         for cell in cells {
+            
+            let oldSize = cell.view.bounds.size
+            cell.view.bounds.size = .zero
+            
+            let isZero = cell.view.sizeThatFits(.zero) == .zero
+            
+            cell.view.bounds.size = oldSize
+            
+            if isZero {
+                continue
+            }
+            
             switch cell.gridLength {
             case .constant(let value, let view, _, _, _):
                 
@@ -116,13 +128,12 @@ public class Grid: UIView {
                 }
                 
             case .auto(let view, _, _, let maxSize, let margin):
-                let sizeResult = calculateAutoCellSize(view: view,
-                                                 maxSize: maxSize,
-                                                 margin: margin,
-                                                 fitsSize: size
+                let sizeResult = calculateAutoCellSize(
+                    view: view,
+                    maxSize: maxSize,
+                    margin: margin,
+                    fitsSize: size
                 )
-                
-                
                 
                 if gridType == .vertical {
                     totalWidth = max(totalWidth, sizeResult.width)
@@ -135,22 +146,21 @@ public class Grid: UIView {
             }
         }
         
-        return CGSize(width: totalWidth, height: totalHeight)
+        if size.width > size.height {
+            let finalWidth = totalWidth > size.width ? size.width : totalWidth
+            return CGSize(width: finalWidth, height: totalHeight)
+        } else {
+            let finalHeight = totalHeight > size.height ? size.height : totalWidth
+            return CGSize(width: totalWidth, height: finalHeight)
+        }
     }
     
-    private func calculateAutoCellSize(view: UIView,
-                                       maxSize: CGFloat,
-                                       margin: UIEdgeInsets,
-                                       fitsSize: CGSize = .zero
+    private func calculateAutoCellSize(
+        view: UIView,
+        maxSize: CGFloat,
+        margin: UIEdgeInsets,
+        fitsSize: CGSize = .zero
     ) -> CGSize {
-        let label = view as? UILabel
-        let grid = view as? Grid
-        let imageView = view as? UIImageView
-        let stackView = view as? UIStackView
-        
-        if label == nil && grid == nil && imageView == nil && stackView == nil {
-            return .zero
-        }
         
         var edgeWidth = self.bounds.size.width + margin.left + margin.right
         var edgeHeight = self.bounds.size.height + margin.top + margin.bottom

@@ -59,21 +59,32 @@ final class DetailViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.gameDescription)
     }
 
-    func testFavorite() {
+    func testAddToFavorite() {
         
         viewModel.downloadData()
+        let popupCount = coordinator.invokeCountPopUpAlert
         
         XCTAssertFalse(viewModel.isFavorite)
         
+        XCTAssertTrue(coordinator.invokeCountPopUpAlert == popupCount)
         viewModel.toggleFavorite()
-        
+        XCTAssertTrue(coordinator.invokeCountPopUpAlert == popupCount)
         XCTAssertTrue(viewModel.isFavorite)
         XCTAssertTrue(coreDataService.isNotSeen(Int32(defaultTestGameID)))
+    }
+    
+    func testRemoveFromFavorite() {
+        viewModel.downloadData()
         
-        XCTAssertTrue(coordinator.invokeCountPopUpAlert == 0)
+        //to make it favorite first
+        viewModel.toggleFavorite()
+        
+        let popupCount = coordinator.invokeCountPopUpAlert
+        
+        XCTAssertTrue(viewModel.isFavorite)
         
         viewModel.toggleFavorite()
-        XCTAssertTrue(coordinator.invokeCountPopUpAlert == 1)
+        XCTAssertTrue(coordinator.invokeCountPopUpAlert > popupCount)
         XCTAssertFalse(viewModel.isFavorite)
     }
     
@@ -102,7 +113,7 @@ final class DetailViewModelTests: XCTestCase {
     
     func testNotification() {
         
-        //In order to be able to set a future notification, the game's release date has to be set in the future, not past
+        //In order to be able to set a future notification, the game's release date has to be set to a future date, not past
         viewModel = DetailViewModel(
             service: gamesService,
             coreDataService: coreDataService,
