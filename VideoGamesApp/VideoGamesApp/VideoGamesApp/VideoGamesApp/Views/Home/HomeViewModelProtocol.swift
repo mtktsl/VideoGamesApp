@@ -8,9 +8,10 @@
 import Foundation
 import RAWG_API
 
-protocol HomeViewModelProtocol {
+protocol HomeViewModelProtocol: AnyObject {
     var viewControllerTitle: String { get }
     var delegate: HomeViewModelDelegate? { get set }
+    var dataSource: HomeCollectionDataSource? { get set }
     
     var imageViewPagerCount: Int { get }
     var dataCount: Int { get }

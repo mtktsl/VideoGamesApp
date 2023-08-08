@@ -45,7 +45,7 @@ fileprivate extension UIEdgeInsets {
 }
 
 extension HomeViewController {
-    fileprivate enum Constants {
+    enum Constants {
         static let imageViewPagerHeaderHeight: CGFloat = 200
         static let collectionContentInset = UIEdgeInsets(
             top: 0, left: 10, bottom: 10, right: 10
@@ -60,7 +60,7 @@ extension HomeViewController {
 }
 
 //MARK: - HomeviewControllerProtocol
-protocol HomeViewControllerProtocol {
+protocol HomeViewControllerProtocol: AnyObject, ImageViewPagerDelegate {
     func setupColors()
     func setupMainGrid()
     func showNotFoundView()
@@ -118,7 +118,7 @@ class HomeViewController: UIViewController {
             withReuseIdentifier: ImageViewPagerReusableView.reuseIdentifier
         )
         
-        collectionView.dataSource = self
+        collectionView.dataSource = viewModel.dataSource
         collectionView.delegate = self
         
         collectionView.backgroundView = notFoundView
@@ -273,6 +273,11 @@ class HomeViewController: UIViewController {
         }
     }
     
+    lazy var dataSource = HomeCollectionDataSource(
+        view: self,
+        viewModel: viewModel
+    )
+    
     //MARK: - Overridden methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -329,74 +334,7 @@ extension HomeViewController: HomeViewControllerProtocol {
 }
 
 //MARK: - UICollectionViewDataSource and Delegate implementations
-extension HomeViewController: UICollectionViewDataSource,
-                              UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        let count = viewModel.dataCount
-        if count == .zero {
-            showNotFoundView()
-        } else {
-            hideNotFoundView()
-        }
-        return count
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: GamesListCell.reuseIdentifier,
-            for: indexPath
-        ) as? GamesListCell
-        else { fatalError("Failed to cast GamesListCell") }
-        
-        cell.viewModel = GamesListCellViewModel(
-            dataModel: viewModel.getGameForCell(at: indexPath.row)
-        )
-        
-        return cell
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        guard let suppView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: ImageViewPagerReusableView.reuseIdentifier,
-            for: indexPath
-        ) as? ImageViewPagerReusableView
-        else {
-            fatalError("Failed to cast ImageViewPagerReusableView in HomeViewController")
-        }
-        
-        var imageURLStrings = [String?]()
-        var titles = [String?]()
-        
-        let dataCount = viewModel.imageViewPagerCount
-        
-        for i in 0 ..< dataCount {
-            let gameData = viewModel.getGameForHeader(at: i)
-            imageURLStrings.append(gameData?.backgroundImageURLString)
-            titles.append(gameData?.name)
-        }
-        
-        suppView.viewModel = ImageViewPagerReusableViewModel(
-            imageURLStrings: imageURLStrings,
-            titles: titles
-        )
-        
-        suppView.contentInset = Constants.collectionContentInset
-        suppView.imageViewPager.delegate = self
-        
-        return suppView
-    }
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(
         _ collectionView: UICollectionView,

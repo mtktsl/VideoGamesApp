@@ -66,6 +66,8 @@
 		6FA6505A2A7394E500323422 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA650592A7394E500323422 /* DetailViewModelTests.swift */; };
 		6FA6505C2A7396A500323422 /* MockFutureGameDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */; };
 		6FA6505F2A7398CD00323422 /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */; };
+		6FDBC3402A8299CE00B32458 /* HomeCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBC33F2A8299CE00B32458 /* HomeCollectionDataSource.swift */; };
+		6FDBC3422A82A1F600B32458 /* FavoritesCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBC3412A82A1F600B32458 /* FavoritesCollectionDataSource.swift */; };
 		6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CDE2A657BBF00A1C518 /* LoadingView */; };
 		6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CE42A65EEB100A1C518 /* TextStepperView */; };
 		6FE66CE82A6617A300A1C518 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE66CE72A6617A300A1C518 /* DetailViewController.swift */; };
@@ -153,6 +155,8 @@
 		6FA650592A7394E500323422 /* DetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
 		6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockFutureGameDetails.json; sourceTree = "<group>"; };
 		6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
+		6FDBC33F2A8299CE00B32458 /* HomeCollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionDataSource.swift; sourceTree = "<group>"; };
+		6FDBC3412A82A1F600B32458 /* FavoritesCollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionDataSource.swift; sourceTree = "<group>"; };
 		6FE66CDD2A657B3300A1C518 /* LoadingView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LoadingView; path = ../../LoadingView; sourceTree = "<group>"; };
 		6FE66CE32A65DE0100A1C518 /* TextStepperView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TextStepperView; path = ../../TextStepperView; sourceTree = "<group>"; };
 		6FE66CE72A6617A300A1C518 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -329,6 +333,7 @@
 				6F102D312A62C80100C9781A /* HomeViewModel.swift */,
 				6F6D8FAC2A6E00E400E729B6 /* HomeViewModelConstants.swift */,
 				6F6D8FAE2A6E011B00E729B6 /* HomeViewModelProtocol.swift */,
+				6FDBC33F2A8299CE00B32458 /* HomeCollectionDataSource.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -358,6 +363,7 @@
 			children = (
 				6F102D2D2A62C70100C9781A /* FavoritesViewController.swift */,
 				6F102D2F2A62C70D00C9781A /* FavoritesViewModel.swift */,
+				6FDBC3412A82A1F600B32458 /* FavoritesCollectionDataSource.swift */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -665,6 +671,7 @@
 				6F102D282A62A4E900C9781A /* SplashViewModel.swift in Sources */,
 				6F102D2C2A62C50B00C9781A /* MainViewModel.swift in Sources */,
 				6F102D302A62C70D00C9781A /* FavoritesViewModel.swift in Sources */,
+				6FDBC3422A82A1F600B32458 /* FavoritesCollectionDataSource.swift in Sources */,
 				6F7C4C902A62F65C00241AE6 /* GamesListCellViewModel.swift in Sources */,
 				6F7C4C9C2A63278100241AE6 /* ImageAssets.swift in Sources */,
 				6F102D2E2A62C70100C9781A /* FavoritesViewController.swift in Sources */,
@@ -678,6 +685,7 @@
 				6F102CC02A5F193A00C9781A /* AppDelegate.swift in Sources */,
 				6F102D2A2A62C2C400C9781A /* MainViewController.swift in Sources */,
 				6F7C4C942A62FF2F00241AE6 /* CollectionViewTableLayout.swift in Sources */,
+				6FDBC3402A8299CE00B32458 /* HomeCollectionDataSource.swift in Sources */,
 				6F6D8FA92A6DFFFE00E729B6 /* DetailViewModelConstants.swift in Sources */,
 				6F6D8FA72A6DCB2300E729B6 /* CORE_FavoriteGameModel.xcdatamodeld in Sources */,
 				6F102D262A62A46000C9781A /* SplashViewController.swift in Sources */,

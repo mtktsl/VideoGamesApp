@@ -95,8 +95,9 @@ internal final class ModalPickerController: UIViewController {
             searchBar
                 .Expanded()
             cancelButton
-                .Constant(value: 100)
-        }.Auto(margin: .init(top: 10, left: 5, bottom: 10, right: 5))
+                .Constant(value: 100,
+                          margin: .init(top: 10, left: 10, bottom: 10, right: 10))
+        }.Auto(margin: .init(top: 0, left: 5, bottom: 0, right: 5))
     }
     
     override func viewDidLayoutSubviews() {

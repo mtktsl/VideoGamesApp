@@ -89,11 +89,18 @@ extension MainCoordinator {
             coordinator: self,
             service: RAWG_GamesService.shared
         )
+        homeVC.viewModel.dataSource = HomeCollectionDataSource(
+            view: homeVC,
+            viewModel: homeVC.viewModel
+        )
         
         let favoritesVC = FavoritesViewController()
         favoritesVC.viewModel = FavoritesViewModel(
             coordinator: self,
             coreDataService: CoreDataManager.shared
+        )
+        favoritesVC.viewModel.dataSource = FavoritesCollectionDataSource(
+            viewModel: favoritesVC.viewModel
         )
         
         mainVC.setViewControllers(

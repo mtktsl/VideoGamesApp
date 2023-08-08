@@ -15,6 +15,7 @@ protocol HomeViewModelDelegate: AnyObject {
 final class HomeViewModel {
     private(set) weak var coordinator: MainCoordinatorProtocol?
     weak var delegate: HomeViewModelDelegate?
+    var dataSource: HomeCollectionDataSource?
     
     private var gamesDataTask: URLSessionDataTask?
     
