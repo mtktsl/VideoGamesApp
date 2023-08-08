@@ -63,7 +63,8 @@ extension GamesListCellViewModel: GamesListCellViewModelProtocol {
     }
     
     var metacriticRating: GamesListCellRatingModel {
-        guard let rating = dataModel?.metacritic
+        guard let rating = dataModel?.metacritic,
+              rating != 0
         else { return .none }
         
         if rating < 50 {

@@ -180,6 +180,17 @@ final class GamesListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented for GamesListCell")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        gameImageView.setImageAsync(
+            UIImage(named: ApplicationConstants.ImageAssets.loading),
+            newContentMode: .scaleAspectFit
+        )
+        releasedLabel.text = ""
+        rawgRatingLabel.text = "nil"
+        metacriticRatingLabel.text = "nil"
+    }
+    
     @objc private func onIsSeenChanged(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -226,30 +237,7 @@ final class GamesListCell: UICollectionViewCell {
         contentView.sendSubviewToBack(seenIndicatorView)
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        gameImageView.setImageAsync(
-            UIImage(named: ApplicationConstants.ImageAssets.loading),
-            newContentMode: .scaleAspectFit
-        )
-        releasedLabel.text = ""
-        rawgRatingLabel.text = "nil"
-        metacriticRatingLabel.text = "nil"
-    }
-}
-
-extension GamesListCell: GamesListCellProtocol {
-    func setupCell() {
-        guard let data = viewModel.dataModel else { return }
-        
-        viewModel.downloadGameImage()
-        
-        titleLabel.text = data.name
-        
-        if let releaseDate = data.released {
-            releasedLabel.text = "RELEASED ON \(releaseDate)"
-        }
-        
+    private func setRawgColor() {
         switch viewModel.rawgRating {
         case .high:
             rawgRatingLabel.textColor = .ratingHighColor
@@ -260,7 +248,9 @@ extension GamesListCell: GamesListCellProtocol {
         case .none:
             rawgRatingLabel.textColor = .ratingNilColor
         }
-        
+    }
+    
+    private func setMetacriticColor() {
         switch viewModel.metacriticRating {
         case .high:
             metacriticRatingLabel.textColor = .ratingHighColor
@@ -271,6 +261,21 @@ extension GamesListCell: GamesListCellProtocol {
         case .none:
             metacriticRatingLabel.textColor = .ratingNilColor
         }
+    }
+}
+
+extension GamesListCell: GamesListCellProtocol {
+    func setupCell() {
+        guard let data = viewModel.dataModel else { return }
+        
+        titleLabel.text = data.name
+        
+        if let releaseDate = data.released {
+            releasedLabel.text = "RELEASED ON \(releaseDate)"
+        }
+        
+        setRawgColor()
+        setMetacriticColor()
         
         rawgRatingLabel.text = String(data.rating ?? 0.0)
         metacriticRatingLabel.text = String(data.metacritic ?? 0)
@@ -278,6 +283,8 @@ extension GamesListCell: GamesListCellProtocol {
         seenIndicatorView.isHidden = !viewModel.isSeen
         
         mainGrid.setNeedsLayout()
+        
+        viewModel.downloadGameImage()
     }
     
     func setupSubviews() {
