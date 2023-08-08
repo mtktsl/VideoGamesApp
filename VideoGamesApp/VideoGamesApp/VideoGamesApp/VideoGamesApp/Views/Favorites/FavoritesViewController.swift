@@ -27,7 +27,7 @@ extension FavoritesViewController {
     }
 }
 
-protocol FavoritesViewControllerProtocol {
+protocol FavoritesViewControllerProtocol: AnyObject {
     func setupViews()
 }
 
@@ -125,7 +125,7 @@ final class FavoritesViewController: UIViewController {
             withReuseIdentifier: ImageViewPagerReusableView.reuseIdentifier
         )
         
-        collectionView.dataSource = self
+        collectionView.dataSource = viewModel.dataSource
         collectionView.delegate = self
         
         collectionView.backgroundView = notFoundView
@@ -175,36 +175,8 @@ extension FavoritesViewController: FavoritesViewControllerProtocol {
     }
 }
 
-extension FavoritesViewController: UICollectionViewDelegateFlowLayout,
-                                   UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        
-        let count = viewModel.itemCount
-        notFoundView.isHidden = viewModel.itemCount > 0
-        return count
-    }
+extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: GamesListCell.reuseIdentifier,
-            for: indexPath
-        ) as? GamesListCell else {
-            fatalError("Failed to cast GamesListCell in FavoritesViewController.")
-        }
-        
-        let data = viewModel.getGame(at: indexPath.row)
-        cell.viewModel = GamesListCellViewModel(
-            dataModel: data
-        )
-        return cell
-    }
     
     func collectionView(
         _ collectionView: UICollectionView,

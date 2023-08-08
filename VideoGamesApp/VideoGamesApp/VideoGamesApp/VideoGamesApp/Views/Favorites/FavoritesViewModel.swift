@@ -20,7 +20,8 @@ protocol FavoritesViewModelDelegate: AnyObject {
 
 protocol FavoritesViewModelProtocol: AnyObject {
     
-    var delegate: FavoritesViewModelDelegate? { get set}
+    var delegate: FavoritesViewModelDelegate? { get set }
+    var dataSource: FavoritesCollectionDataSource? { get set }
     
     var viewControllerTitle: String { get }
     
@@ -38,6 +39,7 @@ final class FavoritesViewModel {
     private let coreDataService: CoreDataManagerProtocol
     
     weak var delegate: FavoritesViewModelDelegate?
+    var dataSource: FavoritesCollectionDataSource?
     
     private var favoriteGames = [RAWG_GamesListModel]()
     private var filteredGames = [RAWG_GamesListModel]()
