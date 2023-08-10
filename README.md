@@ -39,11 +39,11 @@ width="350" height="730" />
 <img src="https://i.hizliresim.com/khx3fp6.jpg"
 data-canonical-src="https://i.hizliresim.com/khx3fp6.jpg"
 width="350" height="730" />
-&bull; Set an alarm and calendar event for the release date if a game is not released yet:
+&bull; Set a notification and calendar event for the release date of a game if the game is not released yet:
 <img src="https://i.hizliresim.com/29jxdoj.jpg"
 data-canonical-src="https://i.hizliresim.com/29jxdoj.jpg"
 width="350" height="730" />
-&bull; Calendar event is being set when the bell is marked:
+&bull; Calendar event is being set automatically when the bell is marked:
 <img src="https://i.hizliresim.com/1y9e85t.jpg"
 data-canonical-src="https://i.hizliresim.com/1y9e85t.jpg"
 width="350" height="730" />
