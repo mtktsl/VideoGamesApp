@@ -136,7 +136,7 @@ class CoreDataManager {
 extension CoreDataManager: CoreDataManagerProtocol {
     
     var favoriteGames: [RAWG_GamesListModel] {
-        return lastFetch.map( { coreToGamesList($0) })
+        return lastFetch.map( { coreToGamesList($0) }).reversed()
     }
     
     func addGameToFavorites(_ item: RAWG_GameDetails) {

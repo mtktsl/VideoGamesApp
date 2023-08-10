@@ -16,17 +16,11 @@
 		6F102CE42A5F193B00C9781A /* VideoGamesAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102CE32A5F193B00C9781A /* VideoGamesAppUITests.swift */; };
 		6F102CE62A5F193B00C9781A /* VideoGamesAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102CE52A5F193B00C9781A /* VideoGamesAppUITestsLaunchTests.swift */; };
 		6F102CF52A5F196100C9781A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F102CF42A5F196100C9781A /* CoreData.framework */; };
-		6F102CFC2A5F1B3300C9781A /* DataDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102CFB2A5F1B3300C9781A /* DataDownloader */; };
-		6F102CFE2A5F1B3900C9781A /* GridLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102CFD2A5F1B3900C9781A /* GridLayout */; };
 		6F102D082A5F4F3400C9781A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D072A5F4F3400C9781A /* HomeViewController.swift */; };
 		6F102D0A2A5F56B300C9781A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F102D092A5F56B300C9781A /* LaunchScreen.storyboard */; };
 		6F102D0E2A60E8B500C9781A /* ApplicationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D0D2A60E8B500C9781A /* ApplicationConstants.swift */; };
-		6F102D102A60E97400C9781A /* RAWG_API in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102D0F2A60E97400C9781A /* RAWG_API */; };
-		6F102D192A61686900C9781A /* ImageViewPager in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102D182A61686900C9781A /* ImageViewPager */; };
 		6F102D1D2A629EA400C9781A /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D1C2A629EA400C9781A /* CoordinatorProtocol.swift */; };
 		6F102D1F2A629EB600C9781A /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D1E2A629EB600C9781A /* MainCoordinator.swift */; };
-		6F102D222A62A0EA00C9781A /* NetworkStatusObserver in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102D212A62A0EA00C9781A /* NetworkStatusObserver */; };
-		6F102D242A62A0F100C9781A /* NSLayoutConstraintExtensionPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */; };
 		6F102D262A62A46000C9781A /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D252A62A46000C9781A /* SplashViewController.swift */; };
 		6F102D282A62A4E900C9781A /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D272A62A4E900C9781A /* SplashViewModel.swift */; };
 		6F102D2A2A62C2C400C9781A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F102D292A62C2C400C9781A /* MainViewController.swift */; };
@@ -49,7 +43,6 @@
 		6F6D8FC22A715B8C00E729B6 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC12A715B8C00E729B6 /* Bundle+Extension.swift */; };
 		6F6D8FC82A72175D00E729B6 /* NavigationBarAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FC72A72175D00E729B6 /* NavigationBarAppearance.swift */; };
 		6F6D8FCB2A721DB600E729B6 /* ColoredNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FCA2A721DB600E729B6 /* ColoredNavigationController.swift */; };
-		6F6D8FCE2A7220F100E729B6 /* SegmentedPickerView in Frameworks */ = {isa = PBXBuildFile; productRef = 6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */; };
 		6F6D8FD02A722BF300E729B6 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FCF2A722BF300E729B6 /* String+Extension.swift */; };
 		6F6D8FD22A7243C400E729B6 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FD12A7243C400E729B6 /* UIImageView+Extension.swift */; };
 		6F6D8FD42A7285D200E729B6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D8FD32A7285D200E729B6 /* NotificationManager.swift */; };
@@ -66,10 +59,17 @@
 		6FA6505A2A7394E500323422 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA650592A7394E500323422 /* DetailViewModelTests.swift */; };
 		6FA6505C2A7396A500323422 /* MockFutureGameDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6FA6505B2A7396A500323422 /* MockFutureGameDetails.json */; };
 		6FA6505F2A7398CD00323422 /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6505E2A7398CD00323422 /* MockNotificationManager.swift */; };
+		6FBC61F52A85604A00AD6674 /* DataDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61F42A85604A00AD6674 /* DataDownloader */; };
+		6FBC61F72A85604D00AD6674 /* GridLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61F62A85604D00AD6674 /* GridLayout */; };
+		6FBC61F92A85605200AD6674 /* ImageViewPager in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61F82A85605200AD6674 /* ImageViewPager */; };
+		6FBC61FB2A85605600AD6674 /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61FA2A85605600AD6674 /* LoadingView */; };
+		6FBC61FD2A85605B00AD6674 /* NetworkStatusObserver in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61FC2A85605B00AD6674 /* NetworkStatusObserver */; };
+		6FBC61FF2A85605F00AD6674 /* NSLayoutConstraintExtensionPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC61FE2A85605F00AD6674 /* NSLayoutConstraintExtensionPackage */; };
+		6FBC62012A85606300AD6674 /* RAWG_API in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC62002A85606300AD6674 /* RAWG_API */; };
+		6FBC62032A85606800AD6674 /* SegmentedPickerView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC62022A85606800AD6674 /* SegmentedPickerView */; };
+		6FBC62052A85606C00AD6674 /* TextStepperView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FBC62042A85606C00AD6674 /* TextStepperView */; };
 		6FDBC3402A8299CE00B32458 /* HomeCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBC33F2A8299CE00B32458 /* HomeCollectionDataSource.swift */; };
 		6FDBC3422A82A1F600B32458 /* FavoritesCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBC3412A82A1F600B32458 /* FavoritesCollectionDataSource.swift */; };
-		6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CDE2A657BBF00A1C518 /* LoadingView */; };
-		6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE66CE42A65EEB100A1C518 /* TextStepperView */; };
 		6FE66CE82A6617A300A1C518 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE66CE72A6617A300A1C518 /* DetailViewController.swift */; };
 		6FE66CEA2A6617AF00A1C518 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE66CE92A6617AF00A1C518 /* DetailViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -168,16 +168,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F102D192A61686900C9781A /* ImageViewPager in Frameworks */,
-				6F102D222A62A0EA00C9781A /* NetworkStatusObserver in Frameworks */,
-				6FE66CE52A65EEB100A1C518 /* TextStepperView in Frameworks */,
+				6FBC61FB2A85605600AD6674 /* LoadingView in Frameworks */,
+				6FBC62032A85606800AD6674 /* SegmentedPickerView in Frameworks */,
+				6FBC61FD2A85605B00AD6674 /* NetworkStatusObserver in Frameworks */,
+				6FBC62012A85606300AD6674 /* RAWG_API in Frameworks */,
 				6F102CF52A5F196100C9781A /* CoreData.framework in Frameworks */,
-				6F6D8FCE2A7220F100E729B6 /* SegmentedPickerView in Frameworks */,
-				6F102CFE2A5F1B3900C9781A /* GridLayout in Frameworks */,
-				6FE66CDF2A657BBF00A1C518 /* LoadingView in Frameworks */,
-				6F102D102A60E97400C9781A /* RAWG_API in Frameworks */,
-				6F102CFC2A5F1B3300C9781A /* DataDownloader in Frameworks */,
-				6F102D242A62A0F100C9781A /* NSLayoutConstraintExtensionPackage in Frameworks */,
+				6FBC61F72A85604D00AD6674 /* GridLayout in Frameworks */,
+				6FBC61F52A85604A00AD6674 /* DataDownloader in Frameworks */,
+				6FBC61F92A85605200AD6674 /* ImageViewPager in Frameworks */,
+				6FBC62052A85606C00AD6674 /* TextStepperView in Frameworks */,
+				6FBC61FF2A85605F00AD6674 /* NSLayoutConstraintExtensionPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,15 +530,15 @@
 			);
 			name = VideoGamesApp;
 			packageProductDependencies = (
-				6F102CFB2A5F1B3300C9781A /* DataDownloader */,
-				6F102CFD2A5F1B3900C9781A /* GridLayout */,
-				6F102D0F2A60E97400C9781A /* RAWG_API */,
-				6F102D182A61686900C9781A /* ImageViewPager */,
-				6F102D212A62A0EA00C9781A /* NetworkStatusObserver */,
-				6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */,
-				6FE66CDE2A657BBF00A1C518 /* LoadingView */,
-				6FE66CE42A65EEB100A1C518 /* TextStepperView */,
-				6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */,
+				6FBC61F42A85604A00AD6674 /* DataDownloader */,
+				6FBC61F62A85604D00AD6674 /* GridLayout */,
+				6FBC61F82A85605200AD6674 /* ImageViewPager */,
+				6FBC61FA2A85605600AD6674 /* LoadingView */,
+				6FBC61FC2A85605B00AD6674 /* NetworkStatusObserver */,
+				6FBC61FE2A85605F00AD6674 /* NSLayoutConstraintExtensionPackage */,
+				6FBC62002A85606300AD6674 /* RAWG_API */,
+				6FBC62022A85606800AD6674 /* SegmentedPickerView */,
+				6FBC62042A85606C00AD6674 /* TextStepperView */,
 			);
 			productName = VideoGamesApp;
 			productReference = 6F102CBC2A5F193A00C9781A /* VideoGamesApp.app */;
@@ -1022,39 +1022,39 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6F102CFB2A5F1B3300C9781A /* DataDownloader */ = {
+		6FBC61F42A85604A00AD6674 /* DataDownloader */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DataDownloader;
 		};
-		6F102CFD2A5F1B3900C9781A /* GridLayout */ = {
+		6FBC61F62A85604D00AD6674 /* GridLayout */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GridLayout;
 		};
-		6F102D0F2A60E97400C9781A /* RAWG_API */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = RAWG_API;
-		};
-		6F102D182A61686900C9781A /* ImageViewPager */ = {
+		6FBC61F82A85605200AD6674 /* ImageViewPager */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ImageViewPager;
 		};
-		6F102D212A62A0EA00C9781A /* NetworkStatusObserver */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NetworkStatusObserver;
-		};
-		6F102D232A62A0F100C9781A /* NSLayoutConstraintExtensionPackage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NSLayoutConstraintExtensionPackage;
-		};
-		6F6D8FCD2A7220F100E729B6 /* SegmentedPickerView */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SegmentedPickerView;
-		};
-		6FE66CDE2A657BBF00A1C518 /* LoadingView */ = {
+		6FBC61FA2A85605600AD6674 /* LoadingView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LoadingView;
 		};
-		6FE66CE42A65EEB100A1C518 /* TextStepperView */ = {
+		6FBC61FC2A85605B00AD6674 /* NetworkStatusObserver */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkStatusObserver;
+		};
+		6FBC61FE2A85605F00AD6674 /* NSLayoutConstraintExtensionPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NSLayoutConstraintExtensionPackage;
+		};
+		6FBC62002A85606300AD6674 /* RAWG_API */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RAWG_API;
+		};
+		6FBC62022A85606800AD6674 /* SegmentedPickerView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SegmentedPickerView;
+		};
+		6FBC62042A85606C00AD6674 /* TextStepperView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TextStepperView;
 		};
