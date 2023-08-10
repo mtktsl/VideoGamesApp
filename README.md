@@ -39,7 +39,8 @@ width="350" height="730" />
 <img src="https://i.hizliresim.com/khx3fp6.jpg"
 data-canonical-src="https://i.hizliresim.com/khx3fp6.jpg"
 width="350" height="730" />
-&bull; Set a notification and calendar event for the release date of a game if the game is not released yet:
+&bull; By using the bell, set a notification and calendar event for the release date of a game if the game is not released yet
+<br/> (The bell is not visible if the game is already released):
 <img src="https://i.hizliresim.com/29jxdoj.jpg"
 data-canonical-src="https://i.hizliresim.com/29jxdoj.jpg"
 width="350" height="730" />
