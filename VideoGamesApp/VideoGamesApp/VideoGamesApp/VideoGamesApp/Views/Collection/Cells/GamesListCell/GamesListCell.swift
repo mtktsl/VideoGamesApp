@@ -10,6 +10,7 @@ import RAWG_API
 import GridLayout
 import NSLayoutConstraintExtensionPackage
 
+//MARK: - Cell specific colors
 fileprivate extension UIColor {
     static let titleLabelColor = UIColor(
         hue: 222 / maxHueValue,
@@ -35,6 +36,7 @@ fileprivate extension UIColor {
     static let seenIndicatorColor = UIColor.systemOrange
 }
 
+//MARK: - Cell specific constants
 extension GamesListCell {
     fileprivate enum Constants {
         
@@ -53,11 +55,13 @@ extension GamesListCell {
     }
 }
 
+//MARK: - Cell Protocol
 protocol GamesListCellProtocol {
     func setupCell()
     func setupSubviews()
 }
 
+//MARK: - Cell class
 final class GamesListCell: UICollectionViewCell {
     
     static var cellCount = 0
@@ -65,6 +69,7 @@ final class GamesListCell: UICollectionViewCell {
     static let reuseIdentifier = "GamesListCellReuseIdentifier"
     static let defaultHeight: CGFloat = 90
     
+    //MARK: - View definitions
     let gameImageView: UIImageView = {
         let gameImageView = UIImageView()
         gameImageView.contentMode = .scaleAspectFit
@@ -127,6 +132,7 @@ final class GamesListCell: UICollectionViewCell {
         return seenIndicator
     }()
     
+    //MARK: - Main Grid
     lazy var mainGrid = Grid.horizontal {
         gameImageView
             .Constant(value: 150, margin: Constants.gameImageMargin)
@@ -157,6 +163,7 @@ final class GamesListCell: UICollectionViewCell {
         }.Expanded()
     }
     
+    //MARK: - ViewModel definition
     var viewModel: GamesListCellViewModelProtocol! {
         didSet {
             viewModel.delegate = self
@@ -164,6 +171,7 @@ final class GamesListCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Overriden method implementations
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -191,6 +199,7 @@ final class GamesListCell: UICollectionViewCell {
         metacriticRatingLabel.text = "nil"
     }
     
+    //MARK: - Private methods
     @objc private func onIsSeenChanged(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -264,6 +273,8 @@ final class GamesListCell: UICollectionViewCell {
     }
 }
 
+
+//MARK: - Protocol implementation
 extension GamesListCell: GamesListCellProtocol {
     func setupCell() {
         guard let data = viewModel.dataModel else { return }
@@ -294,6 +305,7 @@ extension GamesListCell: GamesListCellProtocol {
     }
 }
 
+//MARK: - Delegate implementation
 extension GamesListCell: GamesListCellViewModelDelegate {
     func onImageResult(_ imageData: Data) {
         gameImageView.setImageAsync(
